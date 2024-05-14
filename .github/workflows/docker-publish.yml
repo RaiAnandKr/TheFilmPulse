@@ -19,9 +19,9 @@ jobs:
       matrix:
         include:
           - dockerfile: Dockerfile_b
-            image: ghcr.io/username/thefilmpulse/backend
+            image: ghcr.io/RaiAnandKr/TheFilmPulse/backend
           - dockerfile: Dockerfile_f
-            image: ghcr.io/username/thefilmpulse/frontend
+            image: ghcr.io/RaiAnandKr/TheFilmPulse/frontend
 
     permissions:
       contents: read
