@@ -6,8 +6,8 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/'); // Replace with your backend URL
-        const data = await response.json(); // Assuming your backend returns JSON
+        const response = await fetch('https://backend.gentleisland-bcedf421.centralindia.azurecontainerapps.io');
+        const data = await response.json();
         setMessage(data.message);
       } catch (error) {
         console.error('Error fetching data:', error);
