@@ -58,8 +58,8 @@ def send_otp():
     phone_number = request.json.get('phone_number')
     if not phone_number:
         return jsonify({"error": "Phone number is required"}), 400
-    # client = TwilioOtp()
-    # client.generate_otp(phone_number)
+    client = TwilioOtp()
+    client.generate_otp(phone_number)
     return jsonify({"message": "OTP sent"}), 200
 
 
@@ -67,9 +67,9 @@ def send_otp():
 def validate_otp():
     phone_number = request.json.get('phone_number')
     otp = request.json.get('otp')
-    # client = TwilioOtp()
-    # if not client.verify_otp(phone_number, otp):
-    #     return jsonify({"message": "invalid otp"}), 401
+    client = TwilioOtp()
+    if not client.verify_otp(phone_number, otp):
+        return jsonify({"message": "invalid otp"}), 401
     session = db.session()
     existing_user = session.query(User).filter_by(phone=phone_number).first()
     if not existing_user:
