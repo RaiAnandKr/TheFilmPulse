@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile_b
+    image: docker.io/thefilmpulse/backend
+    restart: always
+    volumes:
+      - "./backend:/app/backend"
+    env_file:
+      - dev.env
+    ports:
+      - "5000:5000"
+
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3306:3306"
