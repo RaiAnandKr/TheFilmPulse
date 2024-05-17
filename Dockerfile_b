@@ -1,14 +1,18 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM python:3.12.0-slim
 
 # Set the working directory in the container
 WORKDIR /app
+
+
+RUN apt update && apt install -y python3-dev default-libmysqlclient-dev build-essential pkg-config
 
 # Copy the backend files
 COPY backend /app/backend
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt
+
 
 # Expose port
 EXPOSE 5000
