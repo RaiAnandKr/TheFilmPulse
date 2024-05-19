@@ -1,3 +1,6 @@
+/* eslint-disable */
+declare const window: any;
+
 import Head from "next/head";
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -5,8 +8,9 @@ import { useRouter } from 'next/router';
 export default function LoginView() {
 const router = useRouter();
 
+
 useEffect(() => {
-    window.otpless = (otplessUser) => {
+    window.otpless = (otplessUser:any) => {
       router.push('/profile')
     };
   }, []);
@@ -30,3 +34,4 @@ return (
     </>
   );
 }
+/* eslint-disable */
