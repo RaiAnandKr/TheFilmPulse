@@ -8,9 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from flask_migrate import Migrate
 
-from utils.otp import TwilioOtp
-
-
 # TODO: Organise configs and secrets
 
 class ModelDBBase(DeclarativeBase):
@@ -50,39 +47,6 @@ with app.app_context():
 def hello_world():
     """A simple route returning a message"""
     return jsonify({"message": "Hello from your Flask Backend!"})
-
-
-# TODO: Handle otp client init
-@app.route("/request-otp", methods=['POST'])
-def send_otp():
-    phone_number = request.json.get('phone_number')
-    if not phone_number:
-        return jsonify({"error": "Phone number is required"}), 400
-    client = TwilioOtp()
-    client.generate_otp(phone_number)
-    return jsonify({"message": "OTP sent"}), 200
-
-
-@app.route("/verify-otp", methods=['POST'])
-def validate_otp():
-    phone_number = request.json.get('phone_number')
-    otp = request.json.get('otp')
-    client = TwilioOtp()
-    if not client.verify_otp(phone_number, otp):
-        return jsonify({"message": "invalid otp"}), 401
-    session = db.session()
-    existing_user = session.query(User).filter_by(phone=phone_number).first()
-    if not existing_user:
-        existing_user = User(phone=phone_number, username=phone_number)
-        session.add(existing_user)
-        session.commit()
-    access_token = create_access_token(identity=phone_number, expires_delta=timedelta(days=30))
-    # response = jsonify({'token': access_token, 'user': existing_user})
-    response = jsonify(existing_user)
-    set_access_cookies(response, access_token)
-    print(response.headers)
-    return response
-
 
 # TODO: Change these to class based views
 @app.route("/profile", methods=['GET'])
