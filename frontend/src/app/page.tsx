@@ -1,3 +1,11 @@
+import { Button } from "@nextui-org/react";
+
 export default function Page() {
-    return <h1>Hello, Next.js!</h1>
-  }
+  return (
+    <div>
+      <Button color="primary" variant="bordered">
+        Click
+      </Button>
+    </div>
+  );
+}
