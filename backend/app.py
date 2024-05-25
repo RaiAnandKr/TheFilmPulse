@@ -8,7 +8,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from flask_migrate import Migrate
 
-# TODO: Organise configs and secrets
+from auth_provider_config import AuthProviderFactory
+
 
 class ModelDBBase(DeclarativeBase):
     pass
@@ -19,27 +20,31 @@ backend_host = os.environ.get('BACKEND_HOST', 'http://localhost:8081')
 CORS(app, origins=[backend_host], supports_credentials=True)
 
 
-# JWT stuff
-app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
-app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
-# Only for dev, don't use this in prod
-app.config["JWT_COOKIE_SECURE"] = False
+env = os.environ.get('APP_ENV', 'prod')
+if env == 'prod':
+    app.config.from_object('config.ProductionConfig')
+else:
+    app.config.from_object('config.DevelopmentConfig')
+
+
 jwt = JWTManager(app)
 
 # TODO: db hackx, cleanup later
 db = SQLAlchemy(model_class=ModelDBBase)
 migrate = Migrate(app, db)
-mysql_username = os.environ.get('MYSQL_USERNAME')
-mysql_password = os.environ.get('MYSQL_PASSWORD')
-mysql_host = os.environ.get('MYSQL_HOST')
-mysql_db = os.environ.get('MYSQL_DB')
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql://{mysql_username}:{mysql_password}@db/db"
 db.init_app(app)
 
 from models import User
 
 with app.app_context():
     db.create_all()
+
+otpless_config = {
+    'client_id': os.environ.get('OTPLESS_CLIENT_ID'),
+    'client_secret': os.environ.get('OTPLESS_CLIENT_SECRET'),
+}
+
+auth_provider = AuthProviderFactory.get_auth_provider('otpless', **otpless_config)
 
 
 # TODO: Find a way to refactor routes - Blueprints?
@@ -48,12 +53,36 @@ def hello_world():
     """A simple route returning a message"""
     return jsonify({"message": "Hello from your Flask Backend!"})
 
+
+# TODO: errors & exception handling
+@app.route("/login", methods=['POST'])
+def login():
+    data = request.json
+    phone_number = data.get('phone_number')
+    kwargs = {
+        'phone_number': phone_number,
+        'order_id': data.get('order_id'),
+        'auth_token': data.get('auth_token')
+    }
+
+    try:
+        user_info = auth_provider.verify_token(**kwargs)
+        user = User.query.filter_by(phone_number=phone_number).first()
+        if not user:
+            # ask the user to signup
+            pass
+        return jsonify(user), 200
+    except:
+        pass
+    pass
+
+
 # TODO: Change these to class based views
 @app.route("/profile", methods=['GET'])
 @jwt_required()
 def get_profile():
     phone = get_jwt_identity()
-    user = User.query.filter_by(phone=phone).first()
+    user = User.query.filter_by(phone_number=phone).first()
     return jsonify(user), 200
 
 
@@ -62,7 +91,7 @@ def get_profile():
 def update_profile():
     phone = get_jwt_identity()
     session = db.session()
-    user = session.query(User).filter_by(phone=phone).first()
+    user = session.query(User).filter_by(phone_number=phone).first()
     user.full_name = request.json.get('full_name')
     user.email = request.json.get('email')
     session.commit()
