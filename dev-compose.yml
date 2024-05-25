@@ -16,10 +16,11 @@ services:
       - "5000:5000"
 
   db:
-    image: mysql
+    image: postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "3306:3306"
+      - "5432:5432"
