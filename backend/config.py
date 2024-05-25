@@ -1,4 +1,5 @@
 import os
+import sqlalchemy as sa
 
 
 class DataBaseConfig(object):
@@ -7,7 +8,14 @@ class DataBaseConfig(object):
     DB_USERNAME = os.environ.get('DB_USERNAME')
     DB_PASSWORD = os.environ.get('DB_PASSWORD')
     DB_NAME = os.environ.get('DB_NAME')
-    SQLALCHEMY_DATABASE_URI = f'{DB_DIALECT}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}'
+    # SQLALCHEMY_DATABASE_URI = f'{DB_DIALECT}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}'
+    SQLALCHEMY_DATABASE_URI = sa.URL.create(
+        DB_DIALECT,
+        username=DB_USERNAME,
+        password=DB_PASSWORD,
+        host=DB_HOST,
+        database=DB_NAME,
+    )
 
 
 class JWTConfig(object):
