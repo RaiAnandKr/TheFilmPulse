@@ -15,6 +15,7 @@ import { AcmeLogo } from "../res/icons/brandLogo";
 import { useState } from "react";
 import type { MenuItem } from "../schema/MenuItem";
 import { CoinsIcon } from "../res/icons/coinsIcon";
+import styles from "./header.module.css";
 
 const menuItems: MenuItem[] = [
   {
@@ -49,7 +50,7 @@ export const Header = () => {
 
   return (
     <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
-      <NavbarContent as="div" className="noflex" justify="start">
+      <NavbarContent as="div" className={styles.noflex} justify="start">
         <AvatarDropdown />
       </NavbarContent>
 
@@ -60,7 +61,7 @@ export const Header = () => {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="noflex" justify="end">
+      <NavbarContent className={styles.noflex} justify="end">
         <NavbarItem className="hidden lg:flex">
           <Link href="#">Login</Link>
         </NavbarItem>
