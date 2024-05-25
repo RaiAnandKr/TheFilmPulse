@@ -11,20 +11,16 @@ import {
   Dropdown,
   Avatar,
 } from "@nextui-org/react";
-import { AcmeLogo } from "../res/icons/brandLogo";
+import { AcmeLogo } from "../res/brandLogo";
 import { useState } from "react";
 import type { MenuItem } from "../schema/MenuItem";
-import { CoinsIcon } from "../res/icons/coinsIcon";
+import { CoinIcon } from "../res/icons/coin";
 import styles from "./header.module.css";
 
 const menuItems: MenuItem[] = [
   {
     key: "username",
     label: "Signed in as xyz_name",
-  },
-  {
-    key: "dashboard",
-    label: "Dashboard",
   },
   {
     key: "redeem",
@@ -45,33 +41,39 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-export const Header = () => {
+export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
-      <NavbarContent as="div" className={styles.noflex} justify="start">
-        <AvatarDropdown />
-      </NavbarContent>
+    <div className="flex flex-none">
+      <Navbar
+        isBordered
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+      >
+        <NavbarContent as="div" className={styles.noflex} justify="start">
+          <AvatarDropdown />
+        </NavbarContent>
 
-      <NavbarContent className="flex-auto sm:hidden" justify="center">
-        <NavbarBrand>
-          <AcmeLogo />
-          <p className="font-bold text-inherit">ACME</p>
-        </NavbarBrand>
-      </NavbarContent>
+        <NavbarContent className="flex-auto sm:hidden" justify="center">
+          <NavbarBrand>
+            <AcmeLogo />
+            <p className="font-bold text-inherit">ACME</p>
+          </NavbarBrand>
+        </NavbarContent>
 
-      <NavbarContent className={styles.noflex} justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button color="success" variant="flat" startContent={<CoinsIcon />}>
-            500
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
+        <NavbarContent className={styles.noflex} justify="end">
+          <NavbarItem className="hidden lg:flex">
+            <Link href="#">Login</Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Button color="warning" variant="flat" startContent={<CoinIcon />}>
+              500
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+      </Navbar>
+    </div>
   );
 };
 
