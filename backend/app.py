@@ -3,22 +3,17 @@ from datetime import timedelta
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, set_access_cookies
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_migrate import Migrate
+
+from extensions import db
+from models import User, Film, Opinion
 
 from auth_provider_config import AuthProviderFactory
 
-
-class ModelDBBase(DeclarativeBase):
-    pass
-
-
-app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
+app = Flask(__name__)
 backend_host = os.environ.get('BACKEND_HOST', 'http://localhost:8081')
 CORS(app, origins=[backend_host], supports_credentials=True)
-
 
 env = os.environ.get('APP_ENV', 'prod')
 if env == 'prod':
@@ -26,15 +21,11 @@ if env == 'prod':
 else:
     app.config.from_object('config.DevelopmentConfig')
 
-
 jwt = JWTManager(app)
 
 # TODO: db hackx, cleanup later
-db = SQLAlchemy(model_class=ModelDBBase)
-migrate = Migrate(app, db)
 db.init_app(app)
-
-from models import User
+migrate = Migrate(app, db)
 
 with app.app_context():
     db.create_all()
@@ -97,6 +88,51 @@ def update_profile():
     session.commit()
     return jsonify(user), 200
 
+@app.route("/opinions", methods=['GET'])
+def get_opinions():
+    """
+    1. We will always return opinions sorted by desc order of user_count
+    2. /opinions?film=<film_name> is implemented
+    3. /opinions?limit=<limit> is implemented
+    """
+
+    film_name = request.args.get('film')
+    limit = request.args.get('limit', type=int) or None
+
+    session = db.session()
+    query = session.query(Opinion).join(Film, Opinion.film_id == Film.id)
+    if film_name:
+        query = query.filter(Film.title.contains(film_name))
+
+    # Sort by user_count in descending order
+    query = query.order_by(Opinion.user_count.desc())
+
+    # Limit results if limit is specified
+    if limit:
+        query = query.limit(limit)
+
+    # Execute query and fetch results
+    opinions = query.all()
+
+    opinions_json = [
+        {
+            "id": opinion.id,
+            "film_name": opinion.film.title,
+            "text": opinion.text,
+            "icon_url": opinion.icon_url,
+            "user_count": opinion.user_count,
+            "yes_count": opinion.yes_count,
+            "no_count": opinion.no_count,
+            "yes_coins": opinion.yes_coins,
+            "no_coins": opinion.no_coins,
+            "author_id": opinion.author_id
+        } for opinion in opinions
+    ]
+
+    # Close session
+    session.close()
+
+    return jsonify(opinions_json), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

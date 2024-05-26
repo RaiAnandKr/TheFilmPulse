@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from sqlalchemy import Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
-from app import db
+from extensions import db
 from datetime import datetime
 
 @dataclass
