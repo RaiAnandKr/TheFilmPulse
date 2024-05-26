@@ -23,7 +23,7 @@ export default function RootLayout({
             id="appContainer"
           >
             <Header />
-            <div className="flex flex-auto">{children}</div>
+            <div className="flex flex-auto flex-col">{children}</div>
             <Footer />
           </div>
         </Providers>
