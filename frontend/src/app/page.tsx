@@ -8,6 +8,8 @@ import { differenceInDays } from "../utilities/differenceInDays";
 import { FilmPredictionCard } from "../components/film-prediction-card";
 import { TOP_OPINIONS, FILMS } from "../constants/mocks";
 import { colors } from "../styles/colors";
+import { Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   return (
@@ -19,11 +21,24 @@ export default function Page() {
 }
 
 const TopOpinions = () => {
+  const router = useRouter();
+
   return (
     <>
-      <h2 className="p-2 font-bold" style={{ color: colors.primary }}>
-        Top Opinions
-      </h2>
+      <div
+        className="flex justify-between p-2"
+        style={{ color: colors.primary }}
+      >
+        <h2 className="font-bold">Top Opinions</h2>
+        <Button
+          variant="light"
+          color="primary"
+          onClick={() => router.push("/pulse")}
+          className="h-6"
+        >
+          View All
+        </Button>
+      </div>
       <div className="w-full overflow-x-auto">
         <div
           className="flex bg-teal-50"
@@ -37,6 +52,7 @@ const TopOpinions = () => {
                 new Date(),
                 new Date(opinion.endDate),
               )}
+              userVote={opinion.userVote}
               options={opinion.votes.map((vote) => ({
                 key: vote.option,
                 label: vote.option,
