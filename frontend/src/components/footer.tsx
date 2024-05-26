@@ -31,9 +31,9 @@ export const Footer = () => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-none flex-col">
-      <Divider />
-      <div className="flex">
+    <div className="flex h-16 flex-none flex-col">
+      <Divider className="flex-none" />
+      <div className="flex flex-auto items-center justify-between">
         {menuItems.map((item) => {
           const isActive = pathname === item.pathName;
           return (
@@ -41,7 +41,7 @@ export const Footer = () => {
               color={isActive ? "primary" : "default"}
               variant={isActive ? "flat" : "light"}
               key={item.key}
-              className="flex-auto justify-evenly font-bold"
+              className="flex-auto justify-evenly text-base font-bold"
               startContent={item.startIcon}
               onClick={() => item.pathName && router.push(item.pathName)}
             >

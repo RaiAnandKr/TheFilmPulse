@@ -11,11 +11,12 @@ import {
   Dropdown,
   Avatar,
 } from "@nextui-org/react";
-import { AcmeLogo } from "../res/brandLogo";
 import { useState } from "react";
 import type { MenuItem } from "../schema/MenuItem";
 import { CoinIcon } from "../res/icons/coin";
 import styles from "./header.module.css";
+import Image from "next/image";
+import BrandLogo from "../res/Brand.png";
 
 const menuItems: MenuItem[] = [
   {
@@ -55,10 +56,17 @@ export const Header: React.FC = () => {
           <AvatarDropdown />
         </NavbarContent>
 
-        <NavbarContent className="flex-auto sm:hidden" justify="center">
-          <NavbarBrand>
-            <AcmeLogo />
-            <p className="font-bold text-inherit">ACME</p>
+        <NavbarContent className="flex-auto" justify="center">
+          <NavbarBrand className="h-full">
+            <Image
+              src={BrandLogo}
+              alt="Brand Logo"
+              priority
+              className="h-full"
+              style={{
+                objectFit: "contain",
+              }}
+            />
           </NavbarBrand>
         </NavbarContent>
 
