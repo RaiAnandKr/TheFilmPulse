@@ -46,42 +46,41 @@ export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="flex flex-none">
-      <Navbar
-        isBordered
-        isMenuOpen={isMenuOpen}
-        onMenuOpenChange={setIsMenuOpen}
-      >
-        <NavbarContent as="div" className={styles.noflex} justify="start">
-          <AvatarDropdown />
-        </NavbarContent>
+    <Navbar
+      isBordered
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}
+      isBlurred={false}
+    >
+      <NavbarContent as="div" className={styles.noflex} justify="start">
+        <AvatarDropdown />
+      </NavbarContent>
 
-        <NavbarContent className="flex-auto" justify="center">
-          <NavbarBrand className="h-full">
-            <Image
-              src={BrandLogo}
-              alt="Brand Logo"
-              priority
-              className="h-full"
-              style={{
-                objectFit: "contain",
-              }}
-            />
-          </NavbarBrand>
-        </NavbarContent>
+      <NavbarContent className="flex-auto" justify="center">
+        <NavbarBrand className="h-full">
+          <Image
+            src={BrandLogo}
+            alt="Brand Logo"
+            priority
+            className="h-full"
+            style={{
+              objectFit: "contain",
+            }}
+          />
+        </NavbarBrand>
+      </NavbarContent>
 
-        <NavbarContent className={styles.noflex} justify="end">
-          <NavbarItem className="hidden lg:flex">
-            <Link href="#">Login</Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Button color="warning" variant="flat" startContent={<CoinIcon />}>
-              500
-            </Button>
-          </NavbarItem>
-        </NavbarContent>
-      </Navbar>
-    </div>
+      <NavbarContent className={styles.noflex} justify="end">
+        <NavbarItem className="hidden lg:flex">
+          <Link href="#">Login</Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Button color="warning" variant="flat" startContent={<CoinIcon />}>
+            500
+          </Button>
+        </NavbarItem>
+      </NavbarContent>
+    </Navbar>
   );
 };
 
