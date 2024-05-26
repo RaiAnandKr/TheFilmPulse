@@ -17,10 +17,10 @@ export default {
         light: {
           colors: {
             primary: {
-              DEFAULT: colors["teal-500"],
+              DEFAULT: colors.primary,
               foreground: "#000000",
             },
-            focus: colors["teal-500"],
+            focus: colors.primary,
           },
         },
       },
