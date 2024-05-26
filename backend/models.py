@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from sqlalchemy import Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from extensions import db
 from datetime import datetime
 
@@ -36,6 +36,8 @@ class Film(db.Model):
     trailer_url: Mapped[str] = mapped_column(String(500))
     popularity_score: Mapped[int] = mapped_column(Integer, default=0)
 
+    opinions = relationship("Opinion", back_populates="film")
+
 @dataclass
 class Opinion(db.Model):
     id: int
@@ -59,3 +61,5 @@ class Opinion(db.Model):
     yes_coins: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     no_coins: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     author_id: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    film = relationship("Film", back_populates="opinions")
