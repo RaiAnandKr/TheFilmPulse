@@ -31,25 +31,28 @@ export const Footer = () => {
   const router = useRouter();
 
   return (
-    <div className="flex h-16 flex-none flex-col">
-      <Divider className="flex-none" />
-      <div className="flex flex-auto items-center justify-between">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.pathName;
-          return (
-            <Button
-              color={isActive ? "primary" : "default"}
-              variant={isActive ? "flat" : "light"}
-              key={item.key}
-              className="flex-auto justify-evenly text-base font-bold"
-              startContent={item.startIcon}
-              onClick={() => item.pathName && router.push(item.pathName)}
-            >
-              {item.label}
-            </Button>
-          );
-        })}
+    <>
+      <div className="flex p-8"></div>
+      <div className="fixed bottom-0 z-50 flex h-16 w-full flex-none flex-col bg-white">
+        <Divider className="flex-none" />
+        <div className="flex flex-auto items-center justify-between">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.pathName;
+            return (
+              <Button
+                color={isActive ? "primary" : "default"}
+                variant={isActive ? "flat" : "light"}
+                key={item.key}
+                className="flex-auto justify-evenly text-base font-bold"
+                startContent={item.startIcon}
+                onClick={() => item.pathName && router.push(item.pathName)}
+              >
+                {item.label}
+              </Button>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
