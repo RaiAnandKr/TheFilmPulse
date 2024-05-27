@@ -1,4 +1,4 @@
-import { ButtonProps } from "@nextui-org/react";
+import type { ButtonProps } from "@nextui-org/react";
 
 export type MenuItem = {
   key: string;
