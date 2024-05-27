@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 
-from sqlalchemy import Integer, String, DateTime, ForeignKey
+from sqlalchemy import Integer, String, DateTime, ForeignKey, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from extensions import db
 from datetime import datetime
+
 
 @dataclass
 class User(db.Model):
@@ -19,6 +20,7 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String(20), unique=True, nullable=True)
     name: Mapped[str] = mapped_column(String(20), nullable=True)
     is_banned: Mapped[bool] = mapped_column(default=False)
+
 
 @dataclass
 class Film(db.Model):
@@ -37,6 +39,8 @@ class Film(db.Model):
     popularity_score: Mapped[int] = mapped_column(Integer, default=0)
 
     opinions = relationship("Opinion", back_populates="film")
+    predictions = relationship("Prediction", back_populates="film")
+
 
 @dataclass
 class Opinion(db.Model):
@@ -63,3 +67,15 @@ class Opinion(db.Model):
     author_id: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
     film = relationship("Film", back_populates="opinions")
+
+
+@dataclass
+class Prediction(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    film_id: Mapped[int] = mapped_column(Integer, ForeignKey('film.id'))
+    prediction: Mapped[str] = mapped_column(String(200))
+    total_user_participation: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    min_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    max_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+
+    film = relationship("Film", back_populates="predictions")

@@ -1,11 +1,14 @@
 import os
 from datetime import timedelta
+from typing import Type
 
 from flask import Flask, jsonify, request
+from flask.views import View
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_migrate import Migrate
 
+from views import PredictionView, FilmView
 from extensions import db
 from models import User, Film, Opinion
 
@@ -88,6 +91,7 @@ def update_profile():
     session.commit()
     return jsonify(user), 200
 
+
 @app.route("/opinions", methods=['GET'])
 def get_opinions():
     """
@@ -133,6 +137,14 @@ def get_opinions():
     session.close()
 
     return jsonify(opinions_json), 200
+
+
+def add_api(path: str, view: Type[View]):
+    app.add_url_rule(path, view_func=view.as_view(path))
+
+
+add_api('/predictions', PredictionView)
+add_api('/films', FilmView)
 
 if __name__ == "__main__":
     app.run(debug=True)
