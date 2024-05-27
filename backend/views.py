@@ -45,7 +45,11 @@ class BaseAPIView(MethodView):
             if value:
                 query = query.filter(getattr(self.model, column.name) == value)
 
-        # TODO: convert sort and pagination to mixins
+        # Handle filtering by film title
+        film_title = request.args.get('film_title')
+        if film_title and self.model in [Prediction, Opinion]:
+            query = query.join(Film).filter(Film.title.contains(film_title))
+
         sort_by = request.args.get('sort_by', self.sort_by)
         sort_order = request.args.get('sort_order', self.sort_order)
         if sort_order == 'desc':
@@ -53,9 +57,9 @@ class BaseAPIView(MethodView):
         else:
             query = query.order_by(getattr(self.model, sort_by))
 
-        page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('page_size', 10, type=int)
-        query = query.offset((page - 1) * per_page).limit(per_page)
+        limit = request.args.get('limit', 100, type=int)
+        offset = request.args.get('offset', 0, type=int)
+        query = query.limit(limit).offset(offset)
 
         items = query.all()
         return jsonify([self.serializer.serialize(item) for item in items])
