@@ -15,6 +15,8 @@ import { useState } from "react";
 import type { MenuItem } from "../schema/MenuItem";
 import { CoinIcon } from "../res/icons/coin";
 import styles from "./header.module.css";
+import { colors } from "../styles/colors";
+
 const menuItems: MenuItem[] = [
   {
     key: "username",
@@ -48,6 +50,7 @@ export const Header: React.FC = () => {
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       isBlurred={false}
+      classNames={{ wrapper: "justify-between px-3" }}
     >
       <NavbarContent as="div" className={styles.noflex} justify="start">
         <AvatarDropdown />
@@ -64,7 +67,15 @@ export const Header: React.FC = () => {
           <Link href="#">Login</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button color="warning" variant="flat" startContent={<CoinIcon />}>
+          <Button
+            variant="flat"
+            startContent={<CoinIcon />}
+            className="font-bold"
+            style={{
+              color: colors.white,
+              backgroundColor: colors.gold,
+            }}
+          >
             500
           </Button>
         </NavbarItem>

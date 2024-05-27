@@ -63,6 +63,7 @@ const TopOpinions = () => {
                   ) : (
                     <DislikeIcon />
                   ),
+                votes: vote.participationCount,
               }))}
             />
           ))}
