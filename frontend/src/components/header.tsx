@@ -15,9 +15,6 @@ import { useState } from "react";
 import type { MenuItem } from "../schema/MenuItem";
 import { CoinIcon } from "../res/icons/coin";
 import styles from "./header.module.css";
-import Image from "next/image";
-import BrandLogo from "../res/Brand.png";
-
 const menuItems: MenuItem[] = [
   {
     key: "username",
@@ -57,16 +54,8 @@ export const Header: React.FC = () => {
       </NavbarContent>
 
       <NavbarContent className="flex-auto" justify="center">
-        <NavbarBrand className="h-full">
-          <Image
-            src={BrandLogo}
-            alt="Brand Logo"
-            priority
-            className="h-full"
-            style={{
-              objectFit: "contain",
-            }}
-          />
+        <NavbarBrand className="h-full font-bold text-inherit">
+          The Film Pulse
         </NavbarBrand>
       </NavbarContent>
 
