@@ -73,8 +73,9 @@ class Opinion(db.Model):
 class Prediction(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     film_id: Mapped[int] = mapped_column(Integer, ForeignKey('film.id'))
-    prediction: Mapped[str] = mapped_column(String(200))
-    total_user_participation: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    text: Mapped[str] = mapped_column(String(200))
+    icon_url: Mapped[str] = mapped_column(String(500))
+    user_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     min_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     max_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
 

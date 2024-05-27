@@ -3,7 +3,7 @@ from flask.views import MethodView
 from dataclasses import is_dataclass, fields
 import dataclasses
 
-from models import Prediction, Film
+from models import Prediction, Film, Opinion
 from extensions import db
 from serializers import BaseSerializer
 
@@ -98,4 +98,8 @@ class PredictionView(BaseAPIView):
 
 class FilmView(BaseAPIView):
     model = Film
+    methods = ['GET']
+
+class OpinionView(BaseAPIView):
+    model = Opinion
     methods = ['GET']

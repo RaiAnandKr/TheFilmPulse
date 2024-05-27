@@ -8,7 +8,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_migrate import Migrate
 
-from views import PredictionView, FilmView
+from views import PredictionView, FilmView, OpinionView
 from extensions import db
 from models import User, Film, Opinion
 
@@ -91,60 +91,12 @@ def update_profile():
     session.commit()
     return jsonify(user), 200
 
-
-@app.route("/opinions", methods=['GET'])
-def get_opinions():
-    """
-    1. We will always return opinions sorted by desc order of user_count
-    2. /opinions?film=<film_name> is implemented
-    3. /opinions?limit=<limit> is implemented
-    """
-
-    film_name = request.args.get('film')
-    limit = request.args.get('limit', type=int) or None
-
-    session = db.session()
-    query = session.query(Opinion).join(Film, Opinion.film_id == Film.id)
-    if film_name:
-        query = query.filter(Film.title.contains(film_name))
-
-    # Sort by user_count in descending order
-    query = query.order_by(Opinion.user_count.desc())
-
-    # Limit results if limit is specified
-    if limit:
-        query = query.limit(limit)
-
-    # Execute query and fetch results
-    opinions = query.all()
-
-    opinions_json = [
-        {
-            "id": opinion.id,
-            "film_name": opinion.film.title,
-            "text": opinion.text,
-            "icon_url": opinion.icon_url,
-            "user_count": opinion.user_count,
-            "yes_count": opinion.yes_count,
-            "no_count": opinion.no_count,
-            "yes_coins": opinion.yes_coins,
-            "no_coins": opinion.no_coins,
-            "author_id": opinion.author_id
-        } for opinion in opinions
-    ]
-
-    # Close session
-    session.close()
-
-    return jsonify(opinions_json), 200
-
-
 def add_api(path: str, view: Type[View]):
     app.add_url_rule(path, view_func=view.as_view(path))
 
-
 add_api('/predictions', PredictionView)
 add_api('/films', FilmView)
+add_api('/opinions', OpinionView)
 
 if __name__ == "__main__":
     app.run(debug=True)
