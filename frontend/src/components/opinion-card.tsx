@@ -6,17 +6,16 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Input,
   Slider,
 } from "@nextui-org/react";
-import type { UserVote } from "../schema/Opinion";
+import type { OpinionOption, UserVote } from "../schema/Opinion";
 import { CoinIcon } from "../res/icons/coin";
 
 interface OpinionProps {
   title: string;
   daysToEnd: number;
   options: {
-    key: string;
+    key: OpinionOption;
     label: string;
     color: "success" | "danger";
     icon: JSX.Element;
@@ -57,10 +56,10 @@ const Options: React.FC<OptionsProps> = (props) => {
       {options.map((option) => {
         const hasUserVoted = !!userVote;
         const isUserVotedOption =
-          hasUserVoted && userVote.selectedOption === option.label;
+          hasUserVoted && userVote.selectedOption === option.key;
 
         return (
-          <Popover placement="bottom" showArrow offset={10}>
+          <Popover placement="bottom" showArrow offset={10} key={option.key}>
             <PopoverTrigger>
               <Button
                 isDisabled={hasUserVoted}
