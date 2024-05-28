@@ -13,6 +13,9 @@ class User(db.Model):
     phone_number: str
     email: str
     name: str
+    state: str
+    bonus_coins: int
+    earned_coins: int
 
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(15), unique=True)
@@ -20,7 +23,9 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String(20), unique=True, nullable=True)
     name: Mapped[str] = mapped_column(String(20), nullable=True)
     is_banned: Mapped[bool] = mapped_column(default=False)
-
+    state: Mapped[str] = mapped_column(String(50), nullable=True)
+    bonus_coins: Mapped[int] = mapped_column(Integer, default=100)
+    earned_coins: Mapped[int] = mapped_column(Integer, default=0)
 
 @dataclass
 class Film(db.Model):

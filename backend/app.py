@@ -91,6 +91,22 @@ def update_profile():
     session.commit()
     return jsonify(user), 200
 
+@app.route("/coins", methods=['GET'])
+def get_coins():
+    user_id = request.args.get('id', type=int)
+    if not user_id:
+        return jsonify({'message': 'User ID is required'}), 400
+
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+
+    return jsonify({
+        'bonus_coins': user.bonus_coins,
+        'earned_coins': user.earned_coins,
+        'max_opinion_coins': max(40, 0.4*(user.bonus_coins + user.earned_coins))
+    })
+
 def add_api(path: str, view: Type[View]):
     app.add_url_rule(path, view_func=view.as_view(path))
 
