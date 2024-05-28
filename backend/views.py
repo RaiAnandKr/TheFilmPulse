@@ -48,17 +48,22 @@ class BaseAPIView(MethodView):
         else:
             return query.order_by(getattr(self.model, sort_by))
 
+    def filter_on_table_columns_get( self, request, query ):
+        # TODO: restrict to self.columns?
+        for column in self.model.__table__.columns:
+            value = request.args.get(column.name)
+            if value:
+                query = query.filter(getattr(self.model, column.name) == value)
+
+        return query
+
     def get(self):
         if 'GET' not in self.methods:
             return self.method_not_allowed()
 
         query = self.model.query
 
-        # TODO: restrict to self.columns?
-        for column in self.model.__table__.columns:
-            value = request.args.get(column.name)
-            if value:
-                query = query.filter(getattr(self.model, column.name) == value)
+        query = self.filter_on_table_columns_get( request, query )
 
         # Handle filtering by film title
         film_title = request.args.get('film_title')
@@ -111,6 +116,47 @@ class FilmView(BaseAPIView):
     model = Film
     methods = ['GET']
     sort_by = 'popularity_score'
+
+    def get( self ):
+        if 'GET' not in self.methods:
+            return self.method_not_allowed()
+
+        query = self.model.query
+
+        query = self.filter_on_table_columns_get( request, query )
+
+        # A film can be queried using 'title' query parameter as well (since that maps
+        # to a column in the film table) but adding support for 'film_title' query
+        # param too just to ensure consistency with other endpoints which support
+        # 'film_title' only.
+        film_title = request.args.get('film_title')
+        if film_title:
+            query = query.filter(Film.title.contains(film_title))
+
+        # Same consistency for 'film_id'
+        film_id = request.args.get('film_id')
+        if film_id:
+            query = query.filter(Film.id == film_id)
+
+        query = self.sorting_get( request, query )
+        query = self.pagination_get( request, query )
+
+        items = query.all()
+
+        results = []
+        # Go over each film, and fetch the most popular prediction (decided by user count
+        # for each prediction) and return that prediction along with the film data
+        for item in items:
+            top_prediction = Prediction.query.filter_by(
+                film_id=item.id).order_by(Prediction.user_count.desc()).first()
+            serialized_item = self.serializer.serialize(item)
+            serialized_item['top_prediction'] = (
+                self.serializer.serialize(top_prediction)
+                if top_prediction else {}
+            )
+            results.append(serialized_item)
+
+        return jsonify(results)
 
 class OpinionView(BaseAPIView):
     model = Opinion
