@@ -12,9 +12,11 @@ class BaseAPIView(MethodView):
     model = None
     columns = []
     sort_by = 'id'
-    sort_order = 'asc'
+    sort_order = 'desc'
     methods = ['GET', 'POST', 'PUT', 'DELETE']
     serializer_class = BaseSerializer
+    limit = 100
+    offset = 0
 
     def __init__(self):
         if self.model is None:
@@ -33,6 +35,19 @@ class BaseAPIView(MethodView):
     def method_not_allowed():
         return jsonify({'message': 'Method Not Allowed'}), 405
 
+    def pagination_get( self, request, query ):
+        limit = request.args.get('limit', self.limit, type=int)
+        offset = request.args.get('offset', self.offset, type=int)
+        return query.limit(limit).offset(offset)
+
+    def sorting_get( self, request, query ):
+        sort_by = request.args.get('sort_by', self.sort_by)
+        sort_order = request.args.get('sort_order', self.sort_order)
+        if sort_order == 'desc':
+            return query.order_by(db.desc(getattr(self.model, sort_by)))
+        else:
+            return query.order_by(getattr(self.model, sort_by))
+
     def get(self):
         if 'GET' not in self.methods:
             return self.method_not_allowed()
@@ -50,16 +65,8 @@ class BaseAPIView(MethodView):
         if film_title and self.model in [Prediction, Opinion]:
             query = query.join(Film).filter(Film.title.contains(film_title))
 
-        sort_by = request.args.get('sort_by', self.sort_by)
-        sort_order = request.args.get('sort_order', self.sort_order)
-        if sort_order == 'desc':
-            query = query.order_by(db.desc(getattr(self.model, sort_by)))
-        else:
-            query = query.order_by(getattr(self.model, sort_by))
-
-        limit = request.args.get('limit', 100, type=int)
-        offset = request.args.get('offset', 0, type=int)
-        query = query.limit(limit).offset(offset)
+        query = self.sorting_get( request, query )
+        query = self.pagination_get( request, query )
 
         items = query.all()
         return jsonify([self.serializer.serialize(item) for item in items])
@@ -98,12 +105,14 @@ class BaseAPIView(MethodView):
 class PredictionView(BaseAPIView):
     model = Prediction
     methods = ['GET']
-
+    sort_by = 'user_count'
 
 class FilmView(BaseAPIView):
     model = Film
     methods = ['GET']
+    sort_by = 'popularity_score'
 
 class OpinionView(BaseAPIView):
     model = Opinion
     methods = ['GET']
+    sort_by = 'user_count'
