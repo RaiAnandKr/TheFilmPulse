@@ -3,10 +3,10 @@ from flask.views import MethodView
 from dataclasses import is_dataclass, fields
 import dataclasses
 
-from models import Prediction, Film, Opinion
+from models import User, Prediction, Film, Opinion, UserPrediction, UserOpinion
 from extensions import db
 from serializers import BaseSerializer
-
+from sqlalchemy.exc import IntegrityError
 
 class BaseAPIView(MethodView):
     model = None
@@ -162,3 +162,137 @@ class OpinionView(BaseAPIView):
     model = Opinion
     methods = ['GET']
     sort_by = 'user_count'
+
+class BaseUserAPIView(MethodView):
+    model = None
+    columns = []
+    sort_by = 'id'
+    sort_order = 'asc'
+    methods = ['GET', 'POST']
+    serializer_class = BaseSerializer
+
+    def __init__(self):
+        if self.model is None:
+            raise ValueError(f"{self.__class__.__name__} must be assigned to a model")
+
+        if self.columns is None:
+            if is_dataclass(self.model):
+                self.columns = dataclasses.fields(self.model.__annotations__)
+            else:
+                self.columns = self.model.__table__.columns
+
+        self.serializer = self.serializer_class(self.columns)
+        pass
+
+    @staticmethod
+    def method_not_allowed():
+        return jsonify({'message': 'Method Not Allowed'}), 405
+
+    def get(self):
+        if 'GET' not in self.methods:
+            return self.method_not_allowed()
+
+        query = self.model.query
+
+        # TODO: restrict to self.columns?
+        for column in self.model.__table__.columns:
+            value = request.args.get(column.name)
+            if value:
+                query = query.filter(getattr(self.model, column.name) == value)
+
+        # TODO: convert sort and pagination to mixins
+        sort_by = request.args.get('sort_by', self.sort_by)
+        sort_order = request.args.get('sort_order', self.sort_order)
+        if sort_order == 'desc':
+            query = query.order_by(db.desc(getattr(self.model, sort_by)))
+        else:
+            query = query.order_by(getattr(self.model, sort_by))
+
+        items = query.all()
+        return jsonify([self.serializer.serialize(item) for item in items])
+
+    def post(self):
+        if 'POST' not in self.methods:
+            return self.method_not_allowed()
+
+        data = request.get_json()
+        new_item = self.model(**data)
+        db.session.add(new_item)
+        db.session.commit()
+        return jsonify(self.serializer.serialize(new_item)), 201
+
+class UserPredictionView(BaseUserAPIView):
+    model = UserPrediction
+
+    def post(self):
+        if 'POST' not in self.methods:
+            return self.method_not_allowed()
+
+        data = request.get_json()
+        user_id = data.get('user_id')
+        prediction_id = data.get('prediction_id')
+
+        user = db.session.query(User).filter_by(id=user_id).first()
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        prediction = db.session.query(Prediction).filter_by(id=prediction_id).first()
+        if not prediction:
+            return jsonify({'error': 'Prediction not found'}), 404
+
+        try:
+            new_item = self.model(**data)
+            db.session.add(new_item)
+            db.session.commit()
+
+            return jsonify(self.serializer.serialize(new_item)), 201
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({'error': 'Integrity error, possibly due to foreign key constraints'}), 400
+
+
+class UserOpinionView(BaseUserAPIView):
+    model = UserOpinion
+
+    def post(self):
+        if 'POST' not in self.methods:
+            return self.method_not_allowed()
+
+        data = request.get_json()
+
+        user_id = data.get('user_id')
+        opinion_id = data.get('opinion_id')
+        coins_to_deduct = data.get('coins')
+
+        user = db.session.query(User).filter_by(id=user_id).first()
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        opinion = db.session.query(Opinion).filter_by(id=opinion_id).first()
+        if not opinion:
+            return jsonify({'error': 'Opinion not found'}), 404
+
+        if coins_to_deduct is None or coins_to_deduct < 0:
+            return jsonify({'error': 'Invalid coins value'}), 400
+
+        # If bonus coins exist, reduce them first and then if more coins are needed, reduce
+        # the earned coins.
+        if user.bonus_coins >= coins_to_deduct:
+            user.bonus_coins -= coins_to_deduct
+        else:
+            remaining_coins = coins_to_deduct - user.bonus_coins
+            user.bonus_coins = 0
+            if user.earned_coins >= remaining_coins:
+                user.earned_coins -= remaining_coins
+            else:
+                return jsonify({'error': 'Not enough coins'}), 400
+
+        try:
+            new_item = self.model(**data)
+            db.session.add(new_item)
+            db.session.commit()  # Commit both the user and the new opinion
+
+            return jsonify(self.serializer.serialize(new_item)), 201
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({'error': 'Integrity error, possibly due to foreign key constraints'}), 400

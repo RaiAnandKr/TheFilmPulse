@@ -8,7 +8,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_migrate import Migrate
 
-from views import PredictionView, FilmView, OpinionView
+from views import PredictionView, FilmView, OpinionView, UserPredictionView, UserOpinionView
 from extensions import db
 from models import User, Film, Opinion
 
@@ -113,6 +113,8 @@ def add_api(path: str, view: Type[View]):
 add_api('/predictions', PredictionView)
 add_api('/films', FilmView)
 add_api('/opinions', OpinionView)
+add_api('/user_predictions', UserPredictionView)
+add_api('/user_opinions', UserOpinionView)
 
 if __name__ == "__main__":
     app.run(debug=True)
