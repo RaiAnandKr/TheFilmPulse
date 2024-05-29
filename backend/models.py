@@ -27,6 +27,9 @@ class User(db.Model):
     bonus_coins: Mapped[int] = mapped_column(Integer, default=100)
     earned_coins: Mapped[int] = mapped_column(Integer, default=0)
 
+    user_predictions = relationship("UserPrediction", back_populates="user")
+    user_opinions = relationship("UserOpinion", back_populates="user")
+
 @dataclass
 class Film(db.Model):
     id: int
@@ -72,7 +75,20 @@ class Opinion(db.Model):
     author_id: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
     film = relationship("Film", back_populates="opinions")
+    user_opinions = relationship("UserOpinion", back_populates="opinion")
 
+@dataclass
+class UserOpinion(db.Model):
+    __tablename__ = 'user_opinion'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    opinion_id: Mapped[int] = mapped_column(Integer, ForeignKey('opinion.id'))
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'))
+    coins: Mapped[int] = mapped_column(Integer, nullable=False)
+    opinion: Mapped[str] = mapped_column(String(5), nullable=False)
+
+    opinion = relationship("Opinion", back_populates="user_opinions")
+    user = relationship("User", back_populates="user_opinions")
 
 @dataclass
 class Prediction(db.Model):
@@ -85,3 +101,16 @@ class Prediction(db.Model):
     max_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
 
     film = relationship("Film", back_populates="predictions")
+    user_predictions = relationship("UserPrediction", back_populates="prediction")
+
+@dataclass
+class UserPrediction(db.Model):
+    __tablename__ = 'user_prediction'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    prediction_id: Mapped[int] = mapped_column(Integer, ForeignKey('prediction.id'))
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'))
+    value: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    prediction = relationship("Prediction", back_populates="user_predictions")
+    user = relationship("User", back_populates="user_predictions")
