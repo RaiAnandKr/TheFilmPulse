@@ -1,0 +1,34 @@
+films:
+  - title: "Indian 2"
+    release_date: "2024-07-12"
+    poster_url: "http://test_poster"
+    trailer_url: "http://test_trailer"
+    popularity_score: 50
+
+  - title: "Bad Newzz"
+    release_date: "2024-07-19"
+    poster_url: "http://test_poster"
+    trailer_url: "http://test_trailer"
+    popularity_score: 75
+
+opinions:
+  - film_id: 4
+    text: "What will happen"
+    icon_url: "http://test_poster"
+
+  - film_id: 5
+    text: "Good news or bad news"
+    icon_url: "http://test_poster"
+
+predictions:
+  - film_id: 4
+    text: "Weekend collection"
+    icon_url: "http://test_poster"
+    min_value: 50
+    max_value: 200
+
+  - film_id: 5
+    text: "Lifetime collection"
+    icon_url: "http://test_poster"
+    min_value: 150
+    max_value: 500
