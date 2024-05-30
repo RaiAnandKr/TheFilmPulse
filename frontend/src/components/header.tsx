@@ -15,8 +15,7 @@ import { useState } from "react";
 import type { MenuItem } from "../schema/MenuItem";
 import { CoinIcon } from "../res/icons/coin";
 import styles from "./header.module.css";
-import Image from "next/image";
-import BrandLogo from "../res/Brand.png";
+import { colors } from "../styles/colors";
 
 const menuItems: MenuItem[] = [
   {
@@ -51,22 +50,15 @@ export const Header: React.FC = () => {
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       isBlurred={false}
+      classNames={{ wrapper: "justify-between px-3 h-14" }}
     >
       <NavbarContent as="div" className={styles.noflex} justify="start">
         <AvatarDropdown />
       </NavbarContent>
 
       <NavbarContent className="flex-auto" justify="center">
-        <NavbarBrand className="h-full">
-          <Image
-            src={BrandLogo}
-            alt="Brand Logo"
-            priority
-            className="h-full"
-            style={{
-              objectFit: "contain",
-            }}
-          />
+        <NavbarBrand className="h-full font-bold text-inherit">
+          The Film Pulse
         </NavbarBrand>
       </NavbarContent>
 
@@ -75,7 +67,15 @@ export const Header: React.FC = () => {
           <Link href="#">Login</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button color="warning" variant="flat" startContent={<CoinIcon />}>
+          <Button
+            variant="flat"
+            startContent={<CoinIcon />}
+            className="font-bold"
+            style={{
+              color: colors.white,
+              backgroundColor: colors.gold,
+            }}
+          >
             500
           </Button>
         </NavbarItem>

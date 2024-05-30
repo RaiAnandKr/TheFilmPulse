@@ -12,8 +12,8 @@ const TOP_OPINIONS: Opinion[] = [
     endDate: "June 15, 2024",
     filmId: "film-1",
     votes: [
-      { option: OpinionOption.Yes, participationCount: 250, coins: 5235 },
-      { option: OpinionOption.No, participationCount: 179, coins: 3875 },
+      { option: OpinionOption.Yes, participationCount: 250, coins: 8235 },
+      { option: OpinionOption.No, participationCount: 129, coins: 3875 },
     ],
     userVote: { selectedOption: OpinionOption.Yes, coinsUsed: 25 },
   },
@@ -25,7 +25,7 @@ const TOP_OPINIONS: Opinion[] = [
     filmId: "film-2",
     votes: [
       { option: OpinionOption.Yes, participationCount: 214, coins: 4230 },
-      { option: OpinionOption.No, participationCount: 140, coins: 3975 },
+      { option: OpinionOption.No, participationCount: 180, coins: 3975 },
     ],
     userVote: { selectedOption: OpinionOption.No, coinsUsed: 12 },
   },
@@ -36,7 +36,7 @@ const TOP_OPINIONS: Opinion[] = [
     endDate: "July 15, 2024",
     filmId: "film-2",
     votes: [
-      { option: OpinionOption.Yes, participationCount: 198, coins: 2230 },
+      { option: OpinionOption.Yes, participationCount: 68, coins: 2230 },
       { option: OpinionOption.No, participationCount: 126, coins: 2955 },
     ],
   },
