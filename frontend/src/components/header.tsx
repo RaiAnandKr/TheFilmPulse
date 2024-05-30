@@ -50,7 +50,7 @@ export const Header: React.FC = () => {
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       isBlurred={false}
-      classNames={{ wrapper: "justify-between px-3" }}
+      classNames={{ wrapper: "justify-between px-3 h-14" }}
     >
       <NavbarContent as="div" className={styles.noflex} justify="start">
         <AvatarDropdown />

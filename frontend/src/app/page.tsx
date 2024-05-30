@@ -7,8 +7,14 @@ import { LikeIcon } from "../res/icons/like";
 import { FilmPredictionCard } from "../components/film-prediction-card";
 import { TOP_OPINIONS, FILMS } from "../constants/mocks";
 import { colors } from "../styles/colors";
-import { Button } from "@nextui-org/react";
+import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { InfoIcon } from "~/res/icons/info";
 
 export default function Page() {
   return (
@@ -24,20 +30,11 @@ const TopOpinions = () => {
 
   return (
     <>
-      <div
-        className="flex justify-between p-2"
-        style={{ color: colors.primary }}
-      >
-        <h2 className="font-bold">Top Opinions</h2>
-        <Button
-          variant="light"
-          color="primary"
-          onClick={() => router.push("/pulse")}
-          className="h-6"
-        >
-          View All
-        </Button>
-      </div>
+      <SectionHeader
+        title="Top Opinions"
+        onViewAllClick={() => router.push("/pulse")}
+        infoText=""
+      />
       <div className="w-full overflow-x-auto">
         <div
           className="flex bg-gradient-to-r from-green-200 to-rose-200"
@@ -71,14 +68,60 @@ const TopOpinions = () => {
 };
 
 const FilmPredictions = () => {
+  const router = useRouter();
+
   return (
     <>
-      <h2 className="p-2 font-bold" style={{ color: colors.primary }}>
-        Film Predictions
-      </h2>
+      <SectionHeader
+        title="Top Predictions"
+        onViewAllClick={() => router.push("/pulse")}
+        infoText=""
+      />
       {FILMS.map((film) => (
         <FilmPredictionCard key={film.filmId} film={film} />
       ))}
     </>
+  );
+};
+
+interface SectionHeaderProps {
+  title: string;
+  infoText: string;
+  onViewAllClick: () => void;
+}
+const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
+  const { title, onViewAllClick } = props;
+  return (
+    <div
+      className="flex h-10 items-center justify-between text-sm"
+      style={{ color: colors.primary }}
+    >
+      <Popover placement="bottom" showArrow={true}>
+        <PopoverTrigger>
+          <Button
+            variant="light"
+            color="primary"
+            className="h-full font-bold"
+            endContent={<InfoIcon />}
+          >
+            {title}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <div className="px-1 py-2">
+            <div className="text-small font-bold">Popover Content</div>
+            <div className="text-tiny">This is the popover content</div>
+          </div>
+        </PopoverContent>
+      </Popover>
+      <Button
+        variant="light"
+        color="primary"
+        onClick={onViewAllClick}
+        className="h-full"
+      >
+        View All
+      </Button>
+    </div>
   );
 };

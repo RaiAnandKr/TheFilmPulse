@@ -27,10 +27,10 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
   }, []);
 
   return (
-    <div className="p-3">
-      <Card isFooterBlurred className="h-[360px] w-full">
+    <div className="p-2">
+      <Card isFooterBlurred className="h-[336px] w-full">
         <CardHeader className="absolute z-10 flex-col items-start bg-black/40 backdrop-blur backdrop-saturate-150">
-          <h3 className="overflow-hidden text-ellipsis text-nowrap text-xl font-medium text-white/90 ">
+          <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-medium text-white/90 ">
             {title}
           </h3>
           <p className="overflow-hidden text-ellipsis text-nowrap text-tiny font-bold text-white/60 ">
