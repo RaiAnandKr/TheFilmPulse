@@ -4,7 +4,6 @@ import { OpinionOption } from "../schema/Opinion";
 import { OpinionCard } from "../components/opinion-card";
 import { DislikeIcon } from "../res/icons/dislike";
 import { LikeIcon } from "../res/icons/like";
-import { differenceInDays } from "../utilities/differenceInDays";
 import { FilmPredictionCard } from "../components/film-prediction-card";
 import { TOP_OPINIONS, FILMS } from "../constants/mocks";
 import { colors } from "../styles/colors";
@@ -41,17 +40,14 @@ const TopOpinions = () => {
       </div>
       <div className="w-full overflow-x-auto">
         <div
-          className="flex bg-teal-50"
+          className="flex bg-gradient-to-r from-green-200 to-rose-200"
           style={{ width: `calc(18rem * ${TOP_OPINIONS.length || 1})` }} // 18rem is for w-72, which is card width
         >
           {TOP_OPINIONS.map((opinion) => (
             <OpinionCard
               title={opinion.title}
               key={opinion.opinionId}
-              daysToEnd={differenceInDays(
-                new Date(),
-                new Date(opinion.endDate),
-              )}
+              endDate={opinion.endDate}
               userVote={opinion.userVote}
               options={opinion.votes.map((vote) => ({
                 key: vote.option,
@@ -64,6 +60,7 @@ const TopOpinions = () => {
                     <DislikeIcon />
                   ),
                 votes: vote.participationCount,
+                coins: vote.coins,
               }))}
             />
           ))}

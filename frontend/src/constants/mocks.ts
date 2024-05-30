@@ -12,7 +12,7 @@ const TOP_OPINIONS: Opinion[] = [
     endDate: "June 15, 2024",
     filmId: "film-1",
     votes: [
-      { option: OpinionOption.Yes, participationCount: 250, coins: 5235 },
+      { option: OpinionOption.Yes, participationCount: 250, coins: 8235 },
       { option: OpinionOption.No, participationCount: 129, coins: 3875 },
     ],
     userVote: { selectedOption: OpinionOption.Yes, coinsUsed: 25 },
