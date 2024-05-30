@@ -109,12 +109,10 @@ class BaseAPIView(MethodView):
 
 class PredictionView(BaseAPIView):
     model = Prediction
-    methods = ['GET']
     sort_by = 'user_count'
 
 class FilmView(BaseAPIView):
     model = Film
-    methods = ['GET']
     sort_by = 'popularity_score'
 
     def get( self ):
@@ -160,7 +158,6 @@ class FilmView(BaseAPIView):
 
 class OpinionView(BaseAPIView):
     model = Opinion
-    methods = ['GET']
     sort_by = 'user_count'
 
 class BaseUserAPIView(MethodView):
