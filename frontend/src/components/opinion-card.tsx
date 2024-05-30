@@ -156,8 +156,8 @@ const Options: React.FC<OptionsProps> = (props) => {
 
 const ParticipationTrend: React.FC<ParticipationTrendProps> = (props) => {
   const { options } = props;
-  const coinsOnLike = options.at(0)?.coins || 0;
-  const coinsOnDislike = options.at(1)?.coins || 0;
+  const coinsOnLike = options.at(0)?.coins ?? 0;
+  const coinsOnDislike = options.at(1)?.coins ?? 0;
   const totalCoins = coinsOnLike + coinsOnDislike;
   const coinsOnLikePercent = (coinsOnLike * 100) / totalCoins;
 
