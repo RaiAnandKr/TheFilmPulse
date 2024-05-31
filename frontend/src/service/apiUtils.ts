@@ -31,9 +31,10 @@ export const get = async <T>(url: string, config?: FetchConfig): Promise<T> => {
   return handleResponse(response);
 };
 
-export const getFilms = async (config?: FetchConfig): Promise<Film[]> => {
+export const getFilms = async (filmId: number, config?: FetchConfig): Promise<Film[]> => {
   try {
-    const filmsData = await get<any[]>('/films', config);
+    const url = filmId ? `/films?film_id=${filmId}` : '/films';
+    const filmsData = await get<any[]>(url, config);
 
     // Convert the JSON response to align with schema defined in ../schema/
     // TODO: Few fields need to be added to the API to support the full schema
