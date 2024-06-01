@@ -73,7 +73,7 @@ const FilmPredictions = () => {
   return (
     <>
       <SectionHeader
-        title="Top Predictions"
+        title="Film Predictions"
         onViewAllClick={() => router.push("/pulse")}
         infoText=""
       />
