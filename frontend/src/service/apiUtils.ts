@@ -12,10 +12,18 @@ interface FetchConfig extends RequestInit {
   headers?: HeadersInit;
 }
 
+interface ErrorResponse {
+  error?: string;
+}
+
 const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    const errorData: ErrorResponse = await response.json();
+    // If a custom error message is returned by the backend, use that otherwise use
+    // a generic HTTP error message.
+    throw new Error(errorData.error ?? `HTTP error! status: ${response.status}`);
   }
+
   const data = (await response.json()) as T; // Explicitly assert the type here
   return data;
 };
@@ -30,6 +38,20 @@ export const get = async <T>(url: string, config?: FetchConfig): Promise<T> => {
     },
   });
   return handleResponse(response);
+};
+
+export const post = async <T>(url: string, body: unknown, config?: FetchConfig): Promise<T> => {
+  const response = await fetch(`${BASE_URL}${url}`, {
+    method: 'POST',
+    ...config,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(config?.headers ?? {}),
+    },
+    body: JSON.stringify(body),
+  });
+
+  return handleResponse<T>(response);
 };
 
 export const getFilms = async (filmId: number, config?: FetchConfig): Promise<Film[]> => {
@@ -138,3 +160,31 @@ export const getPredictions = async (filmId: number, config?: FetchConfig): Prom
   }
 };
 
+export const postUserPrediction = async (userId: number, predictionId: number, answer: number, config?: FetchConfig): Promise<void> => {
+  try {
+    const url = '/user_predictions';
+    const body = {
+      user_id: userId,
+      prediction_id: predictionId,
+      answer: answer,
+    };
+    await post<void>(url, body, config);
+  } catch (error) {
+    throw new Error(`Error posting user prediction: ${(error as Error).message}`);
+  }
+};
+
+export const postUserOpinion = async (userId: number, opinionId: number, coins: number, answer: string, config?: FetchConfig): Promise<void> => {
+  try {
+    const url = '/user_opinions';
+    const body = {
+      user_id: userId,
+      opinion_id: opinionId,
+      coins: coins,
+      answer: answer,
+    };
+    await post<void>(url, body, config);
+  } catch (error) {
+    throw new Error(`Error posting user opinion: ${(error as Error).message}`);
+  }
+};
