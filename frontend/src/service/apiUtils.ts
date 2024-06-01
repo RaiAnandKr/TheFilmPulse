@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { Film, Prediction } from '../schema/Film';
+import { Opinion, Vote, UserVote, OpinionOption } from '../schema/Opinion';
 
 const BASE_URL = 'https://backend.gentleisland-bcedf421.centralindia.azurecontainerapps.io';
 
@@ -68,8 +69,40 @@ export const getFilms = async (filmId: number, config?: FetchConfig): Promise<Fi
   }
 };
 
-export const getOpinions = async (config?: FetchConfig) => {
-  return get<any[]>('/opinions', config);
+export const getOpinions = async (config?: FetchConfig): Promise<Opinion[]> => {
+  try {
+    const url = '/opinions';
+    const opinionsData = await get<any[]>(url, config);
+
+    // Convert the JSON response to align with schema defined in ../schema/
+    const opinions: Opinion[] = opinionsData.map((opinionData) => {
+      const yesVote: Vote = {
+        option: OpinionOption.Yes,
+        participationCount: opinionData.yes_count,
+        coins: opinionData.yes_coins,
+      };
+
+      const noVote: Vote = {
+        option: OpinionOption.No,
+        participationCount: opinionData.no_count,
+        coins: opinionData.no_coins,
+      };
+
+      return {
+        opinionId: opinionData.id.toString(),
+        title: opinionData.text,
+        // Adding dummy values to avoid breaking code because of type error
+        startDate: "2024-04-10",
+        endDate: "2024-08-10",
+        filmId: opinionData.film_id.toString(),
+        votes: [yesVote, noVote],
+      };
+    });
+
+    return opinions;
+  } catch (error) {
+    throw new Error(`Error fetching opinions: ${(error as Error).message}`);
+  }
 };
 
 export const getPredictions = async (config?: FetchConfig) => {
