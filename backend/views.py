@@ -237,6 +237,14 @@ class UserPredictionView(BaseUserAPIView):
         if not prediction:
             return jsonify({'error': 'Prediction not found'}), 404
 
+        # Check if the prediction already exists for the user.
+        existing_prediction = db.session.query(UserPrediction).filter_by(user_id=user_id, prediction_id=prediction_id).first()
+        if existing_prediction:
+            return jsonify({'error': 'Prediction already exists for this user'}), 400
+
+        # Increase user_count for this prediction.
+        prediction.user_count += 1
+
         try:
             new_item = self.model(**data)
             db.session.add(new_item)
@@ -246,7 +254,6 @@ class UserPredictionView(BaseUserAPIView):
         except IntegrityError:
             db.session.rollback()
             return jsonify({'error': 'Integrity error, possibly due to foreign key constraints'}), 400
-
 
 class UserOpinionView(BaseUserAPIView):
     model = UserOpinion
@@ -260,6 +267,7 @@ class UserOpinionView(BaseUserAPIView):
         user_id = data.get('user_id')
         opinion_id = data.get('opinion_id')
         coins_to_deduct = data.get('coins')
+        answer = data.get('answer').lower()
 
         user = db.session.query(User).filter_by(id=user_id).first()
         if not user:
@@ -272,6 +280,11 @@ class UserOpinionView(BaseUserAPIView):
         if coins_to_deduct is None or coins_to_deduct < 0:
             return jsonify({'error': 'Invalid coins value'}), 400
 
+        # Check if the opinion already exists for the user
+        existing_opinion = db.session.query(UserOpinion).filter_by(user_id=user_id, opinion_id=opinion_id).first()
+        if existing_opinion:
+            return jsonify({'error': 'Opinion already exists for this user'}), 400
+
         # If bonus coins exist, reduce them first and then if more coins are needed, reduce
         # the earned coins.
         if user.bonus_coins >= coins_to_deduct:
@@ -283,6 +296,15 @@ class UserOpinionView(BaseUserAPIView):
                 user.earned_coins -= remaining_coins
             else:
                 return jsonify({'error': 'Not enough coins'}), 400
+
+        if answer == 'yes':
+            opinion.yes_count += 1
+            opinion.yes_coins += coins_to_deduct
+        elif answer == 'no':
+            opinion.no_count += 1
+            opinion.no_coins += coins_to_deduct
+        else:
+            return jsonify({'error': 'Invalid answer value. Can be either yes or no.'}), 400
 
         try:
             new_item = self.model(**data)
