@@ -228,6 +228,7 @@ class UserPredictionView(BaseUserAPIView):
         data = request.get_json()
         user_id = data.get('user_id')
         prediction_id = data.get('prediction_id')
+        answer =  data.get('answer')
 
         user = db.session.query(User).filter_by(id=user_id).first()
         if not user:
@@ -241,6 +242,9 @@ class UserPredictionView(BaseUserAPIView):
         existing_prediction = db.session.query(UserPrediction).filter_by(user_id=user_id, prediction_id=prediction_id).first()
         if existing_prediction:
             return jsonify({'error': 'Prediction already exists for this user'}), 400
+
+        if answer < prediction.min_value or answer > prediction.max_value:
+            return jsonify({'error': 'Prediction value not in range'}), 400
 
         # Increase user_count for this prediction.
         prediction.user_count += 1
@@ -285,6 +289,10 @@ class UserOpinionView(BaseUserAPIView):
         if existing_opinion:
             return jsonify({'error': 'Opinion already exists for this user'}), 400
 
+        # Make sure that the user has enough coins.
+        if coins_to_deduct > user.bonus_coins + user.earned_coins:
+            return jsonify({'error': 'Not enough coins'}), 400
+
         # If bonus coins exist, reduce them first and then if more coins are needed, reduce
         # the earned coins.
         if user.bonus_coins >= coins_to_deduct:
@@ -292,10 +300,7 @@ class UserOpinionView(BaseUserAPIView):
         else:
             remaining_coins = coins_to_deduct - user.bonus_coins
             user.bonus_coins = 0
-            if user.earned_coins >= remaining_coins:
-                user.earned_coins -= remaining_coins
-            else:
-                return jsonify({'error': 'Not enough coins'}), 400
+            user.earned_coins -= remaining_coins
 
         if answer == 'yes':
             opinion.yes_count += 1
