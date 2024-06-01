@@ -69,9 +69,15 @@ export const getFilms = async (filmId: number, config?: FetchConfig): Promise<Fi
   }
 };
 
-export const getOpinions = async (config?: FetchConfig): Promise<Opinion[]> => {
+export const getOpinions = async (filmId: number, limit: number, config?: FetchConfig): Promise<Opinion[]> => {
   try {
-    const url = '/opinions';
+    let url = '/opinions';
+    if (filmId) {
+      url += `?film_id=${filmId}`;
+    }
+    if (limit) {
+      url += limit === 0? '' : `&limit=${limit}`; // Avoid adding limit=0 as it's unnecessary
+    }
     const opinionsData = await get<any[]>(url, config);
 
     // Convert the JSON response to align with schema defined in ../schema/
@@ -105,7 +111,30 @@ export const getOpinions = async (config?: FetchConfig): Promise<Opinion[]> => {
   }
 };
 
-export const getPredictions = async (config?: FetchConfig) => {
-  return get<any[]>('/predictions', config);
+export const getPredictions = async (filmId: number, config?: FetchConfig): Promise<Prediction[]> => {
+  try{
+    let url = '/predictions';
+    if (filmId) {
+      url += `?film_id=${filmId}`;
+    }
+    const predictionsData = await get<any[]>(url, config);
+
+    const predictions: Prediction[] = predictionsData.map((predictionData) => {
+      return {
+        predictionId: predictionData.id.toString(),
+        title: predictionData.text,
+        filmId: predictionData.film_id,
+        participationCount: predictionData.user_count,
+        meanPrediction: 100,
+        endDate: "2024-08-10",
+        startDate: "2024-04-10",
+      };
+    });
+
+    return predictions;
+
+  } catch (error) {
+    throw new Error(`Error fetching opinions: ${(error as Error).message}`);
+  }
 };
 
