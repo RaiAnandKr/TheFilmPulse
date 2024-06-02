@@ -4,6 +4,7 @@ export type Film = {
   filmCasts?: string;
   videoSrc: string;
   imgSrc: string;
+  releaseDate: string;
   topPrediction: Prediction;
   predictions?: Prediction[];
 };

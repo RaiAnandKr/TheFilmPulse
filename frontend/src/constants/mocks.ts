@@ -1,4 +1,4 @@
-import type { Film } from "../schema/Film";
+import type { Film, Prediction } from "../schema/Film";
 import { OpinionOption, type Opinion } from "../schema/Opinion";
 import Kalki from "../res/images/Kalki.jpeg";
 import Pushpa2 from "../res/images/Pushpa2.jpg";
@@ -49,6 +49,7 @@ const FILMS: Film[] = [
     videoSrc: "<some-video-src>",
     imgSrc: Kalki.src,
     filmCasts: "Prabhas, Deepika, Kamal and others.",
+    releaseDate: "June 15",
     topPrediction: {
       predictionId: "film-1-prediction-1",
       title: "Week 1 box office collection",
@@ -109,16 +110,17 @@ const FILMS: Film[] = [
     videoSrc: "<some-video-src>",
     imgSrc: Pushpa2.src,
     filmCasts: "Allu, Rashmika, Fahadh and others.",
+    releaseDate: "July 12",
     topPrediction: {
-      predictionId: "film-2-prediction-1",
-      title: "Week 1 box office collection",
+      predictionId: "film-2-prediction-3",
+      title: "Lifetime collection (including overseas, theaters, OTT)",
       filmId: "film-2",
       startDate: "May 20, 2024",
       endDate: "July 12, 2024",
-      meanPrediction: 750,
-      participationCount: 6783,
-      predictionRange: [0, 1000],
-      predictionStepValue: 25,
+      meanPrediction: 2100,
+      participationCount: 8929,
+      predictionRange: [0, 3000],
+      predictionStepValue: 50,
       predictionScaleUnit: "Crores",
     },
     predictions: [
@@ -147,12 +149,12 @@ const FILMS: Film[] = [
       },
       {
         predictionId: "film-2-prediction-3",
-        title: "Lifetime collection", // Needs clear naming
+        title: "Lifetime collection (including overseas, theaters, OTT)",
         filmId: "film-2",
         startDate: "May 20, 2024",
         endDate: "July 12, 2024",
         meanPrediction: 2100,
-        participationCount: 4929,
+        participationCount: 8929,
         predictionRange: [0, 3000],
         predictionStepValue: 50,
         predictionScaleUnit: "Crores",
@@ -161,4 +163,41 @@ const FILMS: Film[] = [
   },
 ];
 
-export { TOP_OPINIONS, FILMS };
+const getFilmInfo = (predictionId: string) => {
+  return FILMS.find(
+    (film) =>
+      !!film.predictions?.find(
+        (prediction) => prediction.predictionId === predictionId,
+      ),
+  );
+};
+
+const getPredictions = () => {
+  const predictions: Prediction[] = [];
+
+  FILMS.forEach((film) => {
+    film.predictions && predictions.push(...film.predictions);
+  });
+
+  shuffle(predictions);
+  return predictions;
+};
+
+function shuffle<T>(array: Array<T>) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex] as T,
+      array[currentIndex] as T,
+    ];
+  }
+}
+
+export { TOP_OPINIONS, FILMS, getFilmInfo, getPredictions };
