@@ -24,7 +24,7 @@ export default function PulseLayout({
   );
 
   return (
-    <div className="flex w-full flex-col p-3">
+    <div className="flex w-full flex-col bg-gradient-to-r from-green-100 to-rose-100 p-3">
       <Tabs
         aria-label="Options"
         color="primary"
