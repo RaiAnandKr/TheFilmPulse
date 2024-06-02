@@ -1,7 +1,6 @@
 import os
 import sqlalchemy as sa
 
-
 class DataBaseConfig(object):
     DB_DIALECT = 'postgresql'
     DB_HOST = os.environ.get('DB_HOST')

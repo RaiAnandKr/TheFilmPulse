@@ -1,1 +1,19 @@
 Single-database configuration for Flask.
+For generating the migration script and commit it in github,
+
+// You would use the below to do local testing for the backend anyway.
+docker-compose --file dev-compose.yml up
+
+// Make the changes in models.py
+// The change will be reflected inside the backend container automatically
+// because the backend directory is mounted as a volume
+
+// Now run the following to generate the migration script
+docker-compose -f dev-compose.yml exec backend flask db migrate
+--directory=/app/backend/migrations -m "Add end_date to Opinion and Prediction"
+
+// The migration script will be updated in your local git repo as well because
+// the backend directory is mounted as a volume.
+// Commit the changes in backend/migrations folder.
+
+// The new deployment will run a 'flask db upgrade' and update the DB.

@@ -62,6 +62,7 @@ class Opinion(db.Model):
     yes_coins: int
     no_coins: int
     author_id: int
+    end_date: datetime
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     film_id: Mapped[int] = mapped_column(Integer, ForeignKey('film.id'))
@@ -73,6 +74,7 @@ class Opinion(db.Model):
     yes_coins: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     no_coins: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     author_id: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    end_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
     film = relationship("Film", back_populates="opinions")
     user_opinions = relationship("UserOpinion", back_populates="opinion")
@@ -99,6 +101,8 @@ class Prediction(db.Model):
     user_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     min_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     max_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    mean_value: Mapped[float] = mapped_column(Float, nullable=True, default=0.0)
+    end_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
     film = relationship("Film", back_populates="predictions")
     user_predictions = relationship("UserPrediction", back_populates="prediction")
