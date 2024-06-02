@@ -1,4 +1,6 @@
 import os
+from datetime import timedelta
+
 import sqlalchemy as sa
 
 
@@ -20,9 +22,9 @@ class DataBaseConfig(object):
 
 class JWTConfig(object):
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET')
-    JWT_TOKEN_LOCATION = ["headers", "cookies"]
-    # Think this is default but anyway
+    JWT_TOKEN_LOCATION = ["cookies"]
     JWT_COOKIE_SECURE = True
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=30)
 
 
 # Maybe use this later
