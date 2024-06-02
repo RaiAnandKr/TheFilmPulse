@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from sqlalchemy import Integer, String, DateTime, ForeignKey, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.dialects.postgresql import JSONB
 from extensions import db
 from datetime import datetime
 
@@ -38,6 +39,7 @@ class Film(db.Model):
     poster_url: str
     trailer_url: str
     popularity_score: int
+    cast_metadata: dict
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(100), unique=True)
@@ -45,6 +47,7 @@ class Film(db.Model):
     poster_url: Mapped[str] = mapped_column(String(500), nullable=False)
     trailer_url: Mapped[str] = mapped_column(String(500))
     popularity_score: Mapped[int] = mapped_column(Integer, default=0)
+    cast_metadata: Mapped[dict] = mapped_column(JSONB, default={}, nullable=True)
 
     opinions = relationship("Opinion", back_populates="film")
     predictions = relationship("Prediction", back_populates="film")
@@ -62,6 +65,7 @@ class Opinion(db.Model):
     yes_coins: int
     no_coins: int
     author_id: int
+    end_date: datetime
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     film_id: Mapped[int] = mapped_column(Integer, ForeignKey('film.id'))
@@ -73,6 +77,7 @@ class Opinion(db.Model):
     yes_coins: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     no_coins: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     author_id: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    end_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
     film = relationship("Film", back_populates="opinions")
     user_opinions = relationship("UserOpinion", back_populates="opinion")
@@ -99,6 +104,8 @@ class Prediction(db.Model):
     user_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     min_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     max_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    mean_value: Mapped[float] = mapped_column(Float, nullable=True, default=0.0)
+    end_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
     film = relationship("Film", back_populates="predictions")
     user_predictions = relationship("UserPrediction", back_populates="prediction")
