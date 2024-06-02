@@ -31,7 +31,7 @@ export const Footer = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const pathList = menuItems.map((item) => item.pathName || "");
+  const pathList = menuItems.map((item) => item.pathName ?? "");
 
   return (
     <>
@@ -41,7 +41,7 @@ export const Footer = () => {
         <div className="flex flex-auto items-center justify-between">
           {menuItems.map((item) => {
             const isActive =
-              findMaxMatchingRoute(pathList, pathname || "") === item.pathName;
+              findMaxMatchingRoute(pathList, pathname ?? "") === item.pathName;
             return (
               <Button
                 color={isActive ? "primary" : "default"}
