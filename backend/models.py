@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from sqlalchemy import Integer, String, DateTime, ForeignKey, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.dialects.postgresql import JSONB
 from extensions import db
 from datetime import datetime
 
@@ -38,6 +39,7 @@ class Film(db.Model):
     poster_url: str
     trailer_url: str
     popularity_score: int
+    cast_metadata: dict
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(100), unique=True)
@@ -45,6 +47,7 @@ class Film(db.Model):
     poster_url: Mapped[str] = mapped_column(String(500), nullable=False)
     trailer_url: Mapped[str] = mapped_column(String(500))
     popularity_score: Mapped[int] = mapped_column(Integer, default=0)
+    cast_metadata: Mapped[dict] = mapped_column(JSONB, default={}, nullable=True)
 
     opinions = relationship("Opinion", back_populates="film")
     predictions = relationship("Prediction", back_populates="film")
