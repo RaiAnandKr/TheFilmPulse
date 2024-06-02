@@ -56,18 +56,6 @@ def refresh_expiring_jwts(response):
         return response
 
 
-# # Callback used by the JWT lib to load user
-# @jwt.user_lookup_loader
-# def user_lookup_callback(_jwt_header, jwt_data):
-#     identity = jwt_data["sub"]
-#     return User.query.filter_by(id=identity).one_or_none()
-#
-#
-# @jwt.user_identity_loader
-# def user_identity_lookup(user):
-#     return user.id
-
-
 # TODO: Find a way to refactor routes - Blueprints?
 @app.route("/")
 def hello_world():
@@ -87,9 +75,9 @@ def login():
     }
 
     try:
-        # verified = auth_provider.verify_token(**kwargs)
-        # if not verified:
-        #     return jsonify({"message": "Error verifying token"}), 403
+        verified = auth_provider.verify_token(**kwargs)
+        if not verified:
+            return jsonify({"message": "Error verifying token"}), 403
         user = User.query.filter_by(phone_number=phone_number).one_or_none()
         if not user:
             # TODO: hackx for now. Make the user signup instead of doing this
