@@ -1,9 +1,11 @@
 "use client";
 
-import { FilmPredictionsCard } from "~/components/film-predictions-card";
-import { FILMS } from "~/constants/mocks";
+import { PredictionCard } from "~/components/prediction-card";
+import { getPredictions } from "~/constants/mocks";
 
 const PredictionPage = () =>
-  FILMS.map((film) => <FilmPredictionsCard key={film.filmId} film={film} />);
+  getPredictions().map((prediction) => (
+    <PredictionCard key={prediction.predictionId} prediction={prediction} />
+  ));
 
 export default PredictionPage;

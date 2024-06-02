@@ -94,6 +94,7 @@ export const getFilms = async (
         videoSrc: filmData.trailer_url,
         imgSrc: filmData.poster_url,
         topPrediction: topPrediction,
+        releaseDate: filmData.release_date,
       };
     });
 

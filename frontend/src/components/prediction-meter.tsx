@@ -24,8 +24,8 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
   }, []);
 
   const predictionScaleUnitLabel = predictionScaleUnit
-    ? `(in ${predictionScaleUnit})`
-    : "";
+    ? `In ${predictionScaleUnit}`
+    : " ";
 
   const defaultValue = (predictionRange[0] + predictionRange[1]) / 2;
 
@@ -33,7 +33,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
 
   return (
     <Slider
-      label={`Prediction meter ${predictionScaleUnitLabel}`}
+      label={predictionScaleUnitLabel}
       isDisabled={hasPredicted || !!userPrediction}
       showTooltip
       step={predictionStepValue}
