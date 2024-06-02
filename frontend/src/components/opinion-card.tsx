@@ -91,68 +91,66 @@ const Options: React.FC<OptionsProps> = (props) => {
           option.key === OpinionOption.Yes ? "text-green-500" : "text-rose-500";
 
         return (
-          <>
-            <Popover placement="bottom" showArrow offset={10} key={option.key}>
-              <PopoverTrigger>
-                <Button
-                  isDisabled={hasUserVoted}
-                  variant={hasUserVoted ? "flat" : "bordered"}
-                  color={option.color}
-                  key={option.key}
-                  fullWidth
-                  className="mx-1"
-                  startContent={isUserVotedOption ? <CoinIcon /> : option.icon}
-                >
-                  {isUserVotedOption ? userVote.coinsUsed : option.label}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                className={`w-[240px] p-2.5 ${popoverContentBgColorClass}`}
+          <Popover placement="bottom" showArrow offset={10} key={option.key}>
+            <PopoverTrigger>
+              <Button
+                isDisabled={hasUserVoted}
+                variant={hasUserVoted ? "flat" : "bordered"}
+                color={option.color}
+                key={option.key}
+                fullWidth
+                className="mx-1"
+                startContent={isUserVotedOption ? <CoinIcon /> : option.icon}
               >
-                {(titleProps) => (
-                  <div
-                    className={`flex w-full flex-col items-center ${popoverContentTextColorClass}`}
-                  >
-                    <p className="w-ful h-full font-bold">{option.label}</p>
-                    <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3">
-                      <Slider
-                        label="Select Coins"
-                        showTooltip
-                        step={1}
-                        formatOptions={{
-                          style: "decimal",
-                        }}
-                        maxValue={100}
-                        minValue={0}
-                        marks={[
-                          {
-                            value: 0,
-                            label: "0",
-                          },
-                          {
-                            value: 100, // TODO: use maximum available user coins
-                            label: "100",
-                          },
-                        ]}
-                        defaultValue={30}
-                        className="max-w-md flex-auto pb-2 text-tiny"
-                        classNames={{
-                          value: "text-teal-500 font-bold",
-                        }}
-                      />
-                      <Button
-                        variant="solid"
-                        color="secondary"
-                        className="font-bold"
-                      >
-                        Confirm
-                      </Button>
-                    </div>
+                {isUserVotedOption ? userVote.coinsUsed : option.label}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent
+              className={`w-[240px] p-2.5 ${popoverContentBgColorClass}`}
+            >
+              {(titleProps) => (
+                <div
+                  className={`flex w-full flex-col items-center ${popoverContentTextColorClass}`}
+                >
+                  <p className="w-ful h-full font-bold">{option.label}</p>
+                  <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3">
+                    <Slider
+                      label="Select Coins"
+                      showTooltip
+                      step={1}
+                      formatOptions={{
+                        style: "decimal",
+                      }}
+                      maxValue={100}
+                      minValue={0}
+                      marks={[
+                        {
+                          value: 0,
+                          label: "0",
+                        },
+                        {
+                          value: 100, // TODO: use maximum available user coins
+                          label: "100",
+                        },
+                      ]}
+                      defaultValue={30}
+                      className="max-w-md flex-auto pb-2 text-tiny"
+                      classNames={{
+                        value: "text-teal-500 font-bold",
+                      }}
+                    />
+                    <Button
+                      variant="solid"
+                      color="secondary"
+                      className="font-bold"
+                    >
+                      Confirm
+                    </Button>
                   </div>
-                )}
-              </PopoverContent>
-            </Popover>
-          </>
+                </div>
+              )}
+            </PopoverContent>
+          </Popover>
         );
       })}
     </div>

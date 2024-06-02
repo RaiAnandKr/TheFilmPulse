@@ -1,9 +1,15 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Pulse = () => {
-  redirect("pulse/opinions");
+  const router = useRouter();
+  useEffect(() => {
+    router.push("/pulse/opinions");
+  }, []);
+
+  return <></>;
 };
 
 export default Pulse;
