@@ -246,6 +246,7 @@ class UserPredictionView(BaseUserAPIView):
         if answer < prediction.min_value or answer > prediction.max_value:
             return jsonify({'error': 'Prediction value not in range'}), 400
 
+        prediction.mean_value = ((prediction.mean_value * prediction.user_count) + answer ) / (prediction.user_count + 1)
         # Increase user_count for this prediction.
         prediction.user_count += 1
 
