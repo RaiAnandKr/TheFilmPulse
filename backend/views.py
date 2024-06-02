@@ -2,11 +2,17 @@ from flask import request, jsonify
 from flask.views import MethodView
 from dataclasses import is_dataclass, fields
 import dataclasses
+from datetime import datetime
+import pytz
+from sqlalchemy import or_
 
 from models import User, Prediction, Film, Opinion, UserPrediction, UserOpinion
 from extensions import db
 from serializers import BaseSerializer
 from sqlalchemy.exc import IntegrityError
+
+# Setting the server's timezone to Indian Standard Time
+SERVER_TIMEZONE = 'Asia/Kolkata'
 
 class BaseAPIView(MethodView):
     model = None
@@ -69,6 +75,16 @@ class BaseAPIView(MethodView):
         film_title = request.args.get('film_title')
         if film_title and self.model in [Prediction, Opinion]:
             query = query.join(Film).filter(Film.title.contains(film_title))
+
+        include_closed = request.args.get('include_closed','').lower() == 'true'
+        # Only return those predictions / opinions which either don't have an end_date
+        # or their end_date hasn't passed yet if the client isn't explicitly asking for
+        # closed games as well.
+        if self.model in [Prediction, Opinion] and not include_closed:
+            # Get the current date in the server's timezone
+            tz = pytz.timezone(SERVER_TIMEZONE)
+            current_date = datetime.now(tz).date()
+            query=query.filter(or_(self.model.end_date >= current_date, self.model.end_date == None))
 
         query = self.sorting_get( request, query )
         query = self.pagination_get( request, query )
