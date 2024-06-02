@@ -15,8 +15,7 @@ from models import User, Film, Opinion
 from auth_provider_config import AuthProviderFactory
 
 app = Flask(__name__)
-backend_host = os.environ.get('BACKEND_HOST', 'http://localhost:8081')
-CORS(app, origins=[backend_host], supports_credentials=True)
+# backend_host = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:8081')
 
 env = os.environ.get('APP_ENV', 'prod')
 if env == 'prod':
@@ -25,6 +24,7 @@ else:
     app.config.from_object('config.DevelopmentConfig')
 
 jwt = JWTManager(app)
+CORS(app, supports_credentials=True)
 
 # TODO: db hackx, cleanup later
 db.init_app(app)

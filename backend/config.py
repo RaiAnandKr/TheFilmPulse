@@ -1,6 +1,7 @@
 import os
 import sqlalchemy as sa
 
+
 class DataBaseConfig(object):
     DB_DIALECT = 'postgresql'
     DB_HOST = os.environ.get('DB_HOST')
@@ -24,6 +25,11 @@ class JWTConfig(object):
     JWT_COOKIE_SECURE = True
 
 
+# Maybe use this later
+class CORSConfig(object):
+    CORS_ORIGINS = ['http://localhost:3000']
+
+
 class Config(DataBaseConfig, JWTConfig):
     TESTING = False
 
@@ -31,8 +37,8 @@ class Config(DataBaseConfig, JWTConfig):
 class DevelopmentConfig(Config):
     DEBUG = True
     JWT_COOKIE_SECURE = False
-    pass
+    CORS_ORIGINS = ['http://localhost:3000']
 
 
 class ProductionConfig(Config):
-    pass
+    CORS_ORIGINS = ['https://thefilmpulse.com']
