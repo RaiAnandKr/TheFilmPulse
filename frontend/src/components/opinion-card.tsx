@@ -28,21 +28,26 @@ interface OpinionProps {
     coins: number;
   }[];
   userVote?: UserVote;
+  useFullWidth?: boolean;
 }
 
 type OptionsProps = Pick<OpinionProps, "options" | "userVote">;
 type ParticipationTrendProps = Pick<OpinionProps, "options">;
 
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
-  const { title, endDate, options } = props;
+  const { title, endDate, options, useFullWidth } = props;
 
   const totalParticipations = options.reduce(
     (acc, option) => acc + option.votes,
     0,
   );
 
+  const cardClassName = useFullWidth
+    ? "h-50 p-2.5 my-2 w-full"
+    : "h-50 p-2.5 m-2 w-72";
+
   return (
-    <Card className="h-50 m-2 w-72 p-2.5" isBlurred>
+    <Card className={cardClassName} isBlurred>
       {/** Remember to change parent width if you change card width from w-72. */}
       <CardHeader className="flex items-start justify-between p-0 pb-2">
         <Image

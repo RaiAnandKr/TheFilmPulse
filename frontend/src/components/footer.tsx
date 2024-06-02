@@ -4,6 +4,7 @@ import { FilmIcon } from "~/res/icons/film";
 import { PulseIcon } from "~/res/icons/pulse";
 import { DashboardIcon } from "~/res/icons/dashboard";
 import { usePathname, useRouter } from "next/navigation";
+import { findMaxMatchingRoute } from "~/utilities/findMaxMatchingRoute";
 
 const menuItems: MenuItem[] = [
   {
@@ -30,6 +31,8 @@ export const Footer = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const pathList = menuItems.map((item) => item.pathName || "");
+
   return (
     <>
       <div className="flex p-7"></div>
@@ -37,7 +40,8 @@ export const Footer = () => {
         <Divider className="flex-none" />
         <div className="flex flex-auto items-center justify-between">
           {menuItems.map((item) => {
-            const isActive = pathname === item.pathName;
+            const isActive =
+              findMaxMatchingRoute(pathList, pathname || "") === item.pathName;
             return (
               <Button
                 color={isActive ? "primary" : "default"}
