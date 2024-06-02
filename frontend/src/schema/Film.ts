@@ -4,7 +4,9 @@ export type Film = {
   filmCasts?: string;
   videoSrc: string;
   imgSrc: string;
+  releaseDate: string;
   topPrediction: Prediction;
+  predictions?: Prediction[];
 };
 
 export type Prediction = {
@@ -15,5 +17,8 @@ export type Prediction = {
   endDate: string;
   meanPrediction: number;
   participationCount: number;
+  predictionRange: [number, number];
+  predictionStepValue: number;
+  predictionScaleUnit?: string; //Eg. "Cr"
   userPrediction?: number;
 };

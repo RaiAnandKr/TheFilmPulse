@@ -73,8 +73,8 @@ const FilmPredictions = () => {
   return (
     <>
       <SectionHeader
-        title="Top Predictions"
-        onViewAllClick={() => router.push("/pulse")}
+        title="Film Predictions"
+        onViewAllClick={() => router.push("/pulse/predictions")}
         infoText=""
       />
       {FILMS.map((film) => (
