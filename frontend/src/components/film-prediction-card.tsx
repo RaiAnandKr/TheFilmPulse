@@ -1,15 +1,7 @@
-import {
-  Button,
-  Card,
-  CardFooter,
-  CardHeader,
-  Image,
-  Link,
-  Slider,
-} from "@nextui-org/react";
-import { useCallback, useState } from "react";
+import { Card, CardFooter, CardHeader, Image, Link } from "@nextui-org/react";
 import type { Film } from "../schema/Film";
 import { TimerAndParticipations } from "./timer-and-participations";
+import { PredictionMeter } from "./prediction-meter";
 
 interface FilmPredictionCardProps {
   film: Film;
@@ -20,15 +12,9 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
 ) => {
   const { title, filmCasts, imgSrc, topPrediction: prediction } = props.film;
 
-  const [hasPredicted, setHasPredicted] = useState(false);
-
-  const onPrediction = useCallback(() => {
-    setHasPredicted(true);
-  }, []);
-
   return (
     <div className="p-2">
-      <Card isFooterBlurred className="h-[336px] w-full">
+      <Card isFooterBlurred className="h-[360px] w-full">
         <CardHeader className="absolute z-10 flex-col items-start bg-black/40 backdrop-blur backdrop-saturate-150">
           <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-medium text-white/90 ">
             {title}
@@ -49,42 +35,12 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
               {prediction.title}
             </p>
             <Link href="/pulse" color="warning" className="text-small">
-              More &gt;
+              More
             </Link>
           </div>
 
-          <Slider
-            label="Prediction meter (in Crores)"
-            isDisabled={hasPredicted || !!prediction.userPrediction}
-            showTooltip
-            step={25}
-            formatOptions={{
-              style: "decimal",
-            }}
-            maxValue={1000}
-            minValue={0}
-            marks={[
-              {
-                value: prediction.meanPrediction,
-                label: "Avg",
-              },
-            ]}
-            defaultValue={300}
-            value={prediction.userPrediction}
-            fillOffset={prediction.meanPrediction}
-            className="mb-3 max-w-md flex-auto text-tiny text-white/60"
-            classNames={{ value: "text-teal-500 font-bold" }}
-            endContent={
-              <Button
-                variant="solid"
-                color="primary"
-                className="flex-none font-bold text-white"
-                onClick={onPrediction}
-              >
-                Predict
-              </Button>
-            }
-          />
+          <PredictionMeter prediction={prediction} inDarkTheme />
+
           <TimerAndParticipations
             endDate={prediction.endDate}
             totalParticipations={prediction.participationCount}
