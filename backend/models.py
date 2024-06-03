@@ -40,7 +40,7 @@ class Film(db.Model):
     trailer_url: str
     popularity_score: int
     cast_metadata: dict
-    Finished: int
+    finished: int
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(100), unique=True)
@@ -49,7 +49,7 @@ class Film(db.Model):
     trailer_url: Mapped[str] = mapped_column(String(500))
     popularity_score: Mapped[int] = mapped_column(Integer, default=0)
     cast_metadata: Mapped[dict] = mapped_column(JSONB, default={}, nullable=True)
-    Finished: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
+    finished: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
 
     opinions = relationship("Opinion", back_populates="film")
     predictions = relationship("Prediction", back_populates="film")
@@ -69,7 +69,7 @@ class Opinion(db.Model):
     author_id: int
     end_date: datetime
     correct_answer: str
-    Finished: int
+    finished: int
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     film_id: Mapped[int] = mapped_column(Integer, ForeignKey('film.id'))
@@ -83,7 +83,7 @@ class Opinion(db.Model):
     author_id: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     end_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     correct_answer: Mapped[str] = mapped_column(String(5), nullable=True)
-    Finished: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
+    finished: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
 
     film = relationship("Film", back_populates="opinions")
     user_opinions = relationship("UserOpinion", back_populates="opinion")
@@ -114,7 +114,7 @@ class Prediction(db.Model):
     mean_value: Mapped[float] = mapped_column(Float, nullable=True, default=0.0)
     end_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     correct_answer: Mapped[float] = mapped_column(Float, nullable=True)
-    Finished: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
+    finished: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
 
     film = relationship("Film", back_populates="predictions")
     user_predictions = relationship("UserPrediction", back_populates="prediction")
