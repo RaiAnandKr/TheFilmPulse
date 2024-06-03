@@ -82,7 +82,7 @@ def login():
         if not user:
             # TODO: hackx for now. Make the user signup instead of doing this
             session = db.session()
-            user = User(phone_number=phone_number, username=str(uuid.uuid4(4)))
+            user = User(phone_number=phone_number, username=str(uuid.uuid4())[:10])
             session.add(user)
             session.commit()
         resp = jsonify(user)
