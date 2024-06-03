@@ -97,6 +97,7 @@ class UserOpinion(db.Model):
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'))
     coins: Mapped[int] = mapped_column(Integer, nullable=False)
     answer: Mapped[str] = mapped_column(String(5), nullable=False)
+    coins_won: Mapped[int] = mapped_column(Integer, nullable=True)
 
     opinion = relationship("Opinion", back_populates="user_opinions")
     user = relationship("User", back_populates="user_opinions")
@@ -126,6 +127,8 @@ class UserPrediction(db.Model):
     prediction_id: Mapped[int] = mapped_column(Integer, ForeignKey('prediction.id'))
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'))
     answer: Mapped[float] = mapped_column(Float, nullable=False)
+    coins_won: Mapped[int] = mapped_column(Integer, nullable=True)
+    rank: Mapped[int] = mapped_column(Integer, nullable=True)
 
     prediction = relationship("Prediction", back_populates="user_predictions")
     user = relationship("User", back_populates="user_predictions")
