@@ -257,17 +257,17 @@ class UserPredictionView(BaseUserAPIView):
         prediction_id = data.get('prediction_id')
         answer = data.get('answer')
 
-        user = db.session.query(User).filter_by(id=user_id).first()
+        user = User.query.filter_by(id=user_id).first()
         if not user:
             return jsonify({'error': 'User not found'}), 404
 
-        prediction = db.session.query(Prediction).filter_by(id=prediction_id).first()
+        prediction = Prediction.query.filter_by(id=prediction_id).first()
         if not prediction:
             return jsonify({'error': 'Prediction not found'}), 404
 
         # Check if the prediction already exists for the user.
-        existing_prediction = db.session.query(UserPrediction).filter_by(user_id=user_id,
-                                                                         prediction_id=prediction_id).first()
+        existing_prediction = UserPrediction.query.filter_by(user_id=user_id,
+                                                             prediction_id=prediction_id).first()
         if existing_prediction:
             return jsonify({'error': 'Prediction already exists for this user'}), 400
 
@@ -303,11 +303,11 @@ class UserOpinionView(BaseUserAPIView):
         coins_to_deduct = data.get('coins')
         answer = data.get('answer').lower()
 
-        user = db.session.query(User).filter_by(id=user_id).first()
+        user = User.query.filter_by(id=user_id).first()
         if not user:
             return jsonify({'error': 'User not found'}), 404
 
-        opinion = db.session.query(Opinion).filter_by(id=opinion_id).first()
+        opinion = Opinion.query.filter_by(id=opinion_id).first()
         if not opinion:
             return jsonify({'error': 'Opinion not found'}), 404
 
@@ -315,7 +315,7 @@ class UserOpinionView(BaseUserAPIView):
             return jsonify({'error': 'Invalid coins value'}), 400
 
         # Check if the opinion already exists for the user
-        existing_opinion = db.session.query(UserOpinion).filter_by(user_id=user_id, opinion_id=opinion_id).first()
+        existing_opinion = UserOpinion.query.filter_by(user_id=user_id, opinion_id=opinion_id).first()
         if existing_opinion:
             return jsonify({'error': 'Opinion already exists for this user'}), 400
 
