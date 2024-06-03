@@ -16,6 +16,7 @@ const TOP_OPINIONS: Opinion[] = [
       { option: OpinionOption.No, participationCount: 129, coins: 3875 },
     ],
     userVote: { selectedOption: OpinionOption.Yes, coinsUsed: 25 },
+    filmPosterSrc: Kalki.src,
   },
   {
     opinionId: "b",
@@ -28,6 +29,7 @@ const TOP_OPINIONS: Opinion[] = [
       { option: OpinionOption.No, participationCount: 180, coins: 3975 },
     ],
     userVote: { selectedOption: OpinionOption.No, coinsUsed: 12 },
+    filmPosterSrc: Pushpa2.src,
   },
   {
     opinionId: "c",
@@ -39,6 +41,7 @@ const TOP_OPINIONS: Opinion[] = [
       { option: OpinionOption.Yes, participationCount: 68, coins: 2230 },
       { option: OpinionOption.No, participationCount: 126, coins: 2955 },
     ],
+    filmPosterSrc: Pushpa2.src,
   },
 ];
 

@@ -140,6 +140,7 @@ export const getOpinions = async (
         startDate: "2024-04-10",
         endDate: "2024-08-10",
         filmId: opinionData.film_id.toString(),
+        filmPosterSrc: opinionData.film_poster_src,
         votes: [yesVote, noVote],
       };
     });

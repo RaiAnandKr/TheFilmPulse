@@ -6,6 +6,7 @@ export type Opinion = {
   filmId: string;
   votes: Vote[];
   userVote?: UserVote;
+  filmPosterSrc?: string;
 };
 
 export type Vote = {

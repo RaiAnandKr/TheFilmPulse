@@ -35,7 +35,10 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
           alt="nextui logo"
           height={48}
           radius="sm"
-          src={imgSrc}
+          src={
+            imgSrc ??
+            "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+          }
           width={48}
           className="max-h-12 max-w-12"
         />
