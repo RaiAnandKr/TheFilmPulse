@@ -49,9 +49,12 @@ const FILMS: Film[] = [
   {
     filmId: "film-1",
     title: "Kalki",
-    videoSrc: "<some-video-src>",
+    videoSrc: "https://www.youtube.com/embed/bC36d8e3bb0",
     imgSrc: Kalki.src,
     filmCasts: "Prabhas, Deepika, Kamal and others.",
+    filmDirector: "Nag Ashwin",
+    filmDesc:
+      "Kalki 2898 AD is an upcoming Indian epic science fiction action film, shot primarily in Telugu with some scenes reshot in Hindi. Inspired by Hindu scriptures, the film is set in a post-apocalyptic world, in the year 2898 AD. ",
     releaseDate: "June 15",
     topPrediction: {
       predictionId: "film-1-prediction-1",
@@ -110,9 +113,12 @@ const FILMS: Film[] = [
   {
     filmId: "film-2",
     title: "Pushpa 2",
-    videoSrc: "<some-video-src>",
+    videoSrc: "https://www.youtube.com/embed/aj0TXpTgbUM",
     imgSrc: Pushpa2.src,
     filmCasts: "Allu, Rashmika, Fahadh and others.",
+    filmDirector: "Sukumar",
+    filmDesc:
+      "Pushpa 2: The Rule, is an upcoming Indian Telugu-language action drama film produced by Naveen Yerneni and Yalamanchili Ravi Shankar under their Mythri Movie Makers banner. It is the second installment in the Pushpa film series and the sequel to Pushpa: The Rise.",
     releaseDate: "July 12",
     topPrediction: {
       predictionId: "film-2-prediction-3",
@@ -203,4 +209,24 @@ function shuffle<T>(array: Array<T>) {
   }
 }
 
-export { TOP_OPINIONS, FILMS, getFilmInfo, getPredictions };
+const getFilmInfoFromFilmId = (filmId: string) => {
+  return FILMS.find((film) => film.filmId === filmId);
+};
+
+const getOpinionsFromFilmId = (filmId: string) => {
+  return TOP_OPINIONS.filter((opinion) => opinion.filmId === filmId);
+};
+
+const getPredictionsFromFilmId = (filmId: string) => {
+  return getFilmInfoFromFilmId(filmId)?.predictions;
+};
+
+export {
+  TOP_OPINIONS,
+  FILMS,
+  getFilmInfo,
+  getPredictions,
+  getFilmInfoFromFilmId,
+  getOpinionsFromFilmId,
+  getPredictionsFromFilmId,
+};

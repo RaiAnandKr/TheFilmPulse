@@ -2,7 +2,9 @@ export type Film = {
   filmId: string;
   title: string;
   filmCasts?: string;
-  videoSrc: string;
+  filmDirector?: string;
+  filmDesc?: string;
+  videoSrc?: string;
   imgSrc: string;
   releaseDate: string;
   topPrediction: Prediction;
