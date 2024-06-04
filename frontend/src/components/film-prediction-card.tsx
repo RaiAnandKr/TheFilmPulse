@@ -10,7 +10,6 @@ import type { Film } from "../schema/Film";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 interface FilmPredictionCardProps {
   film: Film;

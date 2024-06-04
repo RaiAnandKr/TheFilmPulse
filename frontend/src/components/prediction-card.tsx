@@ -6,10 +6,7 @@ import {
   Image,
 } from "@nextui-org/react";
 import type { Prediction } from "../schema/Film";
-import {
-  TimerAndParticipations,
-  TotalParticipations,
-} from "./timer-and-participations";
+import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
 import { getFilmInfo } from "~/constants/mocks";
 

@@ -11,7 +11,7 @@ import {
   CardHeader,
   Image,
 } from "@nextui-org/react";
-import { OpinionOption, UserVote } from "../schema/Opinion";
+import { OpinionOption, type UserVote } from "../schema/Opinion";
 import { CoinIcon } from "../res/icons/coin";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { numberInShorthand } from "../utilities/numberInShorthand";
@@ -82,7 +82,7 @@ const Options: React.FC<OptionsProps> = (props) => {
 
   return (
     <div className="flex w-full justify-between pt-2.5">
-      {options.map((option, index) => {
+      {options.map((option) => {
         const hasUserVoted = !!userVote;
         const isUserVotedOption =
           hasUserVoted && userVote.selectedOption === option.key;
