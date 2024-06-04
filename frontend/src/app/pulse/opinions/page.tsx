@@ -13,6 +13,7 @@ const OpinionPage = () =>
       key={opinion.opinionId}
       endDate={opinion.endDate}
       userVote={opinion.userVote}
+      filmPosterSrc={opinion.filmPosterSrc}
       options={opinion.votes.map((vote) => ({
         key: vote.option,
         label: vote.option,

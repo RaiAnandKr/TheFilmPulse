@@ -11,7 +11,7 @@ import {
   CardHeader,
   Image,
 } from "@nextui-org/react";
-import { OpinionOption, UserVote } from "../schema/Opinion";
+import { OpinionOption, type UserVote } from "../schema/Opinion";
 import { CoinIcon } from "../res/icons/coin";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { numberInShorthand } from "../utilities/numberInShorthand";
@@ -29,13 +29,14 @@ interface OpinionProps {
   }[];
   userVote?: UserVote;
   useFullWidth?: boolean;
+  filmPosterSrc?: string;
 }
 
 type OptionsProps = Pick<OpinionProps, "options" | "userVote">;
 type ParticipationTrendProps = Pick<OpinionProps, "options">;
 
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
-  const { title, endDate, options, useFullWidth } = props;
+  const { title, endDate, options, useFullWidth, filmPosterSrc } = props;
 
   const totalParticipations = options.reduce(
     (acc, option) => acc + option.votes,
@@ -44,19 +45,21 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 
   const cardClassName = useFullWidth
     ? "h-50 p-2.5 my-2 w-full"
-    : "h-50 p-2.5 m-2 w-72";
+    : "h-50 p-2.5 m-2 w-72"; // Remember to change parent width if you change card width from w-72.
 
   return (
     <Card className={cardClassName} isBlurred>
-      {/** Remember to change parent width if you change card width from w-72. */}
       <CardHeader className="flex items-start justify-between p-0 pb-2">
         <Image
-          alt="nextui logo"
-          height={42}
+          alt="Film Poster"
+          height={48}
           radius="sm"
-          src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-          width={42}
-          className="max-w-16"
+          src={
+            filmPosterSrc ??
+            "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+          }
+          width={48}
+          className="max-h-12 max-w-12"
         />
         <TimerAndParticipations
           endDate={endDate}
@@ -79,7 +82,7 @@ const Options: React.FC<OptionsProps> = (props) => {
 
   return (
     <div className="flex w-full justify-between pt-2.5">
-      {options.map((option, index) => {
+      {options.map((option) => {
         const hasUserVoted = !!userVote;
         const isUserVotedOption =
           hasUserVoted && userVote.selectedOption === option.key;

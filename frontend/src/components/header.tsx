@@ -16,6 +16,9 @@ import type { MenuItem } from "../schema/MenuItem";
 import { CoinIcon } from "../res/icons/coin";
 import styles from "./header.module.css";
 import { colors } from "../styles/colors";
+import { BackIcon } from "~/res/icons/back";
+import { usePathname, useRouter } from "next/navigation";
+import { HOME_PATH } from "~/constants/paths";
 
 const menuItems: MenuItem[] = [
   {
@@ -42,6 +45,11 @@ const menuItems: MenuItem[] = [
 ];
 
 export const Header: React.FC = () => {
+  const pathname = usePathname();
+  return pathname === HOME_PATH ? <HomepageHeader /> : <SpokePageHeader />;
+};
+
+const HomepageHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -62,27 +70,54 @@ export const Header: React.FC = () => {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className={styles.noflex} justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button
-            variant="flat"
-            startContent={<CoinIcon />}
-            className="font-bold"
-            style={{
-              color: colors.white,
-              backgroundColor: colors.gold,
-            }}
-          >
-            500
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
+      <LoginCumCoinsNavbarContent />
     </Navbar>
   );
 };
+
+const SpokePageHeader: React.FC = () => {
+  const router = useRouter();
+
+  return (
+    <Navbar
+      isBordered
+      isBlurred={false}
+      classNames={{ wrapper: "justify-between px-3 h-14" }}
+    >
+      <NavbarContent
+        as="button"
+        className={styles.noflex}
+        justify="start"
+        onClick={() => router.back()}
+      >
+        <BackIcon />
+      </NavbarContent>
+
+      <LoginCumCoinsNavbarContent />
+    </Navbar>
+  );
+};
+
+const LoginCumCoinsNavbarContent = () => (
+  <NavbarContent className={styles.noflex} justify="end">
+    <NavbarItem className="hidden lg:flex">
+      <Link href="#">Login</Link>
+    </NavbarItem>
+    <NavbarItem>
+      <Button
+        variant="flat"
+        startContent={<CoinIcon />}
+        className="font-bold"
+        style={{
+          color: colors.white,
+          backgroundColor: colors.gold,
+        }}
+      >
+        500
+      </Button>
+    </NavbarItem>
+  </NavbarContent>
+);
 
 const AvatarDropdown = () => (
   <Dropdown placement="bottom-end">

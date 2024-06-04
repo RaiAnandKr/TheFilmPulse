@@ -6,10 +6,7 @@ import {
   Image,
 } from "@nextui-org/react";
 import type { Prediction } from "../schema/Film";
-import {
-  TimerAndParticipations,
-  TotalParticipations,
-} from "./timer-and-participations";
+import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
 import { getFilmInfo } from "~/constants/mocks";
 
@@ -35,7 +32,10 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
           alt="nextui logo"
           height={48}
           radius="sm"
-          src={imgSrc}
+          src={
+            imgSrc ??
+            "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+          }
           width={48}
           className="max-h-12 max-w-12"
         />
