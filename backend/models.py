@@ -134,3 +134,23 @@ class UserPrediction(db.Model):
 
     prediction = relationship("Prediction", back_populates="user_predictions")
     user = relationship("User", back_populates="user_predictions")
+
+@dataclass
+class Voucher(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(200), nullable=False)
+    coins: Mapped[int] = mapped_column(Integer, nullable=False)
+    summary: Mapped[str] = mapped_column(String(500), nullable=True)
+    icon_url: Mapped[str] = mapped_column(String(500), nullable=True)
+
+    voucher_codes = relationship("VoucherCode", back_populates="voucher")
+
+@dataclass
+class VoucherCode(db.Model):
+    __tablename__ = "voucher_code"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    voucher_id: Mapped[int] = mapped_column(Integer, ForeignKey('voucher.id'))
+    code: Mapped[str] = mapped_column(String(100), nullable=False)
+
+    voucher = relationship("Voucher", back_populates="voucher_codes")
