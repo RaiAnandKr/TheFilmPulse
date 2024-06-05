@@ -2,7 +2,7 @@ import math
 
 from app import app
 from extensions import db
-from models import Prediction
+from models import Prediction, Opinion
 
 from sqlalchemy import or_
 
@@ -12,6 +12,7 @@ def compute_prediction_results():
         or_(Prediction.finished == 0, Prediction.finished.is_(None))
     ).all()
 
+    processed_ids = []
     for prediction in predictions:
         # Calculate user predictions for this prediction
         user_predictions = prediction.user_predictions
@@ -50,10 +51,52 @@ def compute_prediction_results():
 
         # Set finished = 1 in the Prediction table
         prediction.finished = 1
+        processed_ids.append(prediction.id)
 
     # Commit changes to the database
     db.session.commit()
+    print("Finished computing result for prediction Ids: ", processed_ids)
+
+def compute_opinion_results():
+    opinions = Opinion.query.filter(
+        Opinion.correct_answer.isnot(None),
+        or_(Opinion.finished == 0, Opinion.finished.is_(None))
+    ).all()
+
+    processed_ids = []
+    for opinion in opinions:
+        user_opinions = opinion.user_opinions
+        correct_answer = opinion.correct_answer
+
+        correct_coins = opinion.yes_coins if correct_answer == 'yes' else opinion.no_coins
+        incorrect_coins = opinion.no_coins if correct_answer == 'yes' else opinion.yes_coins
+
+        correct_user_opinions = [uo for uo in user_opinions if uo.answer == correct_answer]
+        incorrect_user_opinions = [uo for uo in user_opinions if uo.answer != correct_answer]
+
+        for uo in incorrect_user_opinions:
+            # If there are no correct_coins (meaning no one ended up on the correct side), just return whatever
+            # the user wagered otherwise coins won for them would be 0.
+            uo.coins_won = uo.coins if not correct_coins else 0
+            user = uo.user
+            user.earned_coins += uo.coins_won
+
+        # Distribute incorrect_coins among correct opinions based on their coins proportion
+        for uo in correct_user_opinions:
+            # If there are no incorrect_coins (meaning no one ended up on the incorrect side), the winners won't
+            # get any extra coin and will simply get back the coins they wagered.
+            extra_coins_won = ((uo.coins / correct_coins) * incorrect_coins) if incorrect_coins else 0
+            uo.coins_won = uo.coins + extra_coins_won
+            user = uo.user
+            user.earned_coins += uo.coins_won
+
+        opinion.finished = 1
+        processed_ids.append(opinion.id)
+
+    db.session.commit()
+    print("Finished computing result for opinion Ids: ", processed_ids)
 
 if __name__ == "__main__":
     with app.app_context():
         compute_prediction_results()
+        compute_opinion_results()
