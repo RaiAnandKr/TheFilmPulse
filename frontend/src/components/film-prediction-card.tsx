@@ -72,7 +72,7 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
               {prediction.title}
             </p>
             <Link
-              href="/pulse/predictions"
+              href={`/film/${filmId}/predictions`}
               color="warning"
               className="text-small underline"
             >

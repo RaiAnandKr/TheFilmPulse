@@ -1,17 +1,17 @@
 import { Chip, Image } from "@nextui-org/react";
-import {
-  FILMS,
-  getFilmInfoFromFilmId,
-  getOpinionsFromFilmId,
-  getPredictionsFromFilmId,
-} from "~/constants/mocks";
+import { PulseTabs } from "~/components/pulse-tabs";
+import { FILMS, getFilmInfoFromFilmId } from "~/constants/mocks";
 import type { Film } from "~/schema/Film";
 
-export default function FilmPage({ params }: { params: { id: string } }) {
-  const filmId = params.id;
+export default function FilmLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { filmId: string };
+}) {
+  const filmId = params.filmId;
   const filmInfo = getFilmInfoFromFilmId(filmId);
-  const opinions = getOpinionsFromFilmId(filmId);
-  const predictions = getPredictionsFromFilmId(filmId);
 
   if (!filmInfo) {
     return null;
@@ -20,7 +20,7 @@ export default function FilmPage({ params }: { params: { id: string } }) {
   const { title, filmDesc, filmCasts, filmDirector, releaseDate } = filmInfo;
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex h-full w-full flex-col">
       <FilmVisual film={filmInfo} />
       <div className="p-2">
         <h2 className="overflow-hidden text-ellipsis text-nowrap text-2xl font-bold">
@@ -36,7 +36,6 @@ export default function FilmPage({ params }: { params: { id: string } }) {
         >
           Releasing on {releaseDate}
         </Chip>
-
         <p className="py-2 text-sm">{filmDesc}</p>
         <p className="text-tiny">
           <span className="font-bold">Starring:&nbsp;</span>
@@ -47,6 +46,7 @@ export default function FilmPage({ params }: { params: { id: string } }) {
           <span className="font-medium">{filmDirector}</span>
         </p>
       </div>
+      <PulseTabs>{children}</PulseTabs>
     </div>
   );
 }
@@ -78,6 +78,6 @@ const FilmVisual: React.FC<{ film: Film }> = (props) => {
 
 export async function generateStaticParams() {
   return FILMS.map((film) => ({
-    id: film.filmId,
+    filmId: film.filmId,
   }));
 }

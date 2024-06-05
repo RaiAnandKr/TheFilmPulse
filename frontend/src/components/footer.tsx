@@ -8,8 +8,8 @@ import { findMaxMatchingRoute } from "~/utilities/findMaxMatchingRoute";
 
 const menuItems: MenuItem[] = [
   {
-    key: "film",
-    label: "Film",
+    key: "films",
+    label: "Films",
     startIcon: <FilmIcon />,
     pathName: "/",
   },
