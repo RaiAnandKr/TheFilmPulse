@@ -1,9 +1,6 @@
 "use client";
 
-import { OpinionOption } from "../schema/Opinion";
 import { OpinionCard } from "../components/opinion-card";
-import { DislikeIcon } from "../res/icons/dislike";
-import { LikeIcon } from "../res/icons/like";
 import { FilmPredictionCard } from "../components/film-prediction-card";
 import { TOP_OPINIONS, FILMS } from "../constants/mocks";
 import { colors } from "../styles/colors";
@@ -41,26 +38,7 @@ const TopOpinions = () => {
           style={{ width: `calc(18rem * ${TOP_OPINIONS.length || 1})` }} // 18rem is for w-72, which is card width
         >
           {TOP_OPINIONS.map((opinion) => (
-            <OpinionCard
-              title={opinion.title}
-              key={opinion.opinionId}
-              endDate={opinion.endDate}
-              userVote={opinion.userVote}
-              filmPosterSrc={opinion.filmPosterSrc}
-              options={opinion.votes.map((vote) => ({
-                key: vote.option,
-                label: vote.option,
-                color: vote.option === OpinionOption.Yes ? "success" : "danger",
-                icon:
-                  vote.option === OpinionOption.Yes ? (
-                    <LikeIcon />
-                  ) : (
-                    <DislikeIcon />
-                  ),
-                votes: vote.participationCount,
-                coins: vote.coins,
-              }))}
-            />
+            <OpinionCard opinion={opinion} key={opinion.opinionId} />
           ))}
         </div>
       </div>

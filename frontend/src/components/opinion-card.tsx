@@ -11,35 +11,29 @@ import {
   CardHeader,
   Image,
 } from "@nextui-org/react";
-import { OpinionOption, type UserVote } from "../schema/Opinion";
+import {
+  OpinionOption,
+  type Vote,
+  type Opinion,
+  type UserVote,
+} from "../schema/Opinion";
 import { CoinIcon } from "../res/icons/coin";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { numberInShorthand } from "../utilities/numberInShorthand";
+import { LikeIcon } from "~/res/icons/like";
+import { DislikeIcon } from "~/res/icons/dislike";
 
 interface OpinionProps {
-  title: string;
-  endDate: string;
-  options: {
-    key: OpinionOption;
-    label: string;
-    color: "success" | "danger";
-    icon: JSX.Element;
-    votes: number;
-    coins: number;
-  }[];
-  userVote?: UserVote;
+  opinion: Opinion;
   useFullWidth?: boolean;
-  filmPosterSrc?: string;
 }
 
-type OptionsProps = Pick<OpinionProps, "options" | "userVote">;
-type ParticipationTrendProps = Pick<OpinionProps, "options">;
-
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
-  const { title, endDate, options, useFullWidth, filmPosterSrc } = props;
+  const { useFullWidth, opinion } = props;
+  const { title, endDate, filmPosterSrc, votes, userVote } = opinion;
 
-  const totalParticipations = options.reduce(
-    (acc, option) => acc + option.votes,
+  const totalParticipations = votes.reduce(
+    (acc, vote) => acc + vote.participationCount,
     0,
   );
 
@@ -70,15 +64,28 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
         <p>{title}</p>
       </CardBody>
       <CardFooter className="flex flex-none flex-col p-0 pt-2">
-        <ParticipationTrend options={options} />
-        <Options {...props} />
+        <ParticipationTrend votes={votes} />
+        <Options votes={votes} userVote={userVote} />
       </CardFooter>
     </Card>
   );
 };
 
-const Options: React.FC<OptionsProps> = (props) => {
-  const { options, userVote } = props;
+const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
+  const { votes, userVote } = props;
+
+  const options = votes.map(({ option, coins, participationCount }) => ({
+    key: option,
+    label: option,
+    color: option === OpinionOption.Yes ? "success" : "danger",
+    icon: option === OpinionOption.Yes ? <LikeIcon /> : <DislikeIcon />,
+    popoverContentBgColorClass:
+      option === OpinionOption.Yes ? "bg-green-200" : "bg-rose-200",
+    popoverContentTextColorClass:
+      option === OpinionOption.Yes ? "text-green-500" : "text-rose-500",
+    participationCount: participationCount,
+    coins: coins,
+  }));
 
   return (
     <div className="flex w-full justify-between pt-2.5">
@@ -87,19 +94,13 @@ const Options: React.FC<OptionsProps> = (props) => {
         const isUserVotedOption =
           hasUserVoted && userVote.selectedOption === option.key;
 
-        const popoverContentBgColorClass =
-          option.key === OpinionOption.Yes ? "bg-green-200" : "bg-rose-200";
-
-        const popoverContentTextColorClass =
-          option.key === OpinionOption.Yes ? "text-green-500" : "text-rose-500";
-
         return (
           <Popover placement="bottom" showArrow offset={10} key={option.key}>
             <PopoverTrigger>
               <Button
                 isDisabled={hasUserVoted}
                 variant={hasUserVoted ? "flat" : "bordered"}
-                color={option.color}
+                color={option.color as "success" | "danger"}
                 key={option.key}
                 fullWidth
                 className="mx-1"
@@ -109,11 +110,11 @@ const Options: React.FC<OptionsProps> = (props) => {
               </Button>
             </PopoverTrigger>
             <PopoverContent
-              className={`w-[240px] p-2.5 ${popoverContentBgColorClass}`}
+              className={`w-[240px] p-2.5 ${option.popoverContentBgColorClass}`}
             >
-              {(titleProps) => (
+              {(_) => (
                 <div
-                  className={`flex w-full flex-col items-center ${popoverContentTextColorClass}`}
+                  className={`flex w-full flex-col items-center ${option.popoverContentTextColorClass}`}
                 >
                   <p className="w-ful h-full font-bold">{option.label}</p>
                   <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3">
@@ -160,10 +161,10 @@ const Options: React.FC<OptionsProps> = (props) => {
   );
 };
 
-const ParticipationTrend: React.FC<ParticipationTrendProps> = (props) => {
-  const { options } = props;
-  const coinsOnLike = options.at(0)?.coins ?? 0;
-  const coinsOnDislike = options.at(1)?.coins ?? 0;
+const ParticipationTrend: React.FC<{ votes: Vote[] }> = (props) => {
+  const { votes } = props;
+  const coinsOnLike = votes.at(0)?.coins ?? 0;
+  const coinsOnDislike = votes.at(1)?.coins ?? 0;
   const totalCoins = coinsOnLike + coinsOnDislike;
   const coinsOnLikePercent = (coinsOnLike * 100) / totalCoins;
 

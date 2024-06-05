@@ -1,5 +1,5 @@
 import { Button, Slider } from "@nextui-org/react";
-import { MouseEventHandler, useCallback, useState } from "react";
+import { useCallback, useState, type MouseEventHandler } from "react";
 import type { Prediction } from "~/schema/Film";
 
 interface PredictionMeterProps {
@@ -20,7 +20,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
   const [hasPredicted, setHasPredicted] = useState(false);
 
   const onPrediction: MouseEventHandler<HTMLButtonElement> = useCallback(
-    (ev) => {
+    (_) => {
       setHasPredicted(true);
     },
     [],
