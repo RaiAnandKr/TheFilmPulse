@@ -18,6 +18,7 @@ flask-jwt-extended = "^4.6.0"
 requests = "^2.32.2"
 otplessauthsdk = "^0.3.3"
 psycopg = {extras = ["binary"], version = "^3.1.19"}
+pytz = "^2024.1"
 
 
 [build-system]
