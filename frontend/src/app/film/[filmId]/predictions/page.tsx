@@ -7,7 +7,11 @@ import { useScrollToTop } from "~/hooks/useScrollToTop";
 const FilmPredictionsPage = ({ params }: { params: { filmId: string } }) => {
   useScrollToTop();
   return getPredictionsFromFilmId(params.filmId)?.map((prediction) => (
-    <PredictionCard key={prediction.predictionId} prediction={prediction} />
+    <PredictionCard
+      key={prediction.predictionId}
+      prediction={prediction}
+      noHeader
+    />
   ));
 };
 
