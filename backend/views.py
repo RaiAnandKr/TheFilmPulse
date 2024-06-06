@@ -9,7 +9,7 @@ from sqlalchemy import or_
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
 from view_decorators import load_user
-from models import User, Prediction, Film, Opinion, UserPrediction, UserOpinion
+from models import User, Prediction, Film, Opinion, UserPrediction, UserOpinion, Voucher, VoucherCode
 from extensions import db
 from serializers import BaseSerializer
 from sqlalchemy.exc import IntegrityError
@@ -26,7 +26,8 @@ class BaseAPIView(MethodView):
     offset = 0
     methods = ['GET', 'POST', 'PUT', 'DELETE']
     serializer_class = BaseSerializer
-    decorators = [load_user]
+    # Commenting this for now
+    #decorators = [load_user]
 
     def __init__(self):
         super().__init__()
@@ -81,8 +82,6 @@ class BaseAPIView(MethodView):
         if film_title and self.model in [Prediction, Opinion]:
             query = query.join(Film).filter(Film.title.contains(film_title))
 
-        query = self.sorting_get(request, query)
-        query = self.pagination_get(request, query)
         include_closed = request.args.get('include_closed','').lower() == 'true'
         # Only return those predictions / opinions which either don't have an end_date
         # or their end_date hasn't passed yet if the client isn't explicitly asking for
@@ -134,7 +133,6 @@ class PredictionView(BaseAPIView):
     model = Prediction
     sort_by = 'user_count'
 
-
 class FilmView(BaseAPIView):
     model = Film
     sort_by = 'popularity_score'
@@ -185,6 +183,15 @@ class OpinionView(BaseAPIView):
     model = Opinion
     sort_by = 'user_count'
 
+class VoucherView(BaseAPIView):
+    model = Voucher
+    sort_by = 'coins'
+    sort_order = 'asc'
+
+class VoucherCodeView(BaseAPIView):
+    model = VoucherCode
+    sort_by = 'expiry_date'
+    sort_order = 'asc'
 
 class BaseUserAPIView(MethodView):
     model = None
