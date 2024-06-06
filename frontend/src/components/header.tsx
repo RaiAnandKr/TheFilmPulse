@@ -15,7 +15,6 @@ import { useState } from "react";
 import type { MenuItem } from "../schema/MenuItem";
 import { CoinIcon } from "../res/icons/coin";
 import styles from "./header.module.css";
-import { colors } from "../styles/colors";
 import { BackIcon } from "~/res/icons/back";
 import { usePathname, useRouter } from "next/navigation";
 import { HOME_PATH } from "~/constants/paths";
@@ -108,10 +107,7 @@ const LoginCumCoinsNavbarContent = () => (
         variant="flat"
         startContent={<CoinIcon />}
         className="font-bold"
-        style={{
-          color: colors.white,
-          backgroundColor: colors.gold,
-        }}
+        color="warning"
       >
         500
       </Button>
