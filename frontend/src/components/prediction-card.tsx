@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   CardBody,
   CardFooter,
@@ -9,6 +10,7 @@ import type { Prediction } from "../schema/Film";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
 import { getFilmInfo } from "~/constants/mocks";
+import { useRouter } from "next/navigation";
 
 interface PredictionCardProps {
   prediction: Prediction;
@@ -16,29 +18,36 @@ interface PredictionCardProps {
 
 export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
   const { prediction } = props;
-
   const film = getFilmInfo(prediction.predictionId);
+
+  const router = useRouter();
 
   if (!film) {
     return null;
   }
+
+  const onFilmPosterClick = () => {
+    router.push(`/film/${film.filmId}/predictions`);
+  };
 
   const { title, imgSrc, filmCasts } = film;
 
   return (
     <Card className="h-50 my-2 w-full p-3" isBlurred>
       <CardHeader className="flex items-center p-0">
-        <Image
-          alt="nextui logo"
-          height={48}
-          radius="sm"
-          src={
-            imgSrc ??
-            "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-          }
-          width={48}
-          className="max-h-12 max-w-12"
-        />
+        <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
+          <Image
+            alt="nextui logo"
+            height={48}
+            src={
+              imgSrc ??
+              "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+            }
+            width={48}
+            className="max-h-12 max-w-12"
+          />
+        </Button>
+
         <div className="flex flex-col px-2">
           <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-bold ">
             {title}

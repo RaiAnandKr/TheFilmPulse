@@ -22,6 +22,7 @@ import { TimerAndParticipations } from "./timer-and-participations";
 import { numberInShorthand } from "../utilities/numberInShorthand";
 import { LikeIcon } from "~/res/icons/like";
 import { DislikeIcon } from "~/res/icons/dislike";
+import { useRouter } from "next/navigation";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -30,7 +31,13 @@ interface OpinionProps {
 
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
   const { useFullWidth, opinion } = props;
-  const { title, endDate, filmPosterSrc, votes, userVote } = opinion;
+  const { title, endDate, filmPosterSrc, votes, userVote, filmId } = opinion;
+
+  const router = useRouter();
+
+  const onFilmPosterClick = () => {
+    router.push(`/film/${filmId}/opinions`);
+  };
 
   const totalParticipations = votes.reduce(
     (acc, vote) => acc + vote.participationCount,
@@ -44,17 +51,18 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
   return (
     <Card className={cardClassName} isBlurred>
       <CardHeader className="flex items-start justify-between p-0 pb-2">
-        <Image
-          alt="Film Poster"
-          height={48}
-          radius="sm"
-          src={
-            filmPosterSrc ??
-            "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-          }
-          width={48}
-          className="max-h-12 max-w-12"
-        />
+        <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
+          <Image
+            alt="Film Poster"
+            height={48}
+            src={
+              filmPosterSrc ??
+              "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+            }
+            width={48}
+            className="max-h-12 max-w-12"
+          />
+        </Button>
         <TimerAndParticipations
           endDate={endDate}
           totalParticipations={totalParticipations}
