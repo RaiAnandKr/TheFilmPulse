@@ -5,7 +5,7 @@ import sqlalchemy as sa
 
 
 class DataBaseConfig(object):
-    DB_DIALECT = 'postgresql'
+    DB_DIALECT = 'postgresql+psycopg'
     DB_HOST = os.environ.get('DB_HOST')
     DB_USERNAME = os.environ.get('DB_USERNAME')
     DB_PASSWORD = os.environ.get('DB_PASSWORD')
