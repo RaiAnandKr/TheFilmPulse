@@ -22,15 +22,23 @@ import { TimerAndParticipations } from "./timer-and-participations";
 import { numberInShorthand } from "../utilities/numberInShorthand";
 import { LikeIcon } from "~/res/icons/like";
 import { DislikeIcon } from "~/res/icons/dislike";
+import { useRouter } from "next/navigation";
 
 interface OpinionProps {
   opinion: Opinion;
   useFullWidth?: boolean;
+  useFooter?: boolean;
 }
 
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
-  const { useFullWidth, opinion } = props;
-  const { title, endDate, filmPosterSrc, votes, userVote } = opinion;
+  const { useFullWidth, opinion, useFooter } = props;
+  const { title, endDate, filmPosterSrc, votes, userVote, filmId } = opinion;
+
+  const router = useRouter();
+
+  const onFilmPosterClick = () => {
+    router.push(`/film/${filmId}/opinions`);
+  };
 
   const totalParticipations = votes.reduce(
     (acc, vote) => acc + vote.participationCount,
@@ -43,29 +51,39 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 
   return (
     <Card className={cardClassName} isBlurred>
-      <CardHeader className="flex items-start justify-between p-0 pb-2">
-        <Image
-          alt="Film Poster"
-          height={48}
-          radius="sm"
-          src={
-            filmPosterSrc ??
-            "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-          }
-          width={48}
-          className="max-h-12 max-w-12"
-        />
-        <TimerAndParticipations
-          endDate={endDate}
-          totalParticipations={totalParticipations}
-        />
-      </CardHeader>
+      {!useFooter && (
+        <CardHeader className="flex items-start justify-between p-0 pb-2">
+          <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
+            <Image
+              alt="Film Poster"
+              height={48}
+              src={
+                filmPosterSrc ??
+                "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+              }
+              width={48}
+              className="max-h-12 max-w-12"
+            />
+          </Button>
+          <TimerAndParticipations
+            endDate={endDate}
+            totalParticipations={totalParticipations}
+          />
+        </CardHeader>
+      )}
       <CardBody className="p-0 py-2 text-sm">
         <p>{title}</p>
       </CardBody>
       <CardFooter className="flex flex-none flex-col p-0 pt-2">
         <ParticipationTrend votes={votes} />
         <Options votes={votes} userVote={userVote} />
+        {useFooter && (
+          <TimerAndParticipations
+            endDate={endDate}
+            totalParticipations={totalParticipations}
+            showInRow
+          />
+        )}
       </CardFooter>
     </Card>
   );
@@ -88,7 +106,7 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
   }));
 
   return (
-    <div className="flex w-full justify-between pt-2.5">
+    <div className="flex w-full justify-between pb-1 pt-2.5">
       {options.map((option) => {
         const hasUserVoted = !!userVote;
         const isUserVotedOption =
