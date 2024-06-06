@@ -1,15 +1,16 @@
 import {
+  Button,
   Card,
   CardFooter,
   CardHeader,
   Chip,
   Image,
-  Link,
 } from "@nextui-org/react";
 import type { Film } from "../schema/Film";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
 import { useRouter } from "next/navigation";
+import { ExpandCircleIcon } from "~/res/icons/expand-circle";
 
 interface FilmPredictionCardProps {
   film: Film;
@@ -31,6 +32,10 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
 
   const onCardPress = () => {
     router.push(`film/${filmId}`);
+  };
+
+  const onMorePredictionsClick = () => {
+    router.push(`/film/${filmId}/predictions`);
   };
 
   return (
@@ -71,13 +76,16 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
             <p className="w-10/12 text-start text-small text-white/90">
               {prediction.title}
             </p>
-            <Link
-              href={`/film/${filmId}/predictions`}
+            <Button
+              isIconOnly
               color="warning"
-              className="text-small underline"
+              variant="light"
+              radius="sm"
+              onClick={onMorePredictionsClick}
+              size="sm"
             >
-              More
-            </Link>
+              <ExpandCircleIcon />
+            </Button>
           </div>
 
           <PredictionMeter prediction={prediction} inDarkTheme />

@@ -12,6 +12,7 @@ import {
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { InfoIcon } from "~/res/icons/info";
+import { ForwardIcon } from "~/res/icons/forward";
 
 export default function Page() {
   return (
@@ -94,12 +95,13 @@ const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
         </PopoverContent>
       </Popover>
       <Button
-        variant="light"
+        isIconOnly
         color="primary"
+        variant="light"
         onClick={onViewAllClick}
         className="h-full"
       >
-        View All
+        <ForwardIcon />
       </Button>
     </div>
   );
