@@ -7,11 +7,14 @@ WORKDIR /app
 
 RUN apt update
 
-# Copy the backend files
-COPY backend /app/backend
+# Don't run pip install everytime code changes, do it only when requirements.txt changes
+COPY backend/requirements.txt /app/backend/requirements.txt
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt
+
+# Copy the backend files
+COPY backend /app/backend
 
 # Copy the entrypoint script into the container
 COPY entrypoint.sh /app/entrypoint.sh
