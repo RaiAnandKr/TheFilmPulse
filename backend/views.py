@@ -7,6 +7,7 @@ import pytz
 from sqlalchemy import or_
 
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+from sqlalchemy.sql import sqltypes
 
 from view_decorators import load_user
 from models import User, Prediction, Film, Opinion, UserPrediction, UserOpinion, Voucher, VoucherCode
@@ -63,8 +64,12 @@ class BaseAPIView(MethodView):
     def filter_on_table_columns_get(self, request, query):
         # TODO: restrict to self.columns?
         for column in self.model.__table__.columns:
+            # gets value as string
             value = request.args.get(column.name)
             if value:
+                # Convert str to int
+                if type(column.type) is sqltypes.Integer:
+                    value = int(value)
                 query = query.filter(getattr(self.model, column.name) == value)
 
         return query
@@ -226,8 +231,12 @@ class BaseUserAPIView(MethodView):
 
         # TODO: restrict to self.columns?
         for column in self.model.__table__.columns:
+            # gets value as string
             value = request.args.get(column.name)
             if value:
+                # Convert str to int
+                if type(column.type) is sqltypes.Integer:
+                    value = int(value)
                 query = query.filter(getattr(self.model, column.name) == value)
 
         # TODO: convert sort and pagination to mixins
