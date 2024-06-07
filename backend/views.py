@@ -159,7 +159,7 @@ class FilmView(BaseAPIView):
             query = query.filter(Film.title.contains(film_title))
 
         # Same consistency for 'film_id'
-        film_id = request.args.get('film_id')
+        film_id = request.args.get('film_id', type=int)
         if film_id:
             query = query.filter(Film.id == film_id)
 
