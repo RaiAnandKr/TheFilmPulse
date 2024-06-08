@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .bg-success-to-danger {
+    @apply bg-gradient-to-r from-green-100 to-rose-100;
+  }
+
+  .text-primary {
+    @apply text-teal-500;
+  }
+}

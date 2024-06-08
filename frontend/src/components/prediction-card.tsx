@@ -6,7 +6,7 @@ import {
   CardHeader,
   Image,
 } from "@nextui-org/react";
-import type { Prediction } from "../schema/Film";
+import type { Prediction } from "~/schema/Prediction";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
 import { getFilmInfo } from "~/constants/mocks";

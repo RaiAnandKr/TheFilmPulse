@@ -21,10 +21,14 @@ export const TimerAndParticipations: React.FC<{
 
 export const EndTimer: React.FC<{ endDate: string }> = (props) => {
   const daysToEnd = differenceInDays(new Date(), new Date(props.endDate));
+  const isEndDateInPast = daysToEnd < 0;
+
   return (
     <p className="text-xs text-default-400">
-      <span className="font-semibold">Ends in:</span>
-      <span>{` ${daysToEnd} days`}</span>
+      <span className="font-semibold">
+        {isEndDateInPast ? "Ended on: " : "Ends in: "}
+      </span>
+      <span>{isEndDateInPast ? props.endDate : `${daysToEnd} days`}</span>
     </p>
   );
 };

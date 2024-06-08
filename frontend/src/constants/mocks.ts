@@ -1,9 +1,11 @@
-import type { Film, Prediction } from "../schema/Film";
+import type { Film } from "../schema/Film";
+import type { Prediction } from "~/schema/Prediction";
 import { OpinionOption, type Opinion } from "../schema/Opinion";
 import Kalki from "../res/images/Kalki.jpeg";
 import Pushpa2 from "../res/images/Pushpa2.jpg";
+import { differenceInDays } from "~/utilities/differenceInDays";
 
-const TOP_OPINIONS: Opinion[] = [
+const OPINIONS: Opinion[] = [
   {
     opinionId: "a",
     title:
@@ -43,6 +45,108 @@ const TOP_OPINIONS: Opinion[] = [
     ],
     filmPosterSrc: Pushpa2.src,
   },
+  {
+    opinionId: "d",
+    title: "Will there be sequel of Kalki?",
+    startDate: "May 25, 2024",
+    endDate: "June 5, 2024",
+    filmId: "film-1",
+    votes: [
+      { option: OpinionOption.Yes, participationCount: 168, coins: 2430 },
+      { option: OpinionOption.No, participationCount: 196, coins: 3455 },
+    ],
+    userVote: { selectedOption: OpinionOption.No, coinsUsed: 12 },
+    filmPosterSrc: Pushpa2.src,
+  },
+  {
+    opinionId: "e",
+    title: "Will Fahad Fasil die in Pushpa 2?",
+    startDate: "May 25, 2024",
+    endDate: "June 2, 2024",
+    filmId: "film-2",
+    votes: [
+      { option: OpinionOption.Yes, participationCount: 75, coins: 1230 },
+      { option: OpinionOption.No, participationCount: 128, coins: 1995 },
+    ],
+    userVote: { selectedOption: OpinionOption.Yes, coinsUsed: 85 },
+    filmPosterSrc: Pushpa2.src,
+  },
+];
+
+const PREDICTIONS: Prediction[] = [
+  {
+    predictionId: "film-1-prediction-1",
+    title: "Week 1 box office collection",
+    filmId: "film-1",
+    startDate: "May 26, 2024",
+    endDate: "June 15, 2024",
+    participationCount: 3748,
+    meanPrediction: 400,
+    userPrediction: 775,
+    predictionRange: [0, 1000],
+    predictionStepValue: 25,
+    predictionScaleUnit: "Crores",
+  },
+  {
+    predictionId: "film-1-prediction-2",
+    title: "Week 1 IMDB rating",
+    filmId: "film-1",
+    startDate: "May 26, 2024",
+    endDate: "June 15, 2024",
+    participationCount: 4786,
+    meanPrediction: 8.2,
+    userPrediction: 8.5,
+    predictionRange: [0, 10],
+    predictionStepValue: 0.1,
+  },
+  {
+    predictionId: "film-1-prediction-3",
+    title: "Lifetime collection", // Needs clear naming
+    filmId: "film-1",
+    startDate: "May 26, 2024",
+    endDate: "June 15, 2024",
+    meanPrediction: 1250,
+    participationCount: 1708,
+    predictionRange: [0, 3000],
+    predictionStepValue: 50,
+    predictionScaleUnit: "Crores",
+  },
+  {
+    predictionId: "film-2-prediction-1",
+    title: "Week 1 box office collection",
+    filmId: "film-2",
+    startDate: "May 20, 2024",
+    endDate: "July 12, 2024",
+    meanPrediction: 750,
+    participationCount: 6783,
+    predictionRange: [0, 1000],
+    predictionStepValue: 25,
+    predictionScaleUnit: "Crores",
+  },
+  {
+    predictionId: "film-2-prediction-2",
+    title: "Week 1 IMDB rating",
+    filmId: "film-2",
+    startDate: "May 20, 2024",
+    endDate: "July 12, 2024",
+    participationCount: 4786,
+    meanPrediction: 8.8,
+    predictionRange: [0, 10],
+    predictionStepValue: 0.1,
+  },
+  {
+    predictionId: "film-2-prediction-3",
+    title: "Lifetime collection (including overseas, theaters, OTT)",
+    filmId: "film-2",
+    startDate: "May 20, 2024",
+    endDate: "July 12, 2024",
+    meanPrediction: 2100,
+    userPrediction: 1450,
+    participationCount: 8929,
+    predictionRange: [0, 3000],
+    predictionStepValue: 50,
+    predictionScaleUnit: "Crores",
+  },
 ];
 
 const FILMS: Film[] = [
@@ -69,44 +173,10 @@ const FILMS: Film[] = [
       predictionStepValue: 25,
       predictionScaleUnit: "Crores",
     },
-    predictions: [
-      {
-        predictionId: "film-1-prediction-1",
-        title: "Week 1 box office collection",
-        filmId: "film-1",
-        startDate: "May 26, 2024",
-        endDate: "June 15, 2024",
-        participationCount: 3748,
-        meanPrediction: 400,
-        userPrediction: 775,
-        predictionRange: [0, 1000],
-        predictionStepValue: 25,
-        predictionScaleUnit: "Crores",
-      },
-      {
-        predictionId: "film-1-prediction-2",
-        title: "Week 1 IMDB rating",
-        filmId: "film-1",
-        startDate: "May 26, 2024",
-        endDate: "June 15, 2024",
-        participationCount: 4786,
-        meanPrediction: 8.2,
-        userPrediction: 8.5,
-        predictionRange: [0, 10],
-        predictionStepValue: 0.1,
-      },
-      {
-        predictionId: "film-1-prediction-3",
-        title: "Lifetime collection", // Needs clear naming
-        filmId: "film-1",
-        startDate: "May 26, 2024",
-        endDate: "June 15, 2024",
-        meanPrediction: 1250,
-        participationCount: 1708,
-        predictionRange: [0, 3000],
-        predictionStepValue: 50,
-        predictionScaleUnit: "Crores",
-      },
+    predictionIds: [
+      "film-1-prediction-1",
+      "film-1-prediction-1",
+      "film-1-prediction-1",
     ],
   },
   {
@@ -131,43 +201,10 @@ const FILMS: Film[] = [
       predictionStepValue: 50,
       predictionScaleUnit: "Crores",
     },
-    predictions: [
-      {
-        predictionId: "film-2-prediction-1",
-        title: "Week 1 box office collection",
-        filmId: "film-2",
-        startDate: "May 20, 2024",
-        endDate: "July 12, 2024",
-        meanPrediction: 750,
-        participationCount: 6783,
-        predictionRange: [0, 1000],
-        predictionStepValue: 25,
-        predictionScaleUnit: "Crores",
-      },
-      {
-        predictionId: "film-2-prediction-2",
-        title: "Week 1 IMDB rating",
-        filmId: "film-2",
-        startDate: "May 20, 2024",
-        endDate: "July 12, 2024",
-        participationCount: 4786,
-        meanPrediction: 8.8,
-        predictionRange: [0, 10],
-        predictionStepValue: 0.1,
-      },
-      {
-        predictionId: "film-2-prediction-3",
-        title: "Lifetime collection (including overseas, theaters, OTT)",
-        filmId: "film-2",
-        startDate: "May 20, 2024",
-        endDate: "July 12, 2024",
-        meanPrediction: 2100,
-        userPrediction: 1450,
-        participationCount: 8929,
-        predictionRange: [0, 3000],
-        predictionStepValue: 50,
-        predictionScaleUnit: "Crores",
-      },
+    predictionIds: [
+      "film-2-prediction-1",
+      "film-2-prediction-1",
+      "film-2-prediction-1",
     ],
   },
 ];
@@ -175,21 +212,10 @@ const FILMS: Film[] = [
 const getFilmInfo = (predictionId: string) => {
   return FILMS.find(
     (film) =>
-      !!film.predictions?.find(
-        (prediction) => prediction.predictionId === predictionId,
-      ),
+      film.filmId ===
+      PREDICTIONS.find((prediction) => prediction.predictionId === predictionId)
+        ?.filmId,
   );
-};
-
-const getPredictions = () => {
-  const predictions: Prediction[] = [];
-
-  FILMS.forEach((film) => {
-    film.predictions && predictions.push(...film.predictions);
-  });
-
-  shuffle(predictions);
-  return predictions;
 };
 
 function shuffle<T>(array: Array<T>) {
@@ -209,20 +235,51 @@ function shuffle<T>(array: Array<T>) {
   }
 }
 
+function isPulseActive(endDate: string) {
+  return differenceInDays(new Date(), new Date(endDate)) > 0;
+}
+
+const getOpinions = ({
+  isActive,
+  limit,
+}: {
+  isActive: boolean;
+  limit?: number;
+}) => {
+  const opinions = [...OPINIONS];
+
+  shuffle(opinions);
+
+  return opinions
+    .filter((opinion) => isActive === isPulseActive(opinion.endDate))
+    .slice(0, limit)
+    .filter(Boolean);
+};
+
+const getPredictions = ({ isActive }: { isActive: boolean }) => {
+  const predictions = [...PREDICTIONS];
+
+  shuffle(predictions);
+
+  return predictions
+    .filter((prediction) => isActive === isPulseActive(prediction.endDate))
+    .filter(Boolean);
+};
+
 const getFilmInfoFromFilmId = (filmId: string) => {
   return FILMS.find((film) => film.filmId === filmId);
 };
 
 const getOpinionsFromFilmId = (filmId: string) => {
-  return TOP_OPINIONS.filter((opinion) => opinion.filmId === filmId);
+  return OPINIONS.filter((opinion) => opinion.filmId === filmId);
 };
 
 const getPredictionsFromFilmId = (filmId: string) => {
-  return getFilmInfoFromFilmId(filmId)?.predictions;
+  return PREDICTIONS.filter((prediction) => prediction.filmId === filmId);
 };
 
 export {
-  TOP_OPINIONS,
+  getOpinions,
   FILMS,
   getFilmInfo,
   getPredictions,

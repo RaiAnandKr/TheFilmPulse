@@ -2,7 +2,7 @@
 
 import { OpinionCard } from "../components/opinion-card";
 import { FilmPredictionCard } from "../components/film-prediction-card";
-import { TOP_OPINIONS, FILMS } from "../constants/mocks";
+import { FILMS, getOpinions } from "../constants/mocks";
 import { colors } from "../styles/colors";
 import {
   Button,
@@ -26,6 +26,8 @@ export default function Page() {
 const TopOpinions = () => {
   const router = useRouter();
 
+  const opinions = getOpinions({ isActive: true, limit: 5 });
+
   return (
     <>
       <SectionHeader
@@ -35,10 +37,10 @@ const TopOpinions = () => {
       />
       <div className="w-full overflow-x-auto">
         <div
-          className="flex bg-gradient-to-r from-green-200 to-rose-200"
-          style={{ width: `calc(18rem * ${TOP_OPINIONS.length || 1})` }} // 18rem is for w-72, which is card width
+          className="bg-success-to-danger flex"
+          style={{ width: `calc(18rem * ${opinions.length || 1})` }} // 18rem is for w-72, which is card width
         >
-          {TOP_OPINIONS.map((opinion) => (
+          {opinions.map((opinion) => (
             <OpinionCard opinion={opinion} key={opinion.opinionId} />
           ))}
         </div>

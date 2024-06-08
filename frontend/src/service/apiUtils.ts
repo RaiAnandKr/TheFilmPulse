@@ -3,7 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Film, Prediction } from "../schema/Film";
+import { Film } from "../schema/Film";
+import { Prediction } from "~/schema/Prediction";
 import { Opinion, Vote, UserVote, OpinionOption } from "../schema/Opinion";
 
 const BASE_URL =

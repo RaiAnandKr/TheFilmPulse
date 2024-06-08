@@ -1,6 +1,6 @@
 import { Button, Slider } from "@nextui-org/react";
 import { useCallback, useState, type MouseEventHandler } from "react";
-import type { Prediction } from "~/schema/Film";
+import type { Prediction } from "~/schema/Prediction";
 
 interface PredictionMeterProps {
   prediction: Prediction;
