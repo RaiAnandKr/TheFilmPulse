@@ -1,6 +1,7 @@
 from dataclasses import dataclass, is_dataclass, asdict
 from datetime import datetime
 
+# TODO: Improve this or just use marshmallow later
 class BaseSerializer:
 
     def __init__(self, columns=None):
@@ -28,3 +29,9 @@ class BaseSerializer:
 
     def _serialize_model(self, item):
         return {col: self._get_value(getattr(item, col)) for col in item.__table__.columns.keys()}
+
+
+class UserSerializer(BaseSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        self.columns = ['username', 'email', 'state', 'bonus_coins', 'earned_coins']
