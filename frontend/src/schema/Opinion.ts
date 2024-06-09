@@ -1,4 +1,9 @@
+import type { OpinionOption } from "./OpinionOption";
+import type { PulseResult } from "./PulseResult";
+import { PulseType } from "./PulseType";
+
 export type Opinion = {
+  type: PulseType.Opinion;
   opinionId: string;
   title: string;
   startDate: string;
@@ -7,6 +12,7 @@ export type Opinion = {
   votes: Vote[];
   userVote?: UserVote;
   filmPosterSrc?: string;
+  result?: PulseResult<OpinionOption>;
 };
 
 export type Vote = {
@@ -19,8 +25,3 @@ export type UserVote = {
   selectedOption: OpinionOption;
   coinsUsed: number;
 };
-
-export enum OpinionOption {
-  Yes = "Yes",
-  No = "No",
-}

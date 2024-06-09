@@ -1,10 +1,10 @@
 "use client";
 
 import { OpinionCard } from "~/components/opinion-card";
-import { TOP_OPINIONS } from "~/constants/mocks";
+import { getOpinions } from "~/constants/mocks";
 
 const OpinionPage = () =>
-  TOP_OPINIONS.map((opinion) => (
+  getOpinions({ isActive: true }).map((opinion) => (
     <OpinionCard opinion={opinion} key={opinion.opinionId} useFullWidth />
   ));
 

@@ -21,7 +21,7 @@ export const PulseTabs: React.FC<React.PropsWithChildren> = (props) => {
   );
 
   return (
-    <div className="flex w-full flex-1 flex-col bg-gradient-to-r from-green-100 to-rose-100 p-3">
+    <div className="bg-success-to-danger flex w-full flex-1 flex-col p-3">
       <Tabs
         aria-label="Options"
         color="primary"
