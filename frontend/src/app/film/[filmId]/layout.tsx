@@ -34,7 +34,7 @@ export default function FilmLayout({
           variant="flat"
           classNames={{ content: "font-bold" }}
         >
-          Releasing on {releaseDate}
+          Releasing {releaseDate}
         </Chip>
         <p className="py-2 text-sm">{filmDesc}</p>
         <p className="text-tiny">
