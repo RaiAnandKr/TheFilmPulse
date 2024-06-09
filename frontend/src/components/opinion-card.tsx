@@ -10,7 +10,6 @@ import {
   Progress,
   CardHeader,
   Image,
-  Chip,
 } from "@nextui-org/react";
 import { type Vote, type Opinion, type UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";

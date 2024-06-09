@@ -4,7 +4,6 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Chip,
   Image,
 } from "@nextui-org/react";
 import type { Prediction } from "~/schema/Prediction";
@@ -13,7 +12,6 @@ import { PredictionMeter, type PredictionMeterProps } from "./prediction-meter";
 import { getFilmInfo } from "~/constants/mocks";
 import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
-import { numberInShorthand } from "~/utilities/numberInShorthand";
 
 interface PredictionCardProps {
   prediction: Prediction;

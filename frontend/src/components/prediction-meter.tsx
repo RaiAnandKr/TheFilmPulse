@@ -52,7 +52,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
           Predict
         </Button>
       ),
-    [noButton],
+    [noButton, onPrediction],
   );
 
   return (

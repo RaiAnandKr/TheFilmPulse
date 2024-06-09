@@ -20,7 +20,6 @@ import type { Opinion } from "~/schema/Opinion";
 import type { Prediction } from "~/schema/Prediction";
 import { PulseType } from "~/schema/PulseType";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
-import { shuffle } from "~/utilities/shuffle";
 
 const Dashboard = () => (
   <>

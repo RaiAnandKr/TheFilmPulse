@@ -1,19 +1,18 @@
 import {
-  Button,
   Chip,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@nextui-org/react";
 import { InfoIcon } from "~/res/icons/info";
-import { PulseResult, PulseResultType } from "~/schema/PulseResult";
+import { PulseResultType, type PulseResult } from "~/schema/PulseResult";
 import { differenceInDays } from "~/utilities/differenceInDays";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 
 interface ResultChipProps {
   endDate: string;
   hasUserParticipated: boolean;
-  result?: Pick<PulseResult<any>, "type" | "coinsResult">;
+  result?: Pick<PulseResult<undefined>, "type" | "coinsResult">;
 }
 
 const RESULT_COLOR_MAP = new Map<
