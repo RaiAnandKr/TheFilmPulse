@@ -1,12 +1,16 @@
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
-import { OpinionOption, type Opinion } from "../schema/Opinion";
+import { type Opinion } from "../schema/Opinion";
+import { OpinionOption } from "~/schema/OpinionOption";
 import Kalki from "../res/images/Kalki.jpeg";
 import Pushpa2 from "../res/images/Pushpa2.jpg";
 import { differenceInDays } from "~/utilities/differenceInDays";
+import { PulseType } from "~/schema/PulseType";
+import { PulseResultType } from "~/schema/PulseResult";
 
 const OPINIONS: Opinion[] = [
   {
+    type: PulseType.Opinion,
     opinionId: "a",
     title:
       "Will Kalki cross Jawaan's first day box office collection of Rs. 75 Crore in India?",
@@ -21,6 +25,7 @@ const OPINIONS: Opinion[] = [
     filmPosterSrc: Kalki.src,
   },
   {
+    type: PulseType.Opinion,
     opinionId: "b",
     title: "Will Puspa 2 include cameo from Lord Bobby?",
     startDate: "May 20, 2024",
@@ -34,6 +39,7 @@ const OPINIONS: Opinion[] = [
     filmPosterSrc: Pushpa2.src,
   },
   {
+    type: PulseType.Opinion,
     opinionId: "c",
     title: "Will there be sequel of Pushpa 2?",
     startDate: "May 25, 2024",
@@ -46,6 +52,7 @@ const OPINIONS: Opinion[] = [
     filmPosterSrc: Pushpa2.src,
   },
   {
+    type: PulseType.Opinion,
     opinionId: "d",
     title: "Will there be sequel of Kalki?",
     startDate: "May 25, 2024",
@@ -56,9 +63,16 @@ const OPINIONS: Opinion[] = [
       { option: OpinionOption.No, participationCount: 196, coins: 3455 },
     ],
     userVote: { selectedOption: OpinionOption.No, coinsUsed: 12 },
-    filmPosterSrc: Pushpa2.src,
+    filmPosterSrc: Kalki.src,
+    result: {
+      type: PulseResultType.Lost,
+      coinsUsed: 12,
+      coinsResult: 12,
+      finalValue: OpinionOption.Yes,
+    },
   },
   {
+    type: PulseType.Opinion,
     opinionId: "e",
     title: "Will Fahad Fasil die in Pushpa 2?",
     startDate: "May 25, 2024",
@@ -70,11 +84,18 @@ const OPINIONS: Opinion[] = [
     ],
     userVote: { selectedOption: OpinionOption.Yes, coinsUsed: 85 },
     filmPosterSrc: Pushpa2.src,
+    result: {
+      type: PulseResultType.Won,
+      coinsUsed: 85,
+      coinsResult: 135,
+      finalValue: OpinionOption.Yes,
+    },
   },
 ];
 
 const PREDICTIONS: Prediction[] = [
   {
+    type: PulseType.Prediction,
     predictionId: "film-1-prediction-1",
     title: "Week 1 box office collection",
     filmId: "film-1",
@@ -88,6 +109,7 @@ const PREDICTIONS: Prediction[] = [
     predictionScaleUnit: "Crores",
   },
   {
+    type: PulseType.Prediction,
     predictionId: "film-1-prediction-2",
     title: "Week 1 IMDB rating",
     filmId: "film-1",
@@ -100,18 +122,26 @@ const PREDICTIONS: Prediction[] = [
     predictionStepValue: 0.1,
   },
   {
+    type: PulseType.Prediction,
     predictionId: "film-1-prediction-3",
     title: "Lifetime collection", // Needs clear naming
     filmId: "film-1",
     startDate: "May 26, 2024",
-    endDate: "June 15, 2024",
+    endDate: "June 1, 2024",
     meanPrediction: 1250,
+    userPrediction: 1950,
     participationCount: 1708,
     predictionRange: [0, 3000],
     predictionStepValue: 50,
     predictionScaleUnit: "Crores",
+    result: {
+      type: PulseResultType.None,
+      coinsResult: 0,
+      finalValue: 2400,
+    },
   },
   {
+    type: PulseType.Prediction,
     predictionId: "film-2-prediction-1",
     title: "Week 1 box office collection",
     filmId: "film-2",
@@ -124,17 +154,25 @@ const PREDICTIONS: Prediction[] = [
     predictionScaleUnit: "Crores",
   },
   {
+    type: PulseType.Prediction,
     predictionId: "film-2-prediction-2",
     title: "Week 1 IMDB rating",
     filmId: "film-2",
     startDate: "May 20, 2024",
-    endDate: "July 12, 2024",
+    endDate: "June 4, 2024",
+    userPrediction: 8.0,
     participationCount: 4786,
     meanPrediction: 8.8,
     predictionRange: [0, 10],
     predictionStepValue: 0.1,
+    result: {
+      type: PulseResultType.Won,
+      coinsResult: 120,
+      finalValue: 8.1,
+    },
   },
   {
+    type: PulseType.Prediction,
     predictionId: "film-2-prediction-3",
     title: "Lifetime collection (including overseas, theaters, OTT)",
     filmId: "film-2",
@@ -161,6 +199,7 @@ const FILMS: Film[] = [
       "Kalki 2898 AD is an upcoming Indian epic science fiction action film, shot primarily in Telugu with some scenes reshot in Hindi. Inspired by Hindu scriptures, the film is set in a post-apocalyptic world, in the year 2898 AD. ",
     releaseDate: "June 15",
     topPrediction: {
+      type: PulseType.Prediction,
       predictionId: "film-1-prediction-1",
       title: "Week 1 box office collection",
       filmId: "film-1",
@@ -190,6 +229,7 @@ const FILMS: Film[] = [
       "Pushpa 2: The Rule, is an upcoming Indian Telugu-language action drama film produced by Naveen Yerneni and Yalamanchili Ravi Shankar under their Mythri Movie Makers banner. It is the second installment in the Pushpa film series and the sequel to Pushpa: The Rise.",
     releaseDate: "July 12",
     topPrediction: {
+      type: PulseType.Prediction,
       predictionId: "film-2-prediction-3",
       title: "Lifetime collection (including overseas, theaters, OTT)",
       filmId: "film-2",
@@ -218,23 +258,6 @@ const getFilmInfo = (predictionId: string) => {
   );
 };
 
-function shuffle<T>(array: Array<T>) {
-  let currentIndex = array.length;
-
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
-    // Pick a remaining element...
-    const randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex] as T,
-      array[currentIndex] as T,
-    ];
-  }
-}
-
 function isPulseActive(endDate: string) {
   return differenceInDays(new Date(), new Date(endDate)) > 0;
 }
@@ -248,8 +271,6 @@ const getOpinions = ({
 }) => {
   const opinions = [...OPINIONS];
 
-  shuffle(opinions);
-
   return opinions
     .filter((opinion) => isActive === isPulseActive(opinion.endDate))
     .slice(0, limit)
@@ -258,8 +279,6 @@ const getOpinions = ({
 
 const getPredictions = ({ isActive }: { isActive: boolean }) => {
   const predictions = [...PREDICTIONS];
-
-  shuffle(predictions);
 
   return predictions
     .filter((prediction) => isActive === isPulseActive(prediction.endDate))

@@ -5,7 +5,9 @@
 
 import { Film } from "../schema/Film";
 import { Prediction } from "~/schema/Prediction";
-import { Opinion, Vote, UserVote, OpinionOption } from "../schema/Opinion";
+import { Opinion, Vote, UserVote } from "../schema/Opinion";
+import { OpinionOption } from "~/schema/OpinionOption";
+import { PulseType } from "~/schema/PulseType";
 
 const BASE_URL =
   "https://backend.gentleisland-bcedf421.centralindia.azurecontainerapps.io";
@@ -76,6 +78,7 @@ export const getFilms = async (
     const films: Film[] = filmsData.map((filmData) => {
       const predictionData = filmData.top_prediction;
       const topPrediction: Prediction = {
+        type: PulseType.Prediction,
         predictionId: predictionData.id,
         title: predictionData.text,
         filmId: predictionData.film_id,
@@ -135,6 +138,7 @@ export const getOpinions = async (
       };
 
       return {
+        type: PulseType.Opinion,
         opinionId: opinionData.id.toString(),
         title: opinionData.text,
         // Adding dummy values to avoid breaking code because of type error
@@ -165,6 +169,7 @@ export const getPredictions = async (
 
     const predictions: Prediction[] = predictionsData.map((predictionData) => {
       return {
+        type: PulseType.Prediction,
         predictionId: predictionData.id.toString(),
         title: predictionData.text,
         filmId: predictionData.film_id,

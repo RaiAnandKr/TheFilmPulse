@@ -1,14 +1,17 @@
 import { Button, Slider } from "@nextui-org/react";
-import { useCallback, useState, type MouseEventHandler } from "react";
+import { useCallback, useMemo, useState, type MouseEventHandler } from "react";
 import type { Prediction } from "~/schema/Prediction";
 
-interface PredictionMeterProps {
+export interface PredictionMeterProps {
   prediction: Prediction;
   inDarkTheme?: boolean;
+  pivotValue?: number;
+  pivotLabel?: string;
+  noButton?: boolean;
 }
 
 export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
-  const { prediction, inDarkTheme } = props;
+  const { prediction, inDarkTheme, pivotLabel, pivotValue, noButton } = props;
   const {
     userPrediction,
     predictionScaleUnit,
@@ -34,6 +37,24 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
 
   const additionalClassName = inDarkTheme ? "text-white/60" : "";
 
+  const effectivePivotValue = pivotValue ?? meanPrediction;
+  const effectivePivotLabel = pivotLabel ?? "Avg";
+
+  const endContentElement = useMemo(
+    () =>
+      noButton ? null : (
+        <Button
+          variant="solid"
+          color="primary"
+          className="flex-none font-bold text-white"
+          onClick={onPrediction}
+        >
+          Predict
+        </Button>
+      ),
+    [noButton],
+  );
+
   return (
     <Slider
       label={predictionScaleUnitLabel}
@@ -47,25 +68,16 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
       maxValue={predictionRange[1]}
       marks={[
         {
-          value: meanPrediction,
-          label: "Avg",
+          value: effectivePivotValue,
+          label: effectivePivotLabel,
         },
       ]}
       defaultValue={defaultValue}
       value={userPrediction}
-      fillOffset={meanPrediction}
-      className={`mb-3 max-w-md flex-auto text-tiny ${additionalClassName}`}
+      fillOffset={effectivePivotValue}
+      className={`mb-3 h-16 max-w-md flex-auto text-tiny ${additionalClassName}`}
       classNames={{ value: "text-teal-500 font-bold" }}
-      endContent={
-        <Button
-          variant="solid"
-          color="primary"
-          className="flex-none font-bold text-white"
-          onClick={onPrediction}
-        >
-          Predict
-        </Button>
-      }
+      endContent={endContentElement}
     />
   );
 };

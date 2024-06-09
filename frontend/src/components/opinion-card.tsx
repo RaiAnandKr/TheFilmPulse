@@ -10,19 +10,17 @@ import {
   Progress,
   CardHeader,
   Image,
+  Chip,
 } from "@nextui-org/react";
-import {
-  OpinionOption,
-  type Vote,
-  type Opinion,
-  type UserVote,
-} from "../schema/Opinion";
+import { type Vote, type Opinion, type UserVote } from "../schema/Opinion";
+import { OpinionOption } from "~/schema/OpinionOption";
 import { CoinIcon } from "../res/icons/coin";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { numberInShorthand } from "../utilities/numberInShorthand";
 import { LikeIcon } from "~/res/icons/like";
 import { DislikeIcon } from "~/res/icons/dislike";
 import { useRouter } from "next/navigation";
+import { ResultChip } from "./result-chip";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -32,7 +30,8 @@ interface OpinionProps {
 
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
   const { useFullWidth, opinion, useFooter } = props;
-  const { title, endDate, filmPosterSrc, votes, userVote, filmId } = opinion;
+  const { title, endDate, filmPosterSrc, votes, userVote, filmId, result } =
+    opinion;
 
   const router = useRouter();
 
@@ -52,23 +51,30 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
   return (
     <Card className={cardClassName} isBlurred>
       {!useFooter && (
-        <CardHeader className="flex items-start justify-between p-0 pb-2">
-          <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
-            <Image
-              alt="Film Poster"
-              height={48}
-              src={
-                filmPosterSrc ??
-                "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-              }
-              width={48}
-              className="max-h-12 max-w-12"
-            />
-          </Button>
-          <TimerAndParticipations
+        <CardHeader className="flex flex-col items-start p-0 pb-2">
+          <ResultChip
             endDate={endDate}
-            totalParticipations={totalParticipations}
+            hasUserParticipated={!!userVote}
+            result={result}
           />
+          <div className="flex w-full items-start justify-between">
+            <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
+              <Image
+                alt="Film Poster"
+                height={48}
+                src={
+                  filmPosterSrc ??
+                  "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+                }
+                width={48}
+                className="max-h-12 max-w-12"
+              />
+            </Button>
+            <TimerAndParticipations
+              endDate={endDate}
+              totalParticipations={totalParticipations}
+            />
+          </div>
         </CardHeader>
       )}
       <CardBody className="p-0 py-2 text-sm">
@@ -135,7 +141,7 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
                   className={`flex w-full flex-col items-center ${option.popoverContentTextColorClass}`}
                 >
                   <p className="w-ful h-full font-bold">{option.label}</p>
-                  <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3">
+                  <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3 text-black">
                     <Slider
                       label="Select Coins"
                       showTooltip

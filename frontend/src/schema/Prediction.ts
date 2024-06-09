@@ -1,4 +1,8 @@
+import type { PulseResult } from "./PulseResult";
+import type { PulseType } from "./PulseType";
+
 export type Prediction = {
+  type: PulseType.Prediction;
   predictionId: string;
   title: string; // I think we should change this to 'text'. title is very closely linked with Film.
   filmId: string;
@@ -10,4 +14,5 @@ export type Prediction = {
   predictionStepValue: number;
   predictionScaleUnit?: string; //Eg. "Cr"
   userPrediction?: number;
+  result?: PulseResult<number>;
 };
