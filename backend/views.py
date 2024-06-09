@@ -12,11 +12,12 @@ from sqlalchemy.sql import sqltypes
 from view_decorators import load_user
 from models import User, Prediction, Film, Opinion, UserPrediction, UserOpinion, Voucher, VoucherCode
 from extensions import db
-from serializers import BaseSerializer
+from serializers import BaseSerializer, UserSerializer
 from sqlalchemy.exc import IntegrityError
 
 # Setting the server's timezone to Indian Standard Time
 SERVER_TIMEZONE = 'Asia/Kolkata'
+
 
 class BaseAPIView(MethodView):
     model = None
@@ -27,6 +28,7 @@ class BaseAPIView(MethodView):
     offset = 0
     methods = ['GET', 'POST', 'PUT', 'DELETE']
     serializer_class = BaseSerializer
+
     # Commenting this for now
     #decorators = [load_user]
 
@@ -87,7 +89,7 @@ class BaseAPIView(MethodView):
         if film_title and self.model in [Prediction, Opinion]:
             query = query.join(Film).filter(Film.title.contains(film_title))
 
-        include_closed = request.args.get('include_closed','').lower() == 'true'
+        include_closed = request.args.get('include_closed', '').lower() == 'true'
         # Only return those predictions / opinions which either don't have an end_date
         # or their end_date hasn't passed yet if the client isn't explicitly asking for
         # closed games as well.
@@ -95,10 +97,10 @@ class BaseAPIView(MethodView):
             # Get the current date in the server's timezone
             tz = pytz.timezone(SERVER_TIMEZONE)
             current_date = datetime.now(tz).date()
-            query=query.filter(or_(self.model.end_date >= current_date, self.model.end_date == None))
+            query = query.filter(or_(self.model.end_date >= current_date, self.model.end_date == None))
 
-        query = self.sorting_get( request, query )
-        query = self.pagination_get( request, query )
+        query = self.sorting_get(request, query)
+        query = self.pagination_get(request, query)
 
         items = query.all()
         return jsonify([self.serializer.serialize(item) for item in items])
@@ -137,6 +139,26 @@ class BaseAPIView(MethodView):
 class PredictionView(BaseAPIView):
     model = Prediction
     sort_by = 'user_count'
+
+
+class UserView(BaseAPIView):
+    model = User
+    decorators = [load_user]
+    serializer_class = UserSerializer
+    methods = ['GET', 'PUT']
+
+    def get(self):
+        return self.serializer.serialize(g.user)
+
+    def put(self, *args, **kwargs):
+        # TODO: proper serializer 🥲
+        user = g.user
+        user.username = request.json.get('username')
+        user.email = request.json.get('email')
+        user.state = request.json.get('state')
+        db.session.commit()
+        return self.serializer.serialize(user)
+
 
 class FilmView(BaseAPIView):
     model = Film
@@ -188,15 +210,18 @@ class OpinionView(BaseAPIView):
     model = Opinion
     sort_by = 'user_count'
 
+
 class VoucherView(BaseAPIView):
     model = Voucher
     sort_by = 'coins'
     sort_order = 'asc'
 
+
 class VoucherCodeView(BaseAPIView):
     model = VoucherCode
     sort_by = 'expiry_date'
     sort_order = 'asc'
+
 
 class BaseUserAPIView(MethodView):
     model = None

@@ -12,7 +12,8 @@ from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, set_a
     get_jwt
 from flask_migrate import Migrate
 
-from views import PredictionView, FilmView, OpinionView, UserPredictionView, UserOpinionView, VoucherView, VoucherCodeView
+from views import PredictionView, FilmView, OpinionView, UserPredictionView, UserOpinionView, VoucherView, \
+    VoucherCodeView, UserView
 from extensions import db
 from models import User, Film, Opinion
 
@@ -145,6 +146,7 @@ add_api('/user_predictions', UserPredictionView)
 add_api('/user_opinions', UserOpinionView)
 add_api('/vouchers', VoucherView)
 add_api('/voucher_codes', VoucherCodeView)
+add_api('/user', UserView)
 
 if __name__ == "__main__":
     app.run(debug=True)
