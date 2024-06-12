@@ -1,8 +1,8 @@
 export const gcdOfNumbers = (arr: number[]) => {
   const arrLength = arr.length;
-  let result = arr[0] as number;
+  let result = arr[0] ?? 0;
   for (let i = 1; i < arrLength; i++) {
-    result = gcd(arr[i] as number, result);
+    result = gcd(arr[i] ?? 0, result);
 
     if (result == 1) {
       return 1;
