@@ -7,6 +7,12 @@ import Pushpa2 from "../res/images/Pushpa2.jpg";
 import { differenceInDays } from "~/utilities/differenceInDays";
 import { PulseType } from "~/schema/PulseType";
 import { PulseResultType } from "~/schema/PulseResult";
+import Pvr from "~/res/images/PVR.png";
+import Netflix from "~/res/images/Netflix.png";
+import PrimeVideo from "~/res/images/PrimeVideo.webp";
+import Hotstar from "~/res/images/Hotstar.png";
+import Imax from "~/res/images/Imax.png";
+import { CoinType } from "~/schema/CoinType";
 
 const OPINIONS: Opinion[] = [
   {
@@ -297,6 +303,126 @@ const getPredictionsFromFilmId = (filmId: string) => {
   return PREDICTIONS.filter((prediction) => prediction.filmId === filmId);
 };
 
+const REWARDS = [
+  {
+    checkpoint: 200,
+    coupons: [
+      {
+        id: "coupon-1",
+        couponLogoSrc: Pvr.src,
+        couponInfo:
+          "Get Flat 50% Cashback Up To Rs 200 on PVR tickets. T&C apply.",
+      },
+      {
+        id: "coupon-2",
+        couponLogoSrc: Hotstar.src,
+        couponInfo:
+          "Watch ICC T20 World Cup Cricket Matches For Free On Hotstar. T&C apply.",
+      },
+    ],
+  },
+  {
+    checkpoint: 400,
+    coupons: [
+      {
+        id: "coupon-3",
+        couponLogoSrc: Netflix.src,
+        couponInfo:
+          "Netflix Premium Subscriptions starting At Rs 649. T&C apply.",
+      },
+      {
+        id: "coupon-4",
+        couponLogoSrc: PrimeVideo.src,
+        couponInfo:
+          "Amazon Prime Subscription Plan starts At Rs 299. T&C apply.",
+      },
+    ],
+  },
+  {
+    checkpoint: 600,
+    coupons: [
+      {
+        id: "coupon-5",
+        couponLogoSrc: Pvr.src,
+        couponInfo:
+          "Get Flat 60% Cashback Up To Rs 300 on PVR tickets. T&C apply.",
+      },
+      {
+        id: "coupon-6",
+        couponLogoSrc: Netflix.src,
+        couponInfo:
+          "Netflix Premium Subscriptions starting At Rs 449. T&C apply.",
+      },
+      {
+        id: "coupon-7",
+        couponLogoSrc: PrimeVideo.src,
+        couponInfo:
+          "Amazon Prime Subscription Plan starts At Rs 199. T&C apply.",
+      },
+    ],
+  },
+  {
+    checkpoint: 800,
+    coupons: [
+      {
+        id: "coupon-8",
+        couponLogoSrc: Imax.src,
+        couponInfo:
+          "Get Flat 60% Cashback Up To Rs 500 on IMAX 3D tickets. T&C apply.",
+      },
+      {
+        id: "coupon-9",
+        couponLogoSrc: Netflix.src,
+        couponInfo:
+          "Netflix Premium Subscriptions starting At Rs 349. T&C apply.",
+      },
+      {
+        id: "coupon-10",
+        couponLogoSrc: PrimeVideo.src,
+        couponInfo:
+          "Amazon Prime Subscription Plan starts At Rs 99. T&C apply.",
+      },
+    ],
+  },
+  {
+    checkpoint: 1000,
+    coupons: [
+      {
+        id: "coupon-11",
+        couponLogoSrc: Pvr.src,
+        couponInfo:
+          "Get Flat 60% Cashback Up To Rs 400 on PVR tickets. T&C apply.",
+      },
+      {
+        id: "coupon-12",
+        couponLogoSrc: Imax.src,
+        couponInfo:
+          "Get Flat 60% Cashback Up To Rs 600 on IMAX 3D tickets. T&C apply.",
+      },
+      {
+        id: "coupon-13",
+        couponLogoSrc: Netflix.src,
+        couponInfo:
+          "Netflix Premium Subscriptions starting At Rs 299. T&C apply.",
+      },
+      {
+        id: "coupon-14",
+        couponLogoSrc: PrimeVideo.src,
+        couponInfo:
+          "Amazon Prime Subscription Plan free for 1 year. T&C apply.",
+      },
+    ],
+  },
+];
+
+const USER_COINS = [
+  {
+    type: CoinType.Bonus,
+    coins: 50,
+  },
+  { type: CoinType.Earned, coins: 450 },
+];
+
 export {
   getOpinions,
   FILMS,
@@ -305,4 +431,6 @@ export {
   getFilmInfoFromFilmId,
   getOpinionsFromFilmId,
   getPredictionsFromFilmId,
+  REWARDS,
+  USER_COINS,
 };
