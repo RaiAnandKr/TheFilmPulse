@@ -47,11 +47,11 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
         as={"div"}
         onPress={onCardPress}
       >
-        <CardHeader className="absolute z-10 flex-col items-start bg-black/40 backdrop-blur backdrop-saturate-150">
-          <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-medium text-white/90 ">
+        <CardHeader className="absolute z-10 flex-col items-start bg-gradient-to-r from-black from-25%">
+          <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-medium text-white">
             {title}
           </h3>
-          <p className="overflow-hidden text-ellipsis text-nowrap text-tiny font-bold text-white/60">
+          <p className="overflow-hidden text-ellipsis text-nowrap text-tiny font-bold text-white">
             {filmCasts}
           </p>
           <Chip
@@ -62,7 +62,7 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
             variant="flat"
             classNames={{ content: "font-bold" }}
           >
-            Releasing on {releaseDate}
+            Releasing {releaseDate}
           </Chip>
         </CardHeader>
         <Image

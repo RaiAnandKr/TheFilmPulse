@@ -1,0 +1,49 @@
+.couponContainer {
+  --width: 90px;
+  --height: 45px;
+  --border-width: 2px;
+  --gradient-from-color: #4ade80; /* tailwindcss: bg-green-400 */
+  --gradient-to-color: #fb7185; /* tailwindcss: bg-rose-400 */
+}
+
+.coupon {
+  width: var(--width);
+  height: var(--height);
+  border-image: linear-gradient(
+      to right,
+      var(--gradient-from-color),
+      var(--gradient-to-color)
+    )
+    1 / var(--border-width);
+  position: relative;
+}
+
+.coupon::before,
+.coupon::after {
+  --cutoff-height: calc(var(--height) / 3);
+  --cutoff-width: calc(var(--cutoff-height) / 2);
+  position: absolute;
+  content: "";
+  height: var(--cutoff-height);
+  width: var(--cutoff-width);
+  z-index: 1;
+  top: calc((var(--height) - var(--cutoff-height)) / 2);
+}
+
+.coupon::before {
+  border: var(--border-width) solid var(--gradient-from-color);
+  left: 0;
+  border-radius: 0 var(--cutoff-width) var(--cutoff-width) 0;
+  border-left: 0px;
+}
+
+.coupon::after {
+  border: var(--border-width) solid var(--gradient-to-color);
+  right: 0;
+  border-radius: var(--cutoff-width) 0 0 var(--cutoff-width);
+  border-right: 0px;
+}
+
+.couponInfo {
+  height: var(--height);
+}
