@@ -91,7 +91,8 @@ const useStyleUserMark = () => {
 
     userMarkerNode.className = cn(
       userMarkerNode.className,
-      "top-[200%] text-primary font-bold opacity-100",
+      "top-[200%] text-primary font-bold opacity-100 mt-0",
+      "before:w-0 before:h-0 before:border-x-[6px] before:border-b-[6px] before:border-x-transparent before:border-b-primary before:border-solid before:absolute before:top-[-110%] before:left-1/2 before:ml-[-6px]",
     );
   }, []);
 };
