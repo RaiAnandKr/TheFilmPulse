@@ -1,4 +1,9 @@
-import { Slider, cn, type SliderStepMark } from "@nextui-org/react";
+import {
+  Slider,
+  cn,
+  type SliderStepMark,
+  type SliderValue,
+} from "@nextui-org/react";
 import { useContext, useEffect, useMemo } from "react";
 import { REWARDS, getUserEarnedCoins } from "~/constants/mocks";
 import { RewardContext } from "~/data/reward-context";
@@ -13,10 +18,8 @@ export const RewardsMeter = () => {
   const userEarnedCoins = getUserEarnedCoins();
 
   const [rewardPointer, setRewardPointer] = useContext(RewardContext);
-  const onChange = (value: number | number[]) => {
-    typeof value === "number"
-      ? setRewardPointer(value)
-      : setRewardPointer(value[1] ?? 0);
+  const onChange = (value: SliderValue) => {
+    setRewardPointer(getSliderValueInNumber(value));
   };
 
   const marks = useMemo(() => getMarks(userEarnedCoins), [userEarnedCoins]);
@@ -40,6 +43,7 @@ export const RewardsMeter = () => {
         filler:
           "bg-gradient-to-r from-green-300 to-rose-300 dark:from-green-600 dark:to-rose-800",
         step: "bg-default-400/50",
+        value: "text-danger",
       }}
       renderThumb={({ index, ...props }) => (
         <div
@@ -58,6 +62,9 @@ export const RewardsMeter = () => {
       )}
       value={[0, rewardPointer]}
       onChange={onChange}
+      getValue={(value: SliderValue) =>
+        `Coins needed: ${Math.max(0, getSliderValueInNumber(value) - userEarnedCoins)}`
+      }
     />
   );
 };
@@ -96,3 +103,6 @@ const useStyleUserMark = () => {
     );
   }, []);
 };
+
+const getSliderValueInNumber = (value: SliderValue) =>
+  typeof value === "number" ? value : value[1] ?? 0;

@@ -28,7 +28,9 @@ const Coupons = () => {
 
   if (!eligibleCoupons) {
     return (
-      <p className="text-center text-danger-500"> No coupons available.</p>
+      <p className="text-center text-sm text-danger-500">
+        No coupons available.
+      </p>
     );
   }
 
