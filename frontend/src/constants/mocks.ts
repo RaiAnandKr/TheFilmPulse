@@ -423,6 +423,20 @@ const USER_COINS = [
   { type: CoinType.Earned, coins: 450 },
 ];
 
+const getUserEarnedCoins = () =>
+  USER_COINS.find((userCoin) => userCoin.type === CoinType.Earned)?.coins ?? 0;
+
+const getMaxRedeemableCoins = () => {
+  const earnedCoins = getUserEarnedCoins();
+  return REWARDS.reduce((maxRedeemableCoins, reward) => {
+    if (reward.checkpoint > earnedCoins) {
+      return maxRedeemableCoins;
+    }
+
+    return Math.max(reward.checkpoint, maxRedeemableCoins);
+  }, 0);
+};
+
 export {
   getOpinions,
   FILMS,
@@ -433,4 +447,6 @@ export {
   getPredictionsFromFilmId,
   REWARDS,
   USER_COINS,
+  getUserEarnedCoins,
+  getMaxRedeemableCoins,
 };

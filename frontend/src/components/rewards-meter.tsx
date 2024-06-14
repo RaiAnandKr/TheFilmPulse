@@ -1,12 +1,7 @@
-import {
-  Slider,
-  SliderProps,
-  cn,
-  type SliderStepMark,
-} from "@nextui-org/react";
-import { useEffect, useMemo, useState } from "react";
-import { REWARDS, USER_COINS } from "~/constants/mocks";
-import { CoinType } from "~/schema/CoinType";
+import { Slider, cn, type SliderStepMark } from "@nextui-org/react";
+import { useContext, useEffect, useMemo } from "react";
+import { REWARDS, getUserEarnedCoins } from "~/constants/mocks";
+import { RewardContext } from "~/data/reward-context";
 import { gcdOfNumbers } from "~/utilities/gcdOfNumbers";
 
 const SLIDER_ID = "RewardsMeter";
@@ -15,21 +10,16 @@ export const RewardsMeter = () => {
   const checkpointCount = REWARDS.length;
   const maxValue = REWARDS[checkpointCount - 1]?.checkpoint ?? 0;
   const step = gcdOfNumbers(REWARDS.map((reward) => reward.checkpoint));
-  const userRedeemableCoins =
-    USER_COINS.find((userCoin) => userCoin.type === CoinType.Earned)?.coins ??
-    0;
+  const userEarnedCoins = getUserEarnedCoins();
 
-  const [rewardPointer, setRewardPointer] = useState(userRedeemableCoins);
+  const [rewardPointer, setRewardPointer] = useContext(RewardContext);
   const onChange = (value: number | number[]) => {
     typeof value === "number"
       ? setRewardPointer(value)
       : setRewardPointer(value[1] ?? 0);
   };
 
-  const marks = useMemo(
-    () => getMarks(userRedeemableCoins),
-    [userRedeemableCoins],
-  );
+  const marks = useMemo(() => getMarks(userEarnedCoins), [userEarnedCoins]);
 
   useStyleUserMark();
 
@@ -101,7 +91,7 @@ const useStyleUserMark = () => {
 
     userMarkerNode.className = cn(
       userMarkerNode.className,
-      "top-[200%] text-primary font-bold",
+      "top-[200%] text-primary font-bold opacity-100",
     );
   }, []);
 };
