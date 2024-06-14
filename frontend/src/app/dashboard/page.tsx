@@ -5,7 +5,6 @@ import { Rewards } from "~/components/rewards";
 import { OpinionCard } from "~/components/opinion-card";
 import { PredictionCard } from "~/components/prediction-card";
 import { getOpinions, getPredictions } from "~/constants/mocks";
-import { CoinIcon } from "~/res/icons/coin";
 import { CoinType } from "~/schema/CoinType";
 import type { Opinion } from "~/schema/Opinion";
 import type { Prediction } from "~/schema/Prediction";
@@ -40,16 +39,14 @@ const CoinCard: React.FC<{ coinType: CoinType; coins: number }> = (props) => {
   const { coinType, coins } = props;
 
   const specialCardClass =
-    coinType === CoinType.Earned ? "text-black ring-black ring-2" : "";
+    coinType === CoinType.Earned ? "ring-primary ring-2" : "";
 
   return (
-    <Card className={`mx-2 w-full ${specialCardClass}`} isBlurred>
-      <CardBody className="flex-row items-center justify-center text-4xl font-bold">
-        <CoinIcon dynamicSize />
-        <Spacer x={2} />
+    <Card className={`mx-2 w-full ${specialCardClass} text-primary`} isBlurred>
+      <CardBody className="flex-row items-center justify-center p-2 text-4xl font-bold">
         <span>{numberInShorthand(coins)}</span>
       </CardBody>
-      <CardFooter className="justify-center p-0 pb-2">
+      <CardFooter className="justify-center p-0 pb-2 text-black">
         <Chip
           variant="light"
           className="h-full font-bold"
