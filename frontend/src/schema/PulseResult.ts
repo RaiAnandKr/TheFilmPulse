@@ -5,6 +5,7 @@ export interface PulseResult<TValue> {
   finalValue: TValue;
   resultSource?: string;
   resultSourceLink?: string;
+  ranking?: number;
 }
 
 export enum PulseResultType {

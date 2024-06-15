@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Film } from "../schema/Film";
-import { Prediction } from "~/schema/Prediction";
-import { Opinion, Vote, UserVote } from "../schema/Opinion";
+import type { Film } from "../schema/Film";
+import type { Prediction } from "~/schema/Prediction";
+import type { Opinion, Vote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { PulseType } from "~/schema/PulseType";
 

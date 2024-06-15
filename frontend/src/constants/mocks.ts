@@ -13,7 +13,7 @@ import PrimeVideo from "~/res/images/PrimeVideo.webp";
 import Hotstar from "~/res/images/Hotstar.png";
 import Imax from "~/res/images/Imax.png";
 import { CoinType } from "~/schema/CoinType";
-import { CouponDetail } from "~/schema/CouponDetail";
+import type { CouponDetail } from "~/schema/CouponDetail";
 
 const OPINIONS: Opinion[] = [
   {
@@ -176,6 +176,7 @@ const PREDICTIONS: Prediction[] = [
       type: PulseResultType.Won,
       coinsResult: 120,
       finalValue: 8.1,
+      ranking: 21,
     },
   },
   {
