@@ -52,25 +52,31 @@ const HomepageHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <Navbar
-      isBordered
-      isMenuOpen={isMenuOpen}
-      onMenuOpenChange={setIsMenuOpen}
-      isBlurred={false}
-      classNames={{ wrapper: "justify-between px-3 h-14" }}
-    >
-      <NavbarContent as="div" className={styles.noflex} justify="start">
-        <AvatarDropdown />
-      </NavbarContent>
+    <>
+      <div className="flex p-7"></div>
+      <Navbar
+        isBordered
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+        isBlurred={false}
+        classNames={{
+          wrapper: "justify-between px-3 h-14",
+          base: "fixed",
+        }}
+      >
+        <NavbarContent as="div" className={styles.noflex} justify="start">
+          <AvatarDropdown />
+        </NavbarContent>
 
-      <NavbarContent className="flex-auto" justify="center">
-        <NavbarBrand className="h-full font-bold text-inherit">
-          The Film Pulse
-        </NavbarBrand>
-      </NavbarContent>
+        <NavbarContent className="flex-auto" justify="center">
+          <NavbarBrand className="h-full font-bold text-inherit">
+            The Film Pulse
+          </NavbarBrand>
+        </NavbarContent>
 
-      <LoginCumCoinsNavbarContent />
-    </Navbar>
+        <LoginCumCoinsNavbarContent />
+      </Navbar>
+    </>
   );
 };
 
@@ -78,22 +84,25 @@ const SpokePageHeader: React.FC = () => {
   const router = useRouter();
 
   return (
-    <Navbar
-      isBordered
-      isBlurred={false}
-      classNames={{ wrapper: "justify-between px-3 h-14" }}
-    >
-      <NavbarContent
-        as="button"
-        className={styles.noflex}
-        justify="start"
-        onClick={() => router.back()}
+    <>
+      <div className="flex p-7"></div>
+      <Navbar
+        isBordered
+        isBlurred={false}
+        classNames={{ wrapper: "justify-between px-3 h-14", base: "fixed" }}
       >
-        <BackIcon />
-      </NavbarContent>
+        <NavbarContent
+          as="button"
+          className={styles.noflex}
+          justify="start"
+          onClick={() => router.back()}
+        >
+          <BackIcon />
+        </NavbarContent>
 
-      <LoginCumCoinsNavbarContent />
-    </Navbar>
+        <LoginCumCoinsNavbarContent />
+      </Navbar>
+    </>
   );
 };
 
