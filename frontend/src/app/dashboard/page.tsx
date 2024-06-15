@@ -73,7 +73,7 @@ const PastParticipations = () => {
   ].filter(
     (pulse) =>
       !!(
-        ((pulse as Opinion).userVote || (pulse as Prediction).userPrediction) &&
+        ((pulse as Opinion).userVote ?? (pulse as Prediction).userPrediction) &&
         pulse.result
       ),
   );
