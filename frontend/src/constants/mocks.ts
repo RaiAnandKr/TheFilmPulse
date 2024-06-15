@@ -316,6 +316,10 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "PVR",
         worthCoins: 200,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for booking movie tickets on official PVR app and web.",
+          "This Coupon is only applicable for PVR cinemas",
+        ],
       },
       {
         couponId: "coupon-2",
@@ -324,7 +328,10 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
           "Watch ICC T20 World Cup Cricket Matches For Free On Hotstar. T&C apply.",
         couponBrandName: "Hotstar",
         worthCoins: 200,
-        couponExpiryDate: "July 25, 2024",
+        couponExpiryDate: "July 20, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for buying subscription from Hotstar app only.",
+        ],
       },
     ],
   },
@@ -339,6 +346,9 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "Netflix",
         worthCoins: 400,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for buying subscription from Netflix app only.",
+        ],
       },
       {
         couponId: "coupon-4",
@@ -348,6 +358,9 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "Amazon Prime Video",
         worthCoins: 400,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for buying subscription from Amazon app only.",
+        ],
       },
     ],
   },
@@ -362,6 +375,10 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "PVR",
         worthCoins: 600,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for booking movie tickets on official PVR app and web.",
+          "This Coupon is only applicable for PVR cinemas",
+        ],
       },
       {
         couponId: "coupon-6",
@@ -371,6 +388,9 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "Netflix",
         worthCoins: 600,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for buying subscription from Netflix app only.",
+        ],
       },
       {
         couponId: "coupon-7",
@@ -380,6 +400,9 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "Amazon Prime Video",
         worthCoins: 600,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for buying subscription from Prime Video app only.",
+        ],
       },
     ],
   },
@@ -394,6 +417,9 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "IMAX 3D",
         worthCoins: 800,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for buying subscription from Paytm app only.",
+        ],
       },
       {
         couponId: "coupon-9",
@@ -412,6 +438,9 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "Amazon Prime Video",
         worthCoins: 800,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for buying subscription from Amazon app only.",
+        ],
       },
     ],
   },
@@ -426,6 +455,10 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "PVR",
         worthCoins: 1000,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for booking movie tickets on official PVR app and web.",
+          "This Coupon is only applicable for PVR cinemas",
+        ],
       },
       {
         couponId: "coupon-12",
@@ -444,6 +477,9 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "Netflix",
         worthCoins: 1000,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for buying subscription from Netflix app only.",
+        ],
       },
       {
         couponId: "coupon-14",
@@ -453,6 +489,9 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
         couponBrandName: "Amazon Prime Video",
         worthCoins: 1000,
         couponExpiryDate: "July 25, 2024",
+        couponTnCs: [
+          "This Coupon is only applicable for buying subscription from Amazon app only.",
+        ],
       },
     ],
   },

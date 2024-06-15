@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { REWARDS, getMaxRedeemableCoins } from "~/constants/mocks";
+import { getMaxRedeemableCoins } from "~/constants/mocks";
 
 const useRewardState = () => {
   const userRedeemableCoins = getMaxRedeemableCoins();
@@ -9,7 +9,9 @@ const useRewardState = () => {
 
 export const RewardContext = createContext<ReturnType<typeof useRewardState>>([
   0,
-  () => {},
+  (val) => {
+    val;
+  },
 ]);
 
 export const RewardProvider = ({ children }: { children: React.ReactNode }) => {

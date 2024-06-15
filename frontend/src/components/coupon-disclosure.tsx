@@ -7,8 +7,8 @@ import {
   Button,
   cn,
   Image,
-  useDisclosure,
   Divider,
+  type useDisclosure,
 } from "@nextui-org/react";
 import type { CouponDetail } from "~/schema/CouponDetail";
 import { useState } from "react";
@@ -25,7 +25,6 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
     couponInfo,
     couponId,
     worthCoins,
-    couponExpiryDate,
   } = props;
 
   const [couponCode, setCouponCode] = useState<string | undefined>(undefined);
@@ -89,25 +88,22 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
   );
 };
 
-const CouponTnC: React.FC<{
-  worthCoins: number;
-  couponExpiryDate: string;
-}> = (props) => {
+const CouponTnC: React.FC<
+  Pick<CouponDetail, "worthCoins" | "couponExpiryDate" | "couponTnCs">
+> = (props) => {
   return (
     <>
       <h3 className=" font-bold">Terms & Conditions</h3>
       <ul className="list-inside list-disc space-y-4 text-sm">
-        <li>
-          This Coupon is only applicable for booking movie tickets on official
-          PVR app and web.
-        </li>
+        {props.couponTnCs?.map((tnC, idx) => <li key={idx}> {tnC} </li>)}
         <li> Expiry date of this coupon code is {props.couponExpiryDate}.</li>
         <li>
-          The Coupon code will be revealed on clicking the "Claim" button.
+          The Coupon code will be revealed on clicking the &quot;Claim&quot;
+          button.
         </li>
         <li>
           {props.worthCoins} coins will be deducted from your balance on
-          clicking the "Claim" button.
+          clicking the &quot;Claim&quot; button.
         </li>
         <li>
           Once revealed, you will not be shown the code again on page refresh or
@@ -128,11 +124,11 @@ const CouponCode: React.FC<{
 
   const [couponActionLabel, setCouponActionLabel] = useState("Copy");
 
-  const onCopy = () => {
+  const onCopy = async () => {
     if (!couponCode) {
       return;
     }
-    navigator.clipboard.writeText(couponCode);
+    await navigator.clipboard.writeText(couponCode);
     setCouponActionLabel("Copied");
     setTimeout(() => setCouponActionLabel("Copy"), 2000);
   };

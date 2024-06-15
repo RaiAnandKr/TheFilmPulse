@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardBody, CardFooter, Chip, Spacer } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 import { Rewards } from "~/components/rewards";
 import { OpinionCard } from "~/components/opinion-card";
 import { PredictionCard } from "~/components/prediction-card";

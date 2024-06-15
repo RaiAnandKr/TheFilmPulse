@@ -5,4 +5,5 @@ export interface CouponDetail {
   couponInfo: string;
   couponBrandName: string;
   couponExpiryDate: string;
+  couponTnCs?: string[];
 }
