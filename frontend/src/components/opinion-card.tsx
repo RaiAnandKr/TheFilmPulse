@@ -196,7 +196,7 @@ const ParticipationTrend: React.FC<{ votes: Vote[] }> = (props) => {
       size="sm"
       radius="sm"
       classNames={{
-        base: "max-w-md",
+        base: "max-w-md gap-1",
         track: "drop-shadow-md bg-rose-400 mx-1",
         indicator: "bg-green-400",
       }}

@@ -176,6 +176,7 @@ const PREDICTIONS: Prediction[] = [
       type: PulseResultType.Won,
       coinsResult: 120,
       finalValue: 8.1,
+      ranking: 21,
     },
   },
   {

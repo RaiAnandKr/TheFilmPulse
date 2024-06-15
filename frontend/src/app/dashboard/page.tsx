@@ -13,7 +13,14 @@ import { numberInShorthand } from "~/utilities/numberInShorthand";
 
 const Dashboard = () => (
   <>
-    <SectionHeader title="Total coins: 500" />
+    <SectionHeader
+      title={
+        <div className="flex justify-between">
+          <span>Total Coins : </span>
+          <span>{500} </span>
+        </div>
+      }
+    />
     <CoinsInfo />
     <SectionHeader title="Rewards" />
     <Rewards />
@@ -22,7 +29,7 @@ const Dashboard = () => (
   </>
 );
 
-const SectionHeader: React.FC<{ title: string }> = (props) => (
+const SectionHeader: React.FC<{ title: string | JSX.Element }> = (props) => (
   <h2 className="p-2 font-bold text-primary">{props.title}</h2>
 );
 
@@ -63,7 +70,13 @@ const PastParticipations = () => {
   const pastParticipationsByUser: (Opinion | Prediction)[] = [
     ...getOpinions({ isActive: false }),
     ...getPredictions({ isActive: false }),
-  ].filter(Boolean);
+  ].filter(
+    (pulse) =>
+      !!(
+        ((pulse as Opinion).userVote || (pulse as Prediction).userPrediction) &&
+        pulse.result
+      ),
+  );
 
   return (
     <div className="bg-success-to-danger flex w-full flex-col p-3">

@@ -37,7 +37,7 @@ export const ResultChip: React.FC<ResultChipProps> = (props) => {
     <Popover placement="bottom" showArrow={true}>
       <PopoverTrigger>
         <Chip
-          size="sm"
+          size="md"
           radius="sm"
           color={RESULT_COLOR_MAP.get(result.type)}
           variant="flat"
