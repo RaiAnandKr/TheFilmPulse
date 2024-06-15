@@ -1,6 +1,6 @@
 import type { OpinionOption } from "./OpinionOption";
 import type { PulseResult } from "./PulseResult";
-import { PulseType } from "./PulseType";
+import type { PulseType } from "./PulseType";
 
 export type Opinion = {
   type: PulseType.Opinion;

@@ -1,12 +1,12 @@
 import {
   Slider,
-  SliderProps,
   cn,
   type SliderStepMark,
+  type SliderValue,
 } from "@nextui-org/react";
-import { useEffect, useMemo, useState } from "react";
-import { REWARDS, USER_COINS } from "~/constants/mocks";
-import { CoinType } from "~/schema/CoinType";
+import { useContext, useEffect, useMemo } from "react";
+import { REWARDS, getUserEarnedCoins } from "~/constants/mocks";
+import { RewardContext } from "~/data/reward-context";
 import { gcdOfNumbers } from "~/utilities/gcdOfNumbers";
 
 const SLIDER_ID = "RewardsMeter";
@@ -15,21 +15,14 @@ export const RewardsMeter = () => {
   const checkpointCount = REWARDS.length;
   const maxValue = REWARDS[checkpointCount - 1]?.checkpoint ?? 0;
   const step = gcdOfNumbers(REWARDS.map((reward) => reward.checkpoint));
-  const userRedeemableCoins =
-    USER_COINS.find((userCoin) => userCoin.type === CoinType.Earned)?.coins ??
-    0;
+  const userEarnedCoins = getUserEarnedCoins();
 
-  const [rewardPointer, setRewardPointer] = useState(userRedeemableCoins);
-  const onChange = (value: number | number[]) => {
-    typeof value === "number"
-      ? setRewardPointer(value)
-      : setRewardPointer(value[1] ?? 0);
+  const [rewardPointer, setRewardPointer] = useContext(RewardContext);
+  const onChange = (value: SliderValue) => {
+    setRewardPointer(getSliderValueInNumber(value));
   };
 
-  const marks = useMemo(
-    () => getMarks(userRedeemableCoins),
-    [userRedeemableCoins],
-  );
+  const marks = useMemo(() => getMarks(userEarnedCoins), [userEarnedCoins]);
 
   useStyleUserMark();
 
@@ -50,6 +43,7 @@ export const RewardsMeter = () => {
         filler:
           "bg-gradient-to-r from-green-300 to-rose-300 dark:from-green-600 dark:to-rose-800",
         step: "bg-default-400/50",
+        value: "text-danger",
       }}
       renderThumb={({ index, ...props }) => (
         <div
@@ -68,6 +62,9 @@ export const RewardsMeter = () => {
       )}
       value={[0, rewardPointer]}
       onChange={onChange}
+      getValue={(value: SliderValue) =>
+        `Coins needed: ${Math.max(0, getSliderValueInNumber(value) - userEarnedCoins)}`
+      }
     />
   );
 };
@@ -101,7 +98,11 @@ const useStyleUserMark = () => {
 
     userMarkerNode.className = cn(
       userMarkerNode.className,
-      "top-[200%] text-primary font-bold",
+      "top-[200%] text-primary font-bold opacity-100 mt-0",
+      "before:w-0 before:h-0 before:border-x-[6px] before:border-b-[6px] before:border-x-transparent before:border-b-primary before:border-solid before:absolute before:top-[-110%] before:left-1/2 before:ml-[-6px]",
     );
   }, []);
 };
+
+const getSliderValueInNumber = (value: SliderValue) =>
+  typeof value === "number" ? value : value[1] ?? 0;

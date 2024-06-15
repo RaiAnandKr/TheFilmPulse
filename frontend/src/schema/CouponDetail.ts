@@ -1,5 +1,9 @@
 export interface CouponDetail {
-  id: string;
+  couponId: string;
+  worthCoins: number;
   couponLogoSrc: string;
   couponInfo: string;
+  couponBrandName: string;
+  couponExpiryDate: string;
+  couponTnCs?: string[];
 }
