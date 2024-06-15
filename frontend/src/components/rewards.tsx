@@ -37,6 +37,10 @@ const Coupons = () => {
   const isCouponDisabled = getUserEarnedCoins() < rewardPointer;
 
   return eligibleCoupons.map((coupon) => (
-    <Coupon key={coupon.id} coupon={coupon} isDisabled={isCouponDisabled} />
+    <Coupon
+      key={coupon.couponId}
+      coupon={coupon}
+      isDisabled={isCouponDisabled}
+    />
   ));
 };

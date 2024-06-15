@@ -13,6 +13,7 @@ import PrimeVideo from "~/res/images/PrimeVideo.webp";
 import Hotstar from "~/res/images/Hotstar.png";
 import Imax from "~/res/images/Imax.png";
 import { CoinType } from "~/schema/CoinType";
+import { CouponDetail } from "~/schema/CouponDetail";
 
 const OPINIONS: Opinion[] = [
   {
@@ -303,21 +304,27 @@ const getPredictionsFromFilmId = (filmId: string) => {
   return PREDICTIONS.filter((prediction) => prediction.filmId === filmId);
 };
 
-const REWARDS = [
+const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
   {
     checkpoint: 200,
     coupons: [
       {
-        id: "coupon-1",
+        couponId: "coupon-1",
         couponLogoSrc: Pvr.src,
         couponInfo:
           "Get Flat 50% Cashback Up To Rs 200 on PVR tickets. T&C apply.",
+        couponBrandName: "PVR",
+        worthCoins: 200,
+        couponExpiryDate: "July 25, 2024",
       },
       {
-        id: "coupon-2",
+        couponId: "coupon-2",
         couponLogoSrc: Hotstar.src,
         couponInfo:
           "Watch ICC T20 World Cup Cricket Matches For Free On Hotstar. T&C apply.",
+        couponBrandName: "Hotstar",
+        worthCoins: 200,
+        couponExpiryDate: "July 25, 2024",
       },
     ],
   },
@@ -325,16 +332,22 @@ const REWARDS = [
     checkpoint: 400,
     coupons: [
       {
-        id: "coupon-3",
+        couponId: "coupon-3",
         couponLogoSrc: Netflix.src,
         couponInfo:
           "Netflix Premium Subscriptions starting At Rs 649. T&C apply.",
+        couponBrandName: "Netflix",
+        worthCoins: 400,
+        couponExpiryDate: "July 25, 2024",
       },
       {
-        id: "coupon-4",
+        couponId: "coupon-4",
         couponLogoSrc: PrimeVideo.src,
         couponInfo:
           "Amazon Prime Subscription Plan starts At Rs 299. T&C apply.",
+        couponBrandName: "Amazon Prime Video",
+        worthCoins: 400,
+        couponExpiryDate: "July 25, 2024",
       },
     ],
   },
@@ -342,22 +355,31 @@ const REWARDS = [
     checkpoint: 600,
     coupons: [
       {
-        id: "coupon-5",
+        couponId: "coupon-5",
         couponLogoSrc: Pvr.src,
         couponInfo:
           "Get Flat 60% Cashback Up To Rs 300 on PVR tickets. T&C apply.",
+        couponBrandName: "PVR",
+        worthCoins: 600,
+        couponExpiryDate: "July 25, 2024",
       },
       {
-        id: "coupon-6",
+        couponId: "coupon-6",
         couponLogoSrc: Netflix.src,
         couponInfo:
           "Netflix Premium Subscriptions starting At Rs 449. T&C apply.",
+        couponBrandName: "Netflix",
+        worthCoins: 600,
+        couponExpiryDate: "July 25, 2024",
       },
       {
-        id: "coupon-7",
+        couponId: "coupon-7",
         couponLogoSrc: PrimeVideo.src,
         couponInfo:
           "Amazon Prime Subscription Plan starts At Rs 199. T&C apply.",
+        couponBrandName: "Amazon Prime Video",
+        worthCoins: 600,
+        couponExpiryDate: "July 25, 2024",
       },
     ],
   },
@@ -365,22 +387,31 @@ const REWARDS = [
     checkpoint: 800,
     coupons: [
       {
-        id: "coupon-8",
+        couponId: "coupon-8",
         couponLogoSrc: Imax.src,
         couponInfo:
           "Get Flat 60% Cashback Up To Rs 500 on IMAX 3D tickets. T&C apply.",
+        couponBrandName: "IMAX 3D",
+        worthCoins: 800,
+        couponExpiryDate: "July 25, 2024",
       },
       {
-        id: "coupon-9",
+        couponId: "coupon-9",
         couponLogoSrc: Netflix.src,
         couponInfo:
           "Netflix Premium Subscriptions starting At Rs 349. T&C apply.",
+        couponBrandName: "Netflix",
+        worthCoins: 800,
+        couponExpiryDate: "July 25, 2024",
       },
       {
-        id: "coupon-10",
+        couponId: "coupon-10",
         couponLogoSrc: PrimeVideo.src,
         couponInfo:
           "Amazon Prime Subscription Plan starts At Rs 99. T&C apply.",
+        couponBrandName: "Amazon Prime Video",
+        worthCoins: 800,
+        couponExpiryDate: "July 25, 2024",
       },
     ],
   },
@@ -388,28 +419,40 @@ const REWARDS = [
     checkpoint: 1000,
     coupons: [
       {
-        id: "coupon-11",
+        couponId: "coupon-11",
         couponLogoSrc: Pvr.src,
         couponInfo:
           "Get Flat 60% Cashback Up To Rs 400 on PVR tickets. T&C apply.",
+        couponBrandName: "PVR",
+        worthCoins: 1000,
+        couponExpiryDate: "July 25, 2024",
       },
       {
-        id: "coupon-12",
+        couponId: "coupon-12",
         couponLogoSrc: Imax.src,
         couponInfo:
           "Get Flat 60% Cashback Up To Rs 600 on IMAX 3D tickets. T&C apply.",
+        couponBrandName: "IMAX 3D",
+        worthCoins: 1000,
+        couponExpiryDate: "July 25, 2024",
       },
       {
-        id: "coupon-13",
+        couponId: "coupon-13",
         couponLogoSrc: Netflix.src,
         couponInfo:
           "Netflix Premium Subscriptions starting At Rs 299. T&C apply.",
+        couponBrandName: "Netflix",
+        worthCoins: 1000,
+        couponExpiryDate: "July 25, 2024",
       },
       {
-        id: "coupon-14",
+        couponId: "coupon-14",
         couponLogoSrc: PrimeVideo.src,
         couponInfo:
           "Amazon Prime Subscription Plan free for 1 year. T&C apply.",
+        couponBrandName: "Amazon Prime Video",
+        worthCoins: 1000,
+        couponExpiryDate: "July 25, 2024",
       },
     ],
   },
@@ -437,6 +480,10 @@ const getMaxRedeemableCoins = () => {
   }, 0);
 };
 
+const getCouponCode = async (couponId: string) => {
+  return "STEALDEAL50";
+};
+
 export {
   getOpinions,
   FILMS,
@@ -449,4 +496,5 @@ export {
   USER_COINS,
   getUserEarnedCoins,
   getMaxRedeemableCoins,
+  getCouponCode,
 };
