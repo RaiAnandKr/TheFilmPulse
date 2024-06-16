@@ -13,6 +13,7 @@ import { getFilmInfo } from "~/constants/mocks";
 import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
 import { TrophyIcon } from "~/res/icons/trophy";
+import { numberInShorthand } from "~/utilities/numberInShorthand";
 
 interface PredictionCardProps {
   prediction: Prediction;
@@ -124,7 +125,7 @@ const PredictionResult: React.FC<
       {!!result?.ranking && (
         <div className="mb-2 flex items-center text-sm font-bold text-primary">
           <TrophyIcon />
-          <span className="mx-1">Rank {result.ranking}</span>
+          <span className="mx-1">Rank {numberInShorthand(result.ranking)}</span>
         </div>
       )}
     </div>

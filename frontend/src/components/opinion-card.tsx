@@ -10,6 +10,7 @@ import {
   Progress,
   CardHeader,
   Image,
+  cn,
 } from "@nextui-org/react";
 import { type Vote, type Opinion, type UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
@@ -133,11 +134,17 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
               </Button>
             </PopoverTrigger>
             <PopoverContent
-              className={`w-[240px] p-2.5 ${option.popoverContentBgColorClass}`}
+              className={cn(
+                "w-[240px] p-2.5",
+                option.popoverContentBgColorClass,
+              )}
             >
               {(_) => (
                 <div
-                  className={`flex w-full flex-col items-center ${option.popoverContentTextColorClass}`}
+                  className={cn(
+                    "flex w-full flex-col items-center",
+                    option.popoverContentTextColorClass,
+                  )}
                 >
                   <p className="w-ful h-full font-bold">{option.label}</p>
                   <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3 text-black">

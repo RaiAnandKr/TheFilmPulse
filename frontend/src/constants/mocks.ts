@@ -145,6 +145,7 @@ const PREDICTIONS: Prediction[] = [
       type: PulseResultType.None,
       coinsResult: 0,
       finalValue: 2400,
+      ranking: 1500,
     },
   },
   {
