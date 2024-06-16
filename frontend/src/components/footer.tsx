@@ -2,9 +2,9 @@ import { Button, Divider } from "@nextui-org/react";
 import type { MenuItem } from "../schema/MenuItem";
 import { FilmIcon } from "~/res/icons/film";
 import { PulseIcon } from "~/res/icons/pulse";
-import { DashboardIcon } from "~/res/icons/dashboard";
 import { usePathname, useRouter } from "next/navigation";
 import { findMaxMatchingRoute } from "~/utilities/findMaxMatchingRoute";
+import { RedeemIcon } from "~/res/icons/redeem";
 
 const menuItems: MenuItem[] = [
   {
@@ -20,10 +20,10 @@ const menuItems: MenuItem[] = [
     pathName: "/pulse",
   },
   {
-    key: "dashboard",
-    label: "Dashboard",
-    startIcon: <DashboardIcon />,
-    pathName: "/dashboard",
+    key: "rewards",
+    label: "Rewards",
+    startIcon: <RedeemIcon />,
+    pathName: "/rewards",
   },
 ];
 

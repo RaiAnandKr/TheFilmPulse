@@ -18,7 +18,7 @@ export default function Page() {
   return (
     <>
       <TopOpinions />
-      <FilmPredictions />
+      <TrendingFilms />
     </>
   );
 }
@@ -33,7 +33,12 @@ const TopOpinions = () => {
       <SectionHeader
         title="Top Opinions"
         onViewAllClick={() => router.push("/pulse")}
-        infoText=""
+        info={
+          <div className="px-1 py-2">
+            <div className="text-small font-bold">Popover Content</div>
+            <div className="text-tiny">This is the popover content</div>
+          </div>
+        }
       />
       <div className="w-full overflow-x-auto">
         <div
@@ -49,15 +54,14 @@ const TopOpinions = () => {
   );
 };
 
-const FilmPredictions = () => {
+const TrendingFilms = () => {
   const router = useRouter();
 
   return (
     <>
       <SectionHeader
-        title="Film Predictions"
+        title="Trending Films"
         onViewAllClick={() => router.push("/pulse/predictions")}
-        infoText=""
       />
       {FILMS.map((film) => (
         <FilmPredictionCard key={film.filmId} film={film} />
@@ -68,34 +72,35 @@ const FilmPredictions = () => {
 
 interface SectionHeaderProps {
   title: string;
-  infoText: string;
   onViewAllClick: () => void;
+  info?: JSX.Element;
 }
 const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
-  const { title, onViewAllClick } = props;
+  const { title, onViewAllClick, info } = props;
   return (
     <div
       className="flex h-10 items-center justify-between text-sm"
       style={{ color: colors.primary }}
     >
-      <Popover placement="bottom" showArrow={true}>
-        <PopoverTrigger>
-          <Button
-            variant="light"
-            color="primary"
-            className="h-full font-bold"
-            endContent={<InfoIcon />}
-          >
-            {title}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <div className="px-1 py-2">
-            <div className="text-small font-bold">Popover Content</div>
-            <div className="text-tiny">This is the popover content</div>
-          </div>
-        </PopoverContent>
-      </Popover>
+      {info ? (
+        <Popover placement="bottom" showArrow={true}>
+          <PopoverTrigger>
+            <Button
+              variant="light"
+              color="primary"
+              className="h-full font-bold"
+              endContent={<InfoIcon />}
+            >
+              {title}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>{info}</PopoverContent>
+        </Popover>
+      ) : (
+        <div className="flex h-full items-center px-4 font-bold">
+          <h2>{title}</h2>
+        </div>
+      )}
       <Button
         isIconOnly
         color="primary"

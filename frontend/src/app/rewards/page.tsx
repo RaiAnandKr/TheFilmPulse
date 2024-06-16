@@ -11,7 +11,7 @@ import type { Prediction } from "~/schema/Prediction";
 import { PulseType } from "~/schema/PulseType";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 
-const Dashboard = () => (
+const RewardsPage = () => (
   <>
     <SectionHeader
       title={
@@ -36,14 +36,18 @@ const SectionHeader: React.FC<{ title: string | JSX.Element }> = (props) => (
 const CoinsInfo = () => {
   return (
     <div className="bg-success-to-danger flex w-full justify-evenly p-2 py-3">
-      <CoinCard coinType={CoinType.Earned} coins={450} />
-      <CoinCard coinType={CoinType.Bonus} coins={50} />
+      <CoinCard coinType={CoinType.Earned} coins={450} subText="Redeemable" />
+      <CoinCard coinType={CoinType.Bonus} coins={50} subText="Non-redeemable" />
     </div>
   );
 };
 
-const CoinCard: React.FC<{ coinType: CoinType; coins: number }> = (props) => {
-  const { coinType, coins } = props;
+const CoinCard: React.FC<{
+  coinType: CoinType;
+  coins: number;
+  subText?: string;
+}> = (props) => {
+  const { coinType, coins, subText } = props;
 
   const specialCardClass =
     coinType === CoinType.Earned ? "ring-primary ring-2" : "";
@@ -53,14 +57,13 @@ const CoinCard: React.FC<{ coinType: CoinType; coins: number }> = (props) => {
       <CardBody className="flex-row items-center justify-center p-2 text-4xl font-bold">
         <span>{numberInShorthand(coins)}</span>
       </CardBody>
-      <CardFooter className="justify-center p-0 pb-2 text-black">
-        <Chip
-          variant="light"
-          className="h-full font-bold"
-          style={{ color: "inherit" }}
-        >
+      <CardFooter className="flex-col justify-center p-0 pb-2 text-black">
+        <Chip variant="light" className="h-full" style={{ color: "inherit" }}>
           {coinType} coins
         </Chip>
+        {subText && (
+          <span className="text-tiny text-default-500">({subText})</span>
+        )}
       </CardFooter>
     </Card>
   );
@@ -95,4 +98,4 @@ const PastParticipations = () => {
   );
 };
 
-export default Dashboard;
+export default RewardsPage;
