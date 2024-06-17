@@ -97,27 +97,6 @@ def login():
     pass
 
 
-# TODO: Change these to class based views
-@app.route("/profile", methods=['GET'])
-@jwt_required()
-def get_profile():
-    phone = get_jwt_identity()
-    user = User.query.filter_by(phone_number=phone).first()
-    return jsonify(user), 200
-
-
-@app.route("/profile", methods=['PUT'])
-@jwt_required()
-def update_profile():
-    phone = get_jwt_identity()
-    session = db.session()
-    user = session.query(User).filter_by(phone_number=phone).first()
-    user.full_name = request.json.get('full_name')
-    user.email = request.json.get('email')
-    session.commit()
-    return jsonify(user), 200
-
-
 @app.route("/coins", methods=['GET'])
 def get_coins():
     user_id = request.args.get('id', type=int)
