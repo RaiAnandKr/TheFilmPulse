@@ -142,6 +142,7 @@ class Voucher(db.Model):
     coins: Mapped[int] = mapped_column(Integer, nullable=False)
     summary: Mapped[str] = mapped_column(String(500), nullable=True)
     icon_url: Mapped[str] = mapped_column(String(500), nullable=True)
+    terms: Mapped[str] = mapped_column(Text, nullable=True)
 
     voucher_codes = relationship("VoucherCode", back_populates="voucher")
 
