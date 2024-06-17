@@ -115,8 +115,8 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
         userVote={userVote}
       />
       <Option
-        key={votes[0]?.option ?? OpinionOption.No}
-        option={votes[0]?.option ?? OpinionOption.No}
+        key={votes[1]?.option ?? OpinionOption.No}
+        option={votes[1]?.option ?? OpinionOption.No}
         icon={<DislikeIcon />}
         classNames={{
           color: "danger",
