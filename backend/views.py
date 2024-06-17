@@ -9,7 +9,7 @@ from sqlalchemy import or_
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 from sqlalchemy.sql import sqltypes
 
-from view_decorators import load_user
+from view_decorators import load_user_strict, load_user_optional
 from models import User, Prediction, Film, Opinion, UserPrediction, UserOpinion, Voucher, VoucherCode
 from extensions import db
 from serializers import BaseSerializer, UserSerializer
@@ -29,8 +29,7 @@ class BaseAPIView(MethodView):
     methods = ['GET', 'POST', 'PUT', 'DELETE']
     serializer_class = BaseSerializer
 
-    # Commenting this for now
-    #decorators = [load_user]
+    decorators = [load_user_optional]
 
     def __init__(self):
         super().__init__()
@@ -143,9 +142,10 @@ class PredictionView(BaseAPIView):
 
 class UserView(BaseAPIView):
     model = User
-    decorators = [load_user]
     serializer_class = UserSerializer
     methods = ['GET', 'PUT']
+
+    decorators = [load_user_strict]
 
     def get(self):
         return self.serializer.serialize(g.user)
@@ -216,13 +216,18 @@ class VoucherView(BaseAPIView):
     sort_by = 'coins'
     sort_order = 'asc'
 
+    decorators = []
 
 class VoucherCodeView(BaseAPIView):
     model = VoucherCode
     sort_by = 'expiry_date'
     sort_order = 'asc'
 
+    decorators = []
 
+
+# This class is to deal with user's participations in different contests we have on the
+# platform.
 class BaseUserAPIView(MethodView):
     model = None
     columns = []
@@ -230,6 +235,8 @@ class BaseUserAPIView(MethodView):
     sort_order = 'asc'
     methods = ['GET', 'POST']
     serializer_class = BaseSerializer
+
+    decorators = [load_user_strict]
 
     def __init__(self):
         if self.model is None:
@@ -293,12 +300,16 @@ class UserPredictionView(BaseUserAPIView):
         if 'POST' not in self.methods:
             return self.method_not_allowed()
 
+        user = g.user
+        user_id = user.id
+
         data = request.get_json()
-        user_id = data.get('user_id')
+        # The user_id was retrieved from the JWT in the cookies and set into data so that we could
+        # insert the entire data object at once later.
+        data['user_id'] = user_id
         prediction_id = data.get('prediction_id')
         answer = data.get('answer')
 
-        user = User.query.filter_by(id=user_id).first()
         if not user:
             return jsonify({'error': 'User not found'}), 404
 
@@ -337,14 +348,18 @@ class UserOpinionView(BaseUserAPIView):
         if 'POST' not in self.methods:
             return self.method_not_allowed()
 
-        data = request.get_json()
+        user = g.user
+        user_id = user.id
 
-        user_id = data.get('user_id')
+        data = request.get_json()
+        # The user_id was retrieved from the JWT in the cookies and set into data so that we could
+        # insert the entire data object at once later.
+        data['user_id'] = user_id
+
         opinion_id = data.get('opinion_id')
         coins_to_deduct = data.get('coins')
         answer = data.get('answer').lower()
 
-        user = User.query.filter_by(id=user_id).first()
         if not user:
             return jsonify({'error': 'User not found'}), 404
 

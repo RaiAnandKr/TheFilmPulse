@@ -5,7 +5,7 @@ from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, g
 from flask.views import View
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, set_access_cookies, create_access_token, \
@@ -16,6 +16,7 @@ from views import PredictionView, FilmView, OpinionView, UserPredictionView, Use
     VoucherCodeView, UserView
 from extensions import db
 from models import User, Film, Opinion
+from view_decorators import load_user_strict
 
 from auth_provider_config import AuthProviderFactory
 
@@ -97,34 +98,10 @@ def login():
     pass
 
 
-# TODO: Change these to class based views
-@app.route("/profile", methods=['GET'])
-@jwt_required()
-def get_profile():
-    phone = get_jwt_identity()
-    user = User.query.filter_by(phone_number=phone).first()
-    return jsonify(user), 200
-
-
-@app.route("/profile", methods=['PUT'])
-@jwt_required()
-def update_profile():
-    phone = get_jwt_identity()
-    session = db.session()
-    user = session.query(User).filter_by(phone_number=phone).first()
-    user.full_name = request.json.get('full_name')
-    user.email = request.json.get('email')
-    session.commit()
-    return jsonify(user), 200
-
-
 @app.route("/coins", methods=['GET'])
+@load_user_strict
 def get_coins():
-    user_id = request.args.get('id', type=int)
-    if not user_id:
-        return jsonify({'message': 'User ID is required'}), 400
-
-    user = User.query.get(user_id)
+    user = g.user
     if not user:
         return jsonify({'message': 'User not found'}), 404
 

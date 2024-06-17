@@ -40,6 +40,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     JWT_COOKIE_SECURE = False
     CORS_ORIGINS = ['http://localhost:3000']
+    JWT_COOKIE_CSRF_PROTECT = False
 
 
 class ProductionConfig(Config):
