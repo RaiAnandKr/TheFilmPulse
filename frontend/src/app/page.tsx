@@ -55,8 +55,6 @@ const TopOpinions = () => {
 };
 
 const TrendingFilms = () => {
-  const router = useRouter();
-
   return (
     <>
       <SectionHeader title="Trending Films" />

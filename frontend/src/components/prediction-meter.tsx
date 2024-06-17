@@ -74,7 +74,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
       className={`mb-3 h-20 max-w-md flex-auto text-tiny ${additionalClassName}`}
       classNames={{ value: "text-teal-500 font-bold flex-none" }}
       endContent={endContentElement}
-      getValue={(value) => `${value} ${predictionScaleUnit ?? ""}`}
+      getValue={(value) => `${value.toString()} ${predictionScaleUnit ?? ""}`}
     />
   );
 };
