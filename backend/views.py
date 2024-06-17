@@ -102,7 +102,39 @@ class BaseAPIView(MethodView):
         query = self.pagination_get(request, query)
 
         items = query.all()
-        return jsonify([self.serializer.serialize(item) for item in items])
+
+        if self.model not in [Prediction, Opinion]:
+            return jsonify([self.serializer.serialize(item) for item in items])
+
+        # For Predictions and Opinions, we also need to return the votes of the logged in user (if there is
+        # one) for each of the predictions/opinions.
+        results = []
+        user = g.user
+
+        # If there is no logged in user, just return an empty dictionary for user_vote.
+        if not user:
+            for item in items:
+                serialized_item = self.serializer.serialize(item)
+                serialized_item['user_vote'] = {}
+                results.append(serialized_item)
+            return jsonify(results)
+
+        user_id = user.id
+        # For each prediction (or opinion), find if the logged in user has a vote and add it in the result.
+        for item in items:
+            serialized_item = self.serializer.serialize(item)
+            if self.model == Opinion:
+                user_vote = UserOpinion.query.filter_by(user_id=user_id, opinion_id=item.id).first()
+            else:
+                user_vote = UserPrediction.query.filter_by(user_id=user_id, prediction_id=item.id).first()
+
+            serialized_item['user_vote'] = (
+                self.serializer.serialize(user_vote)
+                if user_vote else {}
+            )
+            results.append(serialized_item)
+
+        return jsonify(results)
 
     def post(self):
         if 'POST' not in self.methods:
@@ -190,17 +222,27 @@ class FilmView(BaseAPIView):
 
         items = query.all()
 
+        user = g.user
         results = []
         # Go over each film, and fetch the most popular prediction (decided by user count
         # for each prediction) and return that prediction along with the film data
         for item in items:
+            serialized_item = self.serializer.serialize(item)
+
             top_prediction = Prediction.query.filter_by(
                 film_id=item.id).order_by(Prediction.user_count.desc()).first()
-            serialized_item = self.serializer.serialize(item)
-            serialized_item['top_prediction'] = (
-                self.serializer.serialize(top_prediction)
-                if top_prediction else {}
-            )
+            if not top_prediction:
+                results.append(serialized_item)
+                continue
+
+            # For each prediction, get the user_vote if there is a logged in user and if it has already voted in
+            # that prediction.
+            serialized_top_prediction = self.serializer.serialize(top_prediction)
+            serialized_top_prediction['user_vote'] = {}
+            if user:
+                user_vote = UserPrediction.query.filter_by(user_id=user.id, prediction_id=top_prediction.id).first()
+                serialized_top_prediction['user_vote'] = self.serializer.serialize(user_vote) if user_vote else {}
+            serialized_item['top_prediction'] = serialized_top_prediction
             results.append(serialized_item)
 
         return jsonify(results)
