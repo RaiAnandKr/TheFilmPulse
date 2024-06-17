@@ -300,12 +300,16 @@ class UserPredictionView(BaseUserAPIView):
         if 'POST' not in self.methods:
             return self.method_not_allowed()
 
+        user = g.user
+        user_id = user.id
+
         data = request.get_json()
-        user_id = data.get('user_id')
+        # The user_id was retrieved from the JWT in the cookies and set into data so that we could
+        # insert the entire data object at once later.
+        data['user_id'] = user_id
         prediction_id = data.get('prediction_id')
         answer = data.get('answer')
 
-        user = User.query.filter_by(id=user_id).first()
         if not user:
             return jsonify({'error': 'User not found'}), 404
 
@@ -344,14 +348,18 @@ class UserOpinionView(BaseUserAPIView):
         if 'POST' not in self.methods:
             return self.method_not_allowed()
 
-        data = request.get_json()
+        user = g.user
+        user_id = user.id
 
-        user_id = data.get('user_id')
+        data = request.get_json()
+        # The user_id was retrieved from the JWT in the cookies and set into data so that we could
+        # insert the entire data object at once later.
+        data['user_id'] = user_id
+
         opinion_id = data.get('opinion_id')
         coins_to_deduct = data.get('coins')
         answer = data.get('answer').lower()
 
-        user = User.query.filter_by(id=user_id).first()
         if not user:
             return jsonify({'error': 'User not found'}), 404
 
