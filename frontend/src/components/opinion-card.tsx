@@ -209,7 +209,7 @@ const Option: React.FC<OptionProps> = (props) => {
         <Button
           isDisabled={hasUserVoted}
           variant={hasUserVoted ? "flat" : "bordered"}
-          color={classNames.color as "success" | "danger"}
+          color={classNames.color}
           fullWidth
           className="mx-1"
           startContent={isUserVotedOption ? <CoinIcon /> : icon}
