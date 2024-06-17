@@ -11,6 +11,8 @@ import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
 import { useRouter } from "next/navigation";
 import { ExpandCircleIcon } from "~/res/icons/expand-circle";
+import { CoinsImage } from "~/res/images/CoinsImage";
+import { GiftBoxImage } from "~/res/images/GiftBoxImage";
 
 interface FilmPredictionCardProps {
   film: Film;
@@ -42,7 +44,7 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
     <div className="p-2">
       <Card
         isFooterBlurred
-        className="h-[420px] w-full"
+        className="h-[450px] w-full"
         isPressable
         as={"div"}
         onPress={onCardPress}
@@ -71,10 +73,12 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
           className="z-0 h-full w-full object-cover"
           src={imgSrc}
         />
-        <CardFooter className="absolute bottom-0 z-10 flex flex-col border-t-1 border-default-600 bg-black/40 font-medium dark:border-default-100">
-          <div className="flex w-full items-start justify-between pb-2">
-            <p className="w-10/12 text-start text-small text-white/90">
-              {prediction.title}
+        <CardFooter className="absolute bottom-0 z-10 flex flex-col border-t-1 border-default-600 bg-black/40 pt-2 font-medium dark:border-default-100">
+          <div className="flex w-full items-center justify-between pb-2">
+            <p className="flex w-10/12 gap-2 text-start text-small text-white/90">
+              <span>Predict and Win</span>
+              <CoinsImage />
+              <GiftBoxImage />
             </p>
             <Button
               isIconOnly

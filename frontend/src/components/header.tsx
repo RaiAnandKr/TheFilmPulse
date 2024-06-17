@@ -14,11 +14,11 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import type { MenuItem } from "../schema/MenuItem";
-import { CoinIcon } from "../res/icons/coin";
 import styles from "./header.module.css";
 import { BackIcon } from "~/res/icons/back";
 import { usePathname, useRouter } from "next/navigation";
 import { HOME_PATH } from "~/constants/paths";
+import { CoinsImage } from "~/res/images/CoinsImage";
 
 const menuItems: MenuItem[] = [
   {
@@ -106,7 +106,7 @@ const LoginCumCoinsNavbarContent = () => (
     <NavbarItem>
       <Button
         variant="flat"
-        startContent={<CoinIcon />}
+        startContent={<CoinsImage />}
         className="font-bold"
         color="warning"
       >

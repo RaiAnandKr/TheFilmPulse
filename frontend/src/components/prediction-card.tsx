@@ -68,7 +68,6 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
         </CardHeader>
       )}
       <CardBody className="flex flex-col p-0 py-2">
-        <p className="w-full text-small font-semibold">{prediction.title}</p>
         {isResult ? (
           <PredictionDiff {...prediction} />
         ) : (

@@ -10,6 +10,7 @@ import type { Opinion } from "~/schema/Opinion";
 import type { Prediction } from "~/schema/Prediction";
 import { PulseType } from "~/schema/PulseType";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
+import { CoinsImage } from "~/res/images/CoinsImage";
 
 const RewardsPage = () => (
   <>
@@ -58,7 +59,12 @@ const CoinCard: React.FC<{
         <span>{numberInShorthand(coins)}</span>
       </CardBody>
       <CardFooter className="flex-col justify-center p-0 pb-2 text-black">
-        <Chip variant="light" className="h-full" style={{ color: "inherit" }}>
+        <Chip
+          variant="light"
+          className="h-full"
+          style={{ color: "inherit" }}
+          endContent={<CoinsImage />}
+        >
           {coinType} coins
         </Chip>
         {subText && (

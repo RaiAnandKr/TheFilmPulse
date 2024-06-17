@@ -22,7 +22,7 @@ const OPINIONS: Opinion[] = [
     title:
       "Will Kalki cross Jawaan's first day box office collection of Rs. 75 Crore in India?",
     startDate: "May 26, 2024",
-    endDate: "June 15, 2024",
+    endDate: "August 15, 2024",
     filmId: "film-1",
     votes: [
       { option: OpinionOption.Yes, participationCount: 250, coins: 8235 },

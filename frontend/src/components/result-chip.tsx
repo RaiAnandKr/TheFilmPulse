@@ -5,6 +5,7 @@ import {
   PopoverTrigger,
 } from "@nextui-org/react";
 import { InfoIcon } from "~/res/icons/info";
+import { CoinsImage } from "~/res/images/CoinsImage";
 import { PulseResultType, type PulseResult } from "~/schema/PulseResult";
 import { differenceInDays } from "~/utilities/differenceInDays";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
@@ -43,9 +44,14 @@ export const ResultChip: React.FC<ResultChipProps> = (props) => {
           variant="flat"
           classNames={{ content: "font-bold" }}
           className="mb-2"
-          endContent={<InfoIcon dynamicSize />}
+          endContent={
+            <span className="flex items-center gap-2">
+              <CoinsImage />
+              <InfoIcon dynamicSize />
+            </span>
+          }
         >
-          {result.type}: {numberInShorthand(result.coinsResult)} coins
+          {result.type}: {numberInShorthand(result.coinsResult)}
         </Chip>
       </PopoverTrigger>
       <PopoverContent>
