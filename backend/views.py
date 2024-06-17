@@ -9,7 +9,7 @@ from sqlalchemy import or_
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 from sqlalchemy.sql import sqltypes
 
-from view_decorators import load_user
+from view_decorators import load_user_strict, load_user_optional
 from models import User, Prediction, Film, Opinion, UserPrediction, UserOpinion, Voucher, VoucherCode
 from extensions import db
 from serializers import BaseSerializer, UserSerializer
@@ -29,8 +29,7 @@ class BaseAPIView(MethodView):
     methods = ['GET', 'POST', 'PUT', 'DELETE']
     serializer_class = BaseSerializer
 
-    # Commenting this for now
-    #decorators = [load_user]
+    decorators = [load_user_optional]
 
     def __init__(self):
         super().__init__()
@@ -143,9 +142,10 @@ class PredictionView(BaseAPIView):
 
 class UserView(BaseAPIView):
     model = User
-    decorators = [load_user]
     serializer_class = UserSerializer
     methods = ['GET', 'PUT']
+
+    decorators = [load_user_strict]
 
     def get(self):
         return self.serializer.serialize(g.user)
@@ -216,13 +216,18 @@ class VoucherView(BaseAPIView):
     sort_by = 'coins'
     sort_order = 'asc'
 
+    decorators = []
 
 class VoucherCodeView(BaseAPIView):
     model = VoucherCode
     sort_by = 'expiry_date'
     sort_order = 'asc'
 
+    decorators = []
 
+
+# This class is to deal with user's participations in different contests we have on the
+# platform.
 class BaseUserAPIView(MethodView):
     model = None
     columns = []
@@ -230,6 +235,8 @@ class BaseUserAPIView(MethodView):
     sort_order = 'asc'
     methods = ['GET', 'POST']
     serializer_class = BaseSerializer
+
+    decorators = [load_user_strict]
 
     def __init__(self):
         if self.model is None:
