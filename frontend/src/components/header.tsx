@@ -10,6 +10,7 @@ import {
   DropdownTrigger,
   Dropdown,
   Avatar,
+  AvatarIcon,
 } from "@nextui-org/react";
 import { useState } from "react";
 import type { MenuItem } from "../schema/MenuItem";
@@ -22,24 +23,15 @@ import { HOME_PATH } from "~/constants/paths";
 const menuItems: MenuItem[] = [
   {
     key: "username",
-    label: "Signed in as xyz_name",
-  },
-  {
-    key: "redeem",
-    label: "Reedem",
-  },
-  {
-    key: "settings",
-    label: "Settings",
+    label: "Your profile (xyz_name)",
   },
   {
     key: "help",
-    label: "Help & Feedback",
+    label: "Help",
   },
   {
-    key: "logout",
-    label: "Log Out",
-    btnColor: "danger",
+    key: "contact",
+    label: "Contact Us",
   },
 ];
 
@@ -127,15 +119,16 @@ const LoginCumCoinsNavbarContent = () => (
 const AvatarDropdown = () => (
   <Dropdown placement="bottom-end">
     <DropdownTrigger>
-      {/* TODO: changet to nextjs Image element */}
       <Avatar
+        icon={<AvatarIcon />}
         isBordered
         as="button"
-        className="transition-transform"
-        color="primary"
-        name="Jason Hughes"
         size="sm"
-        src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+        color="primary"
+        classNames={{
+          base: "bg-gradient-to-br from-success-300 to-danger-300",
+          icon: "text-black/75",
+        }}
       />
     </DropdownTrigger>
     <DropdownMenu aria-label="Profile Actions" variant="flat" items={menuItems}>
@@ -145,7 +138,7 @@ const AvatarDropdown = () => (
             color={item.btnColor}
             variant="light"
             size="lg"
-            className="h-6"
+            className="h-6 w-full justify-start px-0"
           >
             {item.label}
           </Button>
