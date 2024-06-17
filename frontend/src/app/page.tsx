@@ -42,7 +42,7 @@ const TopOpinions = () => {
       />
       <div className="w-full overflow-x-auto">
         <div
-          className="bg-success-to-danger flex"
+          className="bg-success-to-danger flex min-w-full"
           style={{ width: `calc(18rem * ${opinions.length || 1})` }} // 18rem is for w-72, which is card width
         >
           {opinions.map((opinion) => (

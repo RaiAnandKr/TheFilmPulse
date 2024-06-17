@@ -21,6 +21,8 @@ import { LikeIcon } from "~/res/icons/like";
 import { DislikeIcon } from "~/res/icons/dislike";
 import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
+import { useState } from "react";
+import { getUserEarnedCoins } from "~/constants/mocks";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -98,95 +100,32 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
   const { votes, userVote } = props;
 
-  const options = votes.map(({ option, coins, participationCount }) => ({
-    key: option,
-    label: option,
-    color: option === OpinionOption.Yes ? "success" : "danger",
-    icon: option === OpinionOption.Yes ? <LikeIcon /> : <DislikeIcon />,
-    popoverContentBgColorClass:
-      option === OpinionOption.Yes ? "bg-green-200" : "bg-rose-200",
-    popoverContentTextColorClass:
-      option === OpinionOption.Yes ? "text-green-500" : "text-rose-500",
-    participationCount: participationCount,
-    coins: coins,
-  }));
-
   return (
     <div className="flex w-full justify-between pb-1 pt-2.5">
-      {options.map((option) => {
-        const hasUserVoted = !!userVote;
-        const isUserVotedOption =
-          hasUserVoted && userVote.selectedOption === option.key;
-
-        return (
-          <Popover placement="bottom" showArrow offset={10} key={option.key}>
-            <PopoverTrigger>
-              <Button
-                isDisabled={hasUserVoted}
-                variant={hasUserVoted ? "flat" : "bordered"}
-                color={option.color as "success" | "danger"}
-                key={option.key}
-                fullWidth
-                className="mx-1"
-                startContent={isUserVotedOption ? <CoinIcon /> : option.icon}
-              >
-                {isUserVotedOption ? userVote.coinsUsed : option.label}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent
-              className={cn(
-                "w-[240px] p-2.5",
-                option.popoverContentBgColorClass,
-              )}
-            >
-              {(_) => (
-                <div
-                  className={cn(
-                    "flex w-full flex-col items-center",
-                    option.popoverContentTextColorClass,
-                  )}
-                >
-                  <p className="w-ful h-full font-bold">{option.label}</p>
-                  <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3 text-black">
-                    <Slider
-                      label="Select Coins"
-                      showTooltip
-                      step={1}
-                      formatOptions={{
-                        style: "decimal",
-                      }}
-                      maxValue={100}
-                      minValue={0}
-                      marks={[
-                        {
-                          value: 0,
-                          label: "0",
-                        },
-                        {
-                          value: 100, // TODO: use maximum available user coins
-                          label: "100",
-                        },
-                      ]}
-                      defaultValue={30}
-                      className="max-w-md flex-auto pb-2 text-tiny"
-                      classNames={{
-                        value: "text-teal-500 font-bold",
-                      }}
-                    />
-                    <Button
-                      variant="solid"
-                      color="secondary"
-                      className="font-bold"
-                    >
-                      Confirm
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </PopoverContent>
-          </Popover>
-        );
-      })}
+      <Option
+        key={votes[0]?.option ?? OpinionOption.Yes}
+        option={votes[0]?.option ?? OpinionOption.Yes}
+        icon={<LikeIcon />}
+        classNames={{
+          color: "success",
+          popoverContentBgColorClass: "bg-green-200",
+          popoverContentTextColorClass: "text-green-500",
+        }}
+        votes={votes}
+        userVote={userVote}
+      />
+      <Option
+        key={votes[0]?.option ?? OpinionOption.No}
+        option={votes[0]?.option ?? OpinionOption.No}
+        icon={<DislikeIcon />}
+        classNames={{
+          color: "danger",
+          popoverContentBgColorClass: "bg-rose-200",
+          popoverContentTextColorClass: "text-rose-500",
+        }}
+        votes={votes}
+        userVote={userVote}
+      />
     </div>
   );
 };
@@ -230,3 +169,125 @@ const Coins: React.FC<{
     <p> &nbsp; {numberInShorthand(props.coins)} </p>
   </div>
 );
+
+interface OptionProps {
+  option: OpinionOption;
+  classNames: {
+    color: "success" | "danger";
+    popoverContentBgColorClass: "bg-green-200" | "bg-rose-200";
+    popoverContentTextColorClass: "text-green-500" | "text-rose-500";
+  };
+  icon: JSX.Element;
+  votes: Vote[];
+  userVote?: UserVote;
+}
+
+const Option: React.FC<OptionProps> = (props) => {
+  const { userVote, votes, option, classNames, icon } = props;
+  const label = option;
+
+  const earnedCoins = getUserEarnedCoins();
+  const defaultCoinsToBet = Math.floor(earnedCoins * 0.3);
+  const [coinstToBet, setCoinsToBet] = useState(defaultCoinsToBet);
+
+  const onSliderChange = (value: number | number[]) => {
+    const newValue = typeof value === "number" ? value : value[0] ?? 0;
+    setCoinsToBet(newValue);
+  };
+
+  const hasUserVoted = !!userVote;
+  const isUserVotedOption = hasUserVoted && userVote.selectedOption === option;
+  const expectedRewardCoins = getExpectedRewardCoins(
+    votes,
+    option,
+    coinstToBet,
+  );
+
+  return (
+    <Popover placement="bottom" showArrow offset={10}>
+      <PopoverTrigger>
+        <Button
+          isDisabled={hasUserVoted}
+          variant={hasUserVoted ? "flat" : "bordered"}
+          color={classNames.color as "success" | "danger"}
+          fullWidth
+          className="mx-1"
+          startContent={isUserVotedOption ? <CoinIcon /> : icon}
+        >
+          {isUserVotedOption ? userVote.coinsUsed : label}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent
+        className={cn("w-[260px] p-2.5", classNames.popoverContentBgColorClass)}
+      >
+        {(_) => (
+          <div
+            className={cn(
+              "flex w-full flex-col items-center",
+              classNames.popoverContentTextColorClass,
+            )}
+          >
+            <p className="w-ful h-full font-bold">{label}</p>
+            <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3 text-black">
+              <Slider
+                label="Select Coins"
+                showTooltip
+                step={1}
+                formatOptions={{
+                  style: "decimal",
+                }}
+                maxValue={earnedCoins}
+                marks={[
+                  {
+                    value: 0,
+                    label: "0",
+                  },
+                  {
+                    value: earnedCoins,
+                    label: earnedCoins.toString(),
+                  },
+                ]}
+                value={coinstToBet}
+                onChange={onSliderChange}
+                className="max-w-md flex-auto pb-2 text-tiny"
+                classNames={{
+                  value: "text-teal-500 font-bold",
+                }}
+              />
+              <p className="flex justify-between py-2 font-bold text-success">
+                <span>Expected Coins on win:</span>
+                <span>+{expectedRewardCoins}</span>
+              </p>
+              <Button variant="solid" color="secondary" className="font-bold">
+                Confirm
+              </Button>
+            </div>
+          </div>
+        )}
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+const getExpectedRewardCoins = (
+  votes: Vote[],
+  chosenOption: OpinionOption,
+  coinsToBet: number,
+) => {
+  const totalCoinsOnOtherOption =
+    votes.find((vote) => vote.option !== chosenOption)?.coins ?? 0;
+
+  const totalCoinsOnUserOption =
+    (votes.find((vote) => vote.option === chosenOption)?.coins ?? 0) +
+    coinsToBet;
+
+  if (!coinsToBet) {
+    return 0;
+  }
+
+  const expectedRewardCoins = Math.floor(
+    (coinsToBet / totalCoinsOnUserOption) * totalCoinsOnOtherOption,
+  );
+
+  return expectedRewardCoins;
+};
