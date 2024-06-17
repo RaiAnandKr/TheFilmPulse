@@ -13,6 +13,7 @@ import {
 import type { CouponDetail } from "~/schema/CouponDetail";
 import { useState } from "react";
 import { getCouponCode } from "~/constants/mocks";
+import { CoinsImage } from "~/res/images/CoinsImage";
 
 type CouponDisclosureProps = ReturnType<typeof useDisclosure> & CouponDetail;
 
@@ -52,7 +53,9 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
               <p className="text-tiny text-default-500">{couponInfo}</p>
               <div className="flex justify-between text-sm text-danger">
                 <span>Coins to be decucted on claim: </span>
-                <span>{worthCoins}</span>
+                <span className="flex gap-1">
+                  {worthCoins} <CoinsImage />
+                </span>
               </div>
               <Divider />
             </ModalHeader>

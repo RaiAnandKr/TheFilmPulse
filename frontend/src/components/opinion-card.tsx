@@ -14,7 +14,6 @@ import {
 } from "@nextui-org/react";
 import { type Vote, type Opinion, type UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
-import { CoinIcon } from "../res/icons/coin";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { numberInShorthand } from "../utilities/numberInShorthand";
 import { LikeIcon } from "~/res/icons/like";
@@ -23,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
 import { useState } from "react";
 import { getUserEarnedCoins } from "~/constants/mocks";
+import { CoinsImage } from "~/res/images/CoinsImage";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -115,8 +115,8 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
         userVote={userVote}
       />
       <Option
-        key={votes[0]?.option ?? OpinionOption.No}
-        option={votes[0]?.option ?? OpinionOption.No}
+        key={votes[1]?.option ?? OpinionOption.No}
+        option={votes[1]?.option ?? OpinionOption.No}
         icon={<DislikeIcon />}
         classNames={{
           color: "danger",
@@ -165,7 +165,7 @@ const Coins: React.FC<{
       flexDirection: props.iconAtEnd ? "row-reverse" : "row",
     }}
   >
-    <CoinIcon />
+    <CoinsImage />
     <p> &nbsp; {numberInShorthand(props.coins)} </p>
   </div>
 );
@@ -212,7 +212,7 @@ const Option: React.FC<OptionProps> = (props) => {
           color={classNames.color}
           fullWidth
           className="mx-1"
-          startContent={isUserVotedOption ? <CoinIcon /> : icon}
+          startContent={isUserVotedOption ? <CoinsImage /> : icon}
         >
           {isUserVotedOption ? userVote.coinsUsed : label}
         </Button>
@@ -230,7 +230,12 @@ const Option: React.FC<OptionProps> = (props) => {
             <p className="w-ful h-full font-bold">{label}</p>
             <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3 text-black">
               <Slider
-                label="Select Coins"
+                label={
+                  <p className="flex gap-2">
+                    <span>Select Coins</span>
+                    <CoinsImage />
+                  </p>
+                }
                 showTooltip
                 step={1}
                 formatOptions={{

@@ -55,14 +55,9 @@ const TopOpinions = () => {
 };
 
 const TrendingFilms = () => {
-  const router = useRouter();
-
   return (
     <>
-      <SectionHeader
-        title="Trending Films"
-        onViewAllClick={() => router.push("/pulse/predictions")}
-      />
+      <SectionHeader title="Trending Films" />
       {FILMS.map((film) => (
         <FilmPredictionCard key={film.filmId} film={film} />
       ))}
@@ -72,7 +67,7 @@ const TrendingFilms = () => {
 
 interface SectionHeaderProps {
   title: string;
-  onViewAllClick: () => void;
+  onViewAllClick?: () => void;
   info?: JSX.Element;
 }
 const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
@@ -101,15 +96,17 @@ const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
           <h2>{title}</h2>
         </div>
       )}
-      <Button
-        isIconOnly
-        color="primary"
-        variant="light"
-        onClick={onViewAllClick}
-        className="h-full"
-      >
-        <ForwardIcon />
-      </Button>
+      {!!onViewAllClick && (
+        <Button
+          isIconOnly
+          color="primary"
+          variant="light"
+          onClick={onViewAllClick}
+          className="h-full"
+        >
+          <ForwardIcon />
+        </Button>
+      )}
     </div>
   );
 };

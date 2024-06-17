@@ -29,10 +29,6 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
     [],
   );
 
-  const predictionScaleUnitLabel = predictionScaleUnit
-    ? `In ${predictionScaleUnit}`
-    : " ";
-
   const defaultValue = (predictionRange[0] + predictionRange[1]) / 2;
 
   const additionalClassName = inDarkTheme ? "text-white/60" : "";
@@ -57,7 +53,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
 
   return (
     <Slider
-      label={predictionScaleUnitLabel}
+      label={prediction.title}
       isDisabled={hasPredicted || !!userPrediction}
       showTooltip
       step={predictionStepValue}
@@ -75,9 +71,10 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
       defaultValue={defaultValue}
       value={userPrediction}
       fillOffset={effectivePivotValue}
-      className={`mb-3 h-16 max-w-md flex-auto text-tiny ${additionalClassName}`}
-      classNames={{ value: "text-teal-500 font-bold" }}
+      className={`mb-3 h-20 max-w-md flex-auto text-tiny ${additionalClassName}`}
+      classNames={{ value: "text-teal-500 font-bold flex-none" }}
       endContent={endContentElement}
+      getValue={(value) => `${value.toString()} ${predictionScaleUnit ?? ""}`}
     />
   );
 };
