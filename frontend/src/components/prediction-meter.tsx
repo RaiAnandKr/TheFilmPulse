@@ -1,5 +1,5 @@
 import { Button, Slider } from "@nextui-org/react";
-import { useCallback, useMemo, useState, type MouseEventHandler } from "react";
+import { useMemo, useState } from "react";
 import type { Prediction } from "~/schema/Prediction";
 
 export interface PredictionMeterProps {
@@ -22,32 +22,19 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
 
   const [hasPredicted, setHasPredicted] = useState(false);
 
-  const onPrediction: MouseEventHandler<HTMLButtonElement> = useCallback(
-    (_) => {
-      setHasPredicted(true);
-    },
-    [],
-  );
+  const onPrediction = () => {
+    setHasPredicted(true);
+  };
 
   const defaultValue = (predictionRange[0] + predictionRange[1]) / 2;
 
-  const additionalClassName = inDarkTheme ? "text-white" : "";
+  const additionalClassName = inDarkTheme ? "text-white/80" : "";
 
   const effectivePivotValue = pivotValue ?? meanPrediction;
   const effectivePivotLabel = pivotLabel ?? "Avg";
 
   const endContentElement = useMemo(
-    () =>
-      noButton ? null : (
-        <Button
-          variant="solid"
-          color="primary"
-          className="flex-none font-bold text-white"
-          onClick={onPrediction}
-        >
-          Predict
-        </Button>
-      ),
+    () => (noButton ? null : <PredictButton onPrediction={onPrediction} />),
     [noButton, onPrediction],
   );
 
@@ -78,5 +65,22 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
       endContent={endContentElement}
       getValue={(value) => `${value.toString()} ${predictionScaleUnit ?? ""}`}
     />
+  );
+};
+
+interface PredictButtonProps {
+  onPrediction: () => void;
+}
+
+const PredictButton: React.FC<PredictButtonProps> = (props) => {
+  return (
+    <Button
+      variant="solid"
+      color="primary"
+      className="flex-none font-bold text-white"
+      onClick={props.onPrediction}
+    >
+      Predict
+    </Button>
   );
 };

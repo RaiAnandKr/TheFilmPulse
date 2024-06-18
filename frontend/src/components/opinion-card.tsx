@@ -23,6 +23,7 @@ import { ResultChip } from "./result-chip";
 import { useState } from "react";
 import { getUserEarnedCoins } from "~/constants/mocks";
 import { CoinsImage } from "~/res/images/CoinsImage";
+import type { ClassValue } from "tailwind-variants";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -108,8 +109,9 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
         icon={<LikeIcon />}
         classNames={{
           color: "success",
-          popoverContentBgColorClass: "bg-green-200",
-          popoverContentTextColorClass: "text-green-500",
+          popoverContentBgColorClass:
+            "bg-gradient-to-r from-success-400 to-success-200",
+          popoverContentTextColorClass: "text-success-700",
         }}
         votes={votes}
         userVote={userVote}
@@ -120,8 +122,9 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
         icon={<DislikeIcon />}
         classNames={{
           color: "danger",
-          popoverContentBgColorClass: "bg-rose-200",
-          popoverContentTextColorClass: "text-rose-500",
+          popoverContentBgColorClass:
+            "bg-gradient-to-r from-danger-400 to-danger-200",
+          popoverContentTextColorClass: "text-danger-700",
         }}
         votes={votes}
         userVote={userVote}
@@ -179,8 +182,8 @@ interface OptionProps {
   option: OpinionOption;
   classNames: {
     color: "success" | "danger";
-    popoverContentBgColorClass: "bg-green-200" | "bg-rose-200";
-    popoverContentTextColorClass: "text-green-500" | "text-rose-500";
+    popoverContentBgColorClass: ClassValue;
+    popoverContentTextColorClass: ClassValue;
   };
   icon: JSX.Element;
   votes: Vote[];
@@ -209,7 +212,7 @@ const Option: React.FC<OptionProps> = (props) => {
   );
 
   return (
-    <Popover placement="bottom" showArrow offset={10}>
+    <Popover placement="bottom" showArrow>
       <PopoverTrigger>
         <Button
           isDisabled={hasUserVoted}
@@ -262,7 +265,11 @@ const Option: React.FC<OptionProps> = (props) => {
                 <span>Expected Coins on win:</span>
                 <span>+{expectedRewardCoins}</span>
               </p>
-              <Button variant="solid" color="secondary" className="font-bold">
+              <Button
+                variant="solid"
+                color="primary"
+                className="font-bold text-white"
+              >
                 Confirm
               </Button>
             </div>
