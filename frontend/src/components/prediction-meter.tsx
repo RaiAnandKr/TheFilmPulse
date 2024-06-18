@@ -31,7 +31,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
 
   const defaultValue = (predictionRange[0] + predictionRange[1]) / 2;
 
-  const additionalClassName = inDarkTheme ? "text-white/60" : "";
+  const additionalClassName = inDarkTheme ? "text-white" : "";
 
   const effectivePivotValue = pivotValue ?? meanPrediction;
   const effectivePivotLabel = pivotLabel ?? "Avg";
@@ -72,7 +72,9 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
       value={userPrediction}
       fillOffset={effectivePivotValue}
       className={`mb-3 h-20 max-w-md flex-auto text-tiny ${additionalClassName}`}
-      classNames={{ value: "text-teal-500 font-bold flex-none" }}
+      classNames={{
+        value: "text-teal-500 font-bold flex-none",
+      }}
       endContent={endContentElement}
       getValue={(value) => `${value.toString()} ${predictionScaleUnit ?? ""}`}
     />
