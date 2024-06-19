@@ -97,7 +97,7 @@ const PredictionDiff: React.FC<
       <div className="flex justify-between text-primary">
         <span>Actual result :</span>
         <span>
-          {result?.finalValue ?? 0} {predictionScaleUnit}
+          {result?.finalValue ?? 0} {predictionScaleUnit ?? ""}
         </span>
       </div>
       <div className="flex justify-between text-default-500">

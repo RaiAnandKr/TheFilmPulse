@@ -235,7 +235,7 @@ const Option: React.FC<OptionProps> = (props) => {
             )}
           >
             <p className="w-ful h-full font-bold">{label}</p>
-            <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3 text-black">
+            <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-2 text-black">
               <Slider
                 label={"Select Coins"}
                 showTooltip

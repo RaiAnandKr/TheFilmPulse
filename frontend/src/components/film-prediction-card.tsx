@@ -75,11 +75,11 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
         />
         <CardFooter className="absolute bottom-0 z-10 flex flex-col border-t-1 border-default-600 bg-black/40 pt-2 font-medium dark:border-default-100">
           <div className="flex w-full items-center justify-between pb-2">
-            <p className="flex w-10/12 gap-2 text-start text-medium font-bold text-warning">
+            <h4 className="flex w-10/12 gap-2 text-start text-medium font-bold text-warning">
               <span>Predict and Win</span>
               <CoinsImage />
               <GiftBoxImage />
-            </p>
+            </h4>
             <Button
               isIconOnly
               color="warning"
