@@ -25,6 +25,7 @@ class JWTConfig(object):
     JWT_TOKEN_LOCATION = ["cookies"]
     JWT_COOKIE_SECURE = True
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=30)
+    JWT_COOKIE_SAMESITE = "None"
 
 
 # Maybe use this later
