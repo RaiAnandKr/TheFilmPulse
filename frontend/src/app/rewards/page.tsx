@@ -10,7 +10,6 @@ import type { Opinion } from "~/schema/Opinion";
 import type { Prediction } from "~/schema/Prediction";
 import { PulseType } from "~/schema/PulseType";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
-import { CoinsImage } from "~/res/images/CoinsImage";
 
 const RewardsPage = () => (
   <>
@@ -36,7 +35,7 @@ const SectionHeader: React.FC<{ title: string | JSX.Element }> = (props) => (
 
 const CoinsInfo = () => {
   return (
-    <div className="bg-success-to-danger flex w-full justify-evenly p-2 py-3">
+    <div className="bg-success-to-danger flex w-full justify-evenly gap-3 p-2 py-3">
       <CoinCard coinType={CoinType.Earned} coins={450} subText="Redeemable" />
       <CoinCard coinType={CoinType.Bonus} coins={50} subText="Non-redeemable" />
     </div>
@@ -54,17 +53,12 @@ const CoinCard: React.FC<{
     coinType === CoinType.Earned ? "ring-primary ring-2" : "";
 
   return (
-    <Card className={`mx-2 w-full ${specialCardClass} text-primary`} isBlurred>
+    <Card className={`w-full ${specialCardClass} text-primary`} isBlurred>
       <CardBody className="flex-row items-center justify-center p-2 text-4xl font-bold">
         <span>{numberInShorthand(coins)}</span>
       </CardBody>
       <CardFooter className="flex-col justify-center p-0 pb-2 text-black">
-        <Chip
-          variant="light"
-          className="h-full"
-          style={{ color: "inherit" }}
-          endContent={<CoinsImage />}
-        >
+        <Chip variant="light" className="h-full" style={{ color: "inherit" }}>
           {coinType} coins
         </Chip>
         {subText && (

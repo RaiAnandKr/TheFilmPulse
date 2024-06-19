@@ -4,7 +4,7 @@
 
 @layer components {
   .bg-success-to-danger {
-    @apply bg-gradient-to-r from-green-100 to-rose-100;
+    @apply bg-gradient-to-r from-green-200 to-rose-200;
   }
 
   .text-primary {

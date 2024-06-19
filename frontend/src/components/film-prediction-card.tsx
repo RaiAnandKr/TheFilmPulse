@@ -49,11 +49,11 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
         as={"div"}
         onPress={onCardPress}
       >
-        <CardHeader className="absolute z-10 flex-col items-start bg-gradient-to-r from-black from-25%">
-          <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-medium text-white">
+        <CardHeader className="absolute z-10 flex-col items-start bg-gradient-to-r from-black/90 from-30%">
+          <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-bold text-white/80">
             {title}
           </h3>
-          <p className="overflow-hidden text-ellipsis text-nowrap text-tiny font-bold text-white">
+          <p className="overflow-hidden text-ellipsis text-nowrap text-tiny text-white/80">
             {filmCasts}
           </p>
           <Chip
@@ -75,11 +75,11 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
         />
         <CardFooter className="absolute bottom-0 z-10 flex flex-col border-t-1 border-default-600 bg-black/40 pt-2 font-medium dark:border-default-100">
           <div className="flex w-full items-center justify-between pb-2">
-            <p className="flex w-10/12 gap-2 text-start text-small text-white/90">
+            <h4 className="flex w-10/12 gap-2 text-start text-medium font-bold text-warning">
               <span>Predict and Win</span>
               <CoinsImage />
               <GiftBoxImage />
-            </p>
+            </h4>
             <Button
               isIconOnly
               color="warning"

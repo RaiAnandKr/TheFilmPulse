@@ -12,7 +12,7 @@ import {
   Image,
   cn,
 } from "@nextui-org/react";
-import { type Vote, type Opinion, type UserVote } from "../schema/Opinion";
+import type { Vote, Opinion, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { numberInShorthand } from "../utilities/numberInShorthand";
@@ -23,6 +23,7 @@ import { ResultChip } from "./result-chip";
 import { useState } from "react";
 import { getUserEarnedCoins } from "~/constants/mocks";
 import { CoinsImage } from "~/res/images/CoinsImage";
+import type { ClassValue } from "tailwind-variants";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -101,15 +102,16 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
   const { votes, userVote } = props;
 
   return (
-    <div className="flex w-full justify-between pb-1 pt-2.5">
+    <div className="flex w-full justify-between gap-2 pb-1 pt-2.5">
       <Option
         key={votes[0]?.option ?? OpinionOption.Yes}
         option={votes[0]?.option ?? OpinionOption.Yes}
         icon={<LikeIcon />}
         classNames={{
           color: "success",
-          popoverContentBgColorClass: "bg-green-200",
-          popoverContentTextColorClass: "text-green-500",
+          popoverContentBgColorClass:
+            "bg-gradient-to-r from-success-400 to-success-200",
+          popoverContentTextColorClass: "text-success-700",
         }}
         votes={votes}
         userVote={userVote}
@@ -120,8 +122,9 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
         icon={<DislikeIcon />}
         classNames={{
           color: "danger",
-          popoverContentBgColorClass: "bg-rose-200",
-          popoverContentTextColorClass: "text-rose-500",
+          popoverContentBgColorClass:
+            "bg-gradient-to-r from-danger-400 to-danger-200",
+          popoverContentTextColorClass: "text-danger-700",
         }}
         votes={votes}
         userVote={userVote}
@@ -148,7 +151,9 @@ const ParticipationTrend: React.FC<{ votes: Vote[] }> = (props) => {
       }}
       value={coinsOnLikePercent}
       label={<Coins coins={coinsOnLike} colorClass="text-green-400" />}
-      valueLabel={<Coins coins={coinsOnDislike} colorClass="text-rose-400" />}
+      valueLabel={
+        <Coins coins={coinsOnDislike} colorClass="text-rose-400" iconAtEnd />
+      }
       showValueLabel
     />
   );
@@ -160,13 +165,16 @@ const Coins: React.FC<{
   colorClass?: string;
 }> = (props) => (
   <div
-    className={`flex items-center text-nowrap px-2 text-small text-default-400 ${props.colorClass}`}
+    className={cn(
+      "flex items-center gap-2 text-nowrap px-2 text-small font-semibold text-default-400",
+      props.colorClass,
+    )}
     style={{
       flexDirection: props.iconAtEnd ? "row-reverse" : "row",
     }}
   >
     <CoinsImage />
-    <p> &nbsp; {numberInShorthand(props.coins)} </p>
+    <p>{numberInShorthand(props.coins)} </p>
   </div>
 );
 
@@ -174,8 +182,8 @@ interface OptionProps {
   option: OpinionOption;
   classNames: {
     color: "success" | "danger";
-    popoverContentBgColorClass: "bg-green-200" | "bg-rose-200";
-    popoverContentTextColorClass: "text-green-500" | "text-rose-500";
+    popoverContentBgColorClass: ClassValue;
+    popoverContentTextColorClass: ClassValue;
   };
   icon: JSX.Element;
   votes: Vote[];
@@ -204,17 +212,16 @@ const Option: React.FC<OptionProps> = (props) => {
   );
 
   return (
-    <Popover placement="bottom" showArrow offset={10}>
+    <Popover placement="bottom" showArrow>
       <PopoverTrigger>
         <Button
           isDisabled={hasUserVoted}
           variant={hasUserVoted ? "flat" : "bordered"}
           color={classNames.color}
           fullWidth
-          className="mx-1"
           startContent={isUserVotedOption ? <CoinsImage /> : icon}
         >
-          {isUserVotedOption ? userVote.coinsUsed : label}
+          {isUserVotedOption ? numberInShorthand(userVote.coinsUsed) : label}
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -228,14 +235,9 @@ const Option: React.FC<OptionProps> = (props) => {
             )}
           >
             <p className="w-ful h-full font-bold">{label}</p>
-            <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-3 text-black">
+            <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-2 text-black">
               <Slider
-                label={
-                  <p className="flex gap-2">
-                    <span>Select Coins</span>
-                    <CoinsImage />
-                  </p>
-                }
+                label={"Select Coins"}
                 showTooltip
                 step={1}
                 formatOptions={{
@@ -263,7 +265,11 @@ const Option: React.FC<OptionProps> = (props) => {
                 <span>Expected Coins on win:</span>
                 <span>+{expectedRewardCoins}</span>
               </p>
-              <Button variant="solid" color="secondary" className="font-bold">
+              <Button
+                variant="solid"
+                color="primary"
+                className="font-bold text-white"
+              >
                 Confirm
               </Button>
             </div>

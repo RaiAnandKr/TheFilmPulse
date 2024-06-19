@@ -74,7 +74,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
   const { title, onViewAllClick, info } = props;
   return (
     <div
-      className="flex h-10 items-center justify-between text-sm"
+      className="flex h-10 items-center justify-between"
       style={{ color: colors.primary }}
     >
       {info ? (
@@ -83,7 +83,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
             <Button
               variant="light"
               color="primary"
-              className="h-full font-bold"
+              className="text-md h-full font-bold"
               endContent={<InfoIcon />}
             >
               {title}
