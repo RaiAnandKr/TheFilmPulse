@@ -15,8 +15,8 @@ useEffect(() => {
     window.otpless = (otplessUser:any) => {
       console.log(otplessUser)
       const body = {
-        phone_number: otplessUser['identities'][0]['identityValue'],
-        otp: '+'+otplessUser['idToken'],
+        phone_number: '+'+otplessUser['identities'][0]['identityValue'],
+        otp: otplessUser['idToken'],
       }
       try{
         const resp = post('/login', body)
