@@ -1,4 +1,4 @@
-from flask import request, jsonify, has_request_context, g
+from flask import request, jsonify, has_request_context, g, make_response
 from flask.views import MethodView
 from dataclasses import is_dataclass, fields
 import dataclasses
@@ -322,7 +322,9 @@ class BaseUserAPIView(MethodView):
             query = query.order_by(getattr(self.model, sort_by))
 
         items = query.all()
-        return jsonify([self.serializer.serialize(item) for item in items])
+        response = make_response(jsonify([self.serializer.serialize(item) for item in items]))
+        response.headers['Content-Security-Policy'] = "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';"
+        return response
 
     def post(self):
         if 'POST' not in self.methods:
