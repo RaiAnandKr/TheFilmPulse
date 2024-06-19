@@ -17,23 +17,18 @@ class OTPLess(AuthProvider):
         # self.app_id = kwargs.get('app_id')
         self.client_id = os.environ.get('OTPLESS_CLIENT_ID')
         self.client_secret = os.environ.get('OTPLESS_CLIENT_SECRET')
+        self.app_id = 'DVBH5ZQ4HREV54PIBTM9'
 
     def verify_token(self, **kwargs):
-        order_id = kwargs.get('uid')
-        otp = kwargs.get('otp')
+        token = kwargs.get('otp')
         phone_number = kwargs.get('phone_number')
-        print(order_id)
-        # TODO: exception handling
-        # This not a typo lol
-        result = OTPLessAuthSDK.OTP.veriy_otp(
-            orderId=order_id,
-            otp=otp,
-            phoneNumber=phone_number,
-            email=None,
+        aud = f"{self.client_secret}-{self.app_id}"
+        result = OTPLessAuthSDK.UserDetail.decode_id_token(
+            id_token=token,
             client_id=self.client_id,
-            client_secret=self.client_secret)
-        # sample result={'isOTPVerified': False, 'reason': 'Incorrect OTP!'}
-        return result['isOTPVerified']
+            client_secret=self.client_secret,
+            audience=aud)
+        return phone_number==result['country_code']+result['national_phone_number']
 
 
 class AuthProviderFactory:

@@ -323,7 +323,6 @@ class BaseUserAPIView(MethodView):
 
         items = query.all()
         response = make_response(jsonify([self.serializer.serialize(item) for item in items]))
-        response.headers['Content-Security-Policy'] = "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';"
         return response
 
     def post(self):
