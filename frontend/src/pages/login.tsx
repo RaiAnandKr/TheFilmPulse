@@ -3,14 +3,27 @@ declare const window: any;
 
 import Head from "next/head";
 import { useEffect } from 'react';
+import { post } from '~/service/apiUtils';
 import { useRouter } from 'next/router';
 
 export default function LoginView() {
 const router = useRouter();
 
 
+
 useEffect(() => {
     window.otpless = (otplessUser:any) => {
+      console.log(otplessUser)
+      const body = {
+        phone_number: '+'+otplessUser['identities'][0]['identityValue'],
+        otp: otplessUser['idToken'],
+        uid: 'dummy'
+      }
+      try{
+        const resp = post('/login', body)
+      } catch (error) {
+        console.log('error')
+      }
       router.push('/profile')
     };
   }, []);

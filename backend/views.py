@@ -1,4 +1,4 @@
-from flask import request, jsonify, has_request_context, g
+from flask import request, jsonify, has_request_context, g, make_response
 from flask.views import MethodView
 from dataclasses import is_dataclass, fields
 import dataclasses
@@ -322,7 +322,8 @@ class BaseUserAPIView(MethodView):
             query = query.order_by(getattr(self.model, sort_by))
 
         items = query.all()
-        return jsonify([self.serializer.serialize(item) for item in items])
+        response = make_response(jsonify([self.serializer.serialize(item) for item in items]))
+        return response
 
     def post(self):
         if 'POST' not in self.methods:
