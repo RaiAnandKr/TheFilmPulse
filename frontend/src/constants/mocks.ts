@@ -36,7 +36,7 @@ const OPINIONS: Opinion[] = [
     opinionId: "b",
     title: "Will Puspa 2 include cameo from Lord Bobby?",
     startDate: "May 20, 2024",
-    endDate: "June 17, 2024",
+    endDate: "July 17, 2024",
     filmId: "film-2",
     votes: [
       { option: OpinionOption.Yes, participationCount: 214, coins: 4230 },
@@ -63,7 +63,7 @@ const OPINIONS: Opinion[] = [
     opinionId: "d",
     title: "Will there be sequel of Kalki?",
     startDate: "May 25, 2024",
-    endDate: "June 5, 2024",
+    endDate: "July 5, 2024",
     filmId: "film-1",
     votes: [
       { option: OpinionOption.Yes, participationCount: 168, coins: 2430 },
@@ -83,7 +83,7 @@ const OPINIONS: Opinion[] = [
     opinionId: "e",
     title: "Will Fahad Fasil die in Pushpa 2?",
     startDate: "May 25, 2024",
-    endDate: "June 2, 2024",
+    endDate: "September 2, 2024",
     filmId: "film-2",
     votes: [
       { option: OpinionOption.Yes, participationCount: 75, coins: 1230 },

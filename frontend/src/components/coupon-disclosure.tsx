@@ -65,10 +65,10 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
             <ModalFooter className="flex flex-col items-center justify-center pt-0">
               <Divider />
               <CouponCode couponCode={couponCode} />
-              <div className="flex w-full justify-end">
+              <div className="flex w-full justify-end gap-2">
                 <Button
                   color="danger"
-                  variant="light"
+                  variant="bordered"
                   onPress={onClose}
                   className="font-bold"
                 >

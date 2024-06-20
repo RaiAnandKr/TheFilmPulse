@@ -3,10 +3,6 @@ import {
   CardBody,
   CardFooter,
   Button,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Slider,
   Progress,
   CardHeader,
   Image,
@@ -20,10 +16,9 @@ import { LikeIcon } from "~/res/icons/like";
 import { DislikeIcon } from "~/res/icons/dislike";
 import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
-import { useState } from "react";
-import { getUserEarnedCoins } from "~/constants/mocks";
 import { CoinsImage } from "~/res/images/CoinsImage";
-import type { ClassValue } from "tailwind-variants";
+import { OptionButton } from "./option-button";
+import { useState } from "react";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -100,34 +95,37 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 
 const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
   const { votes, userVote } = props;
+  const [hasVoted, setHasVoted] = useState(false);
 
   return (
     <div className="flex w-full justify-between gap-2 pb-1 pt-2.5">
-      <Option
+      <OptionButton
         key={votes[0]?.option ?? OpinionOption.Yes}
         option={votes[0]?.option ?? OpinionOption.Yes}
         icon={<LikeIcon />}
         classNames={{
-          color: "success",
-          popoverContentBgColorClass:
-            "bg-gradient-to-r from-success-400 to-success-200",
-          popoverContentTextColorClass: "text-success-700",
+          buttonColor: "success",
+          contentBgColor: "bg-success-100",
+          contentTextColor: "text-success",
         }}
         votes={votes}
         userVote={userVote}
+        hasVoted={hasVoted}
+        setHasVoted={setHasVoted}
       />
-      <Option
+      <OptionButton
         key={votes[1]?.option ?? OpinionOption.No}
         option={votes[1]?.option ?? OpinionOption.No}
         icon={<DislikeIcon />}
         classNames={{
-          color: "danger",
-          popoverContentBgColorClass:
-            "bg-gradient-to-r from-danger-400 to-danger-200",
-          popoverContentTextColorClass: "text-danger-700",
+          buttonColor: "danger",
+          contentBgColor: "bg-danger-100",
+          contentTextColor: "text-danger",
         }}
         votes={votes}
         userVote={userVote}
+        hasVoted={hasVoted}
+        setHasVoted={setHasVoted}
       />
     </div>
   );
@@ -177,128 +175,3 @@ const Coins: React.FC<{
     <p>{numberInShorthand(props.coins)} </p>
   </div>
 );
-
-interface OptionProps {
-  option: OpinionOption;
-  classNames: {
-    color: "success" | "danger";
-    popoverContentBgColorClass: ClassValue;
-    popoverContentTextColorClass: ClassValue;
-  };
-  icon: JSX.Element;
-  votes: Vote[];
-  userVote?: UserVote;
-}
-
-const Option: React.FC<OptionProps> = (props) => {
-  const { userVote, votes, option, classNames, icon } = props;
-  const label = option;
-
-  const earnedCoins = getUserEarnedCoins();
-  const defaultCoinsToBet = Math.floor(earnedCoins * 0.3);
-  const [coinstToBet, setCoinsToBet] = useState(defaultCoinsToBet);
-
-  const onSliderChange = (value: number | number[]) => {
-    const newValue = typeof value === "number" ? value : value[0] ?? 0;
-    setCoinsToBet(newValue);
-  };
-
-  const hasUserVoted = !!userVote;
-  const isUserVotedOption = hasUserVoted && userVote.selectedOption === option;
-  const expectedRewardCoins = getExpectedRewardCoins(
-    votes,
-    option,
-    coinstToBet,
-  );
-
-  return (
-    <Popover placement="bottom" showArrow>
-      <PopoverTrigger>
-        <Button
-          isDisabled={hasUserVoted}
-          variant={hasUserVoted ? "flat" : "bordered"}
-          color={classNames.color}
-          fullWidth
-          startContent={isUserVotedOption ? <CoinsImage /> : icon}
-        >
-          {isUserVotedOption ? numberInShorthand(userVote.coinsUsed) : label}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className={cn("w-[260px] p-2.5", classNames.popoverContentBgColorClass)}
-      >
-        {(_) => (
-          <div
-            className={cn(
-              "flex w-full flex-col items-center",
-              classNames.popoverContentTextColorClass,
-            )}
-          >
-            <p className="w-ful h-full font-bold">{label}</p>
-            <div className="mt-2 flex w-full flex-col rounded-lg border-2 border-white bg-white p-2 text-black">
-              <Slider
-                label={"Select Coins"}
-                showTooltip
-                step={1}
-                formatOptions={{
-                  style: "decimal",
-                }}
-                maxValue={earnedCoins}
-                marks={[
-                  {
-                    value: 0,
-                    label: "0",
-                  },
-                  {
-                    value: earnedCoins,
-                    label: earnedCoins.toString(),
-                  },
-                ]}
-                value={coinstToBet}
-                onChange={onSliderChange}
-                className="max-w-md flex-auto pb-2 text-tiny"
-                classNames={{
-                  value: "text-teal-500 font-bold",
-                }}
-              />
-              <p className="flex justify-between py-2 font-bold text-success">
-                <span>Expected Coins on win:</span>
-                <span>+{expectedRewardCoins}</span>
-              </p>
-              <Button
-                variant="solid"
-                color="primary"
-                className="font-bold text-white"
-              >
-                Confirm
-              </Button>
-            </div>
-          </div>
-        )}
-      </PopoverContent>
-    </Popover>
-  );
-};
-
-const getExpectedRewardCoins = (
-  votes: Vote[],
-  chosenOption: OpinionOption,
-  coinsToBet: number,
-) => {
-  const totalCoinsOnOtherOption =
-    votes.find((vote) => vote.option !== chosenOption)?.coins ?? 0;
-
-  const totalCoinsOnUserOption =
-    (votes.find((vote) => vote.option === chosenOption)?.coins ?? 0) +
-    coinsToBet;
-
-  if (!coinsToBet) {
-    return 0;
-  }
-
-  const expectedRewardCoins = Math.floor(
-    (coinsToBet / totalCoinsOnUserOption) * totalCoinsOnOtherOption,
-  );
-
-  return expectedRewardCoins;
-};
