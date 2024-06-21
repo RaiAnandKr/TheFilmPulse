@@ -114,6 +114,8 @@ class Prediction(db.Model):
     min_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     max_value: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     mean_value: Mapped[float] = mapped_column(Float, nullable=True, default=0.0)
+    step_value: Mapped[float] = mapped_column(Float, nullable=True)
+    unit: Mapped[str] = mapped_column(String(100), nullable=True)
     end_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     correct_answer: Mapped[float] = mapped_column(Float, nullable=True)
     finished: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
