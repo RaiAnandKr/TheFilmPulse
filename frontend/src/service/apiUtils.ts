@@ -67,7 +67,7 @@ export const post = async <T>(
 };
 
 export const getFilms = async (
-  filmId: number,
+  filmId: number | string,
   config?: FetchConfig,
 ): Promise<Film[]> => {
   try {
@@ -90,10 +90,10 @@ export const getFilms = async (
         predictionRange: [predictionData.min_value, predictionData.max_value],
         userPrediction: predictionData.user_vote?.answer || null,
         result: predictionData.correct_answer,
+        predictionStepValue: predictionData?.step_value || 25,
+        predictionScaleUnit: predictionData?.unit || "Crores",
         // Adding dummy values to avoid breaking code because of type error.
         startDate: "2024-04-10",
-        predictionStepValue: 25,
-        predictionScaleUnit: "Crores",
       };
 
       return {
