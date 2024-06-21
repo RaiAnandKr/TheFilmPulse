@@ -8,6 +8,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  ButtonProps,
 } from "@nextui-org/react";
 import type { Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
@@ -49,15 +50,31 @@ export const OptionButton: React.FC<OptionButtonProps> = (props) => {
         variant={variant}
         color={classNames.buttonColor}
         fullWidth
-        startContent={isUserVotedOption ? <CoinsImage /> : icon}
         onPress={disclosure.onOpen}
         className={className}
+        {...getOptionTerminalContentProps(props)}
       >
         {isUserVotedOption ? numberInShorthand(userVote.coinsUsed) : label}
       </Button>
       <ConfirmOption {...disclosure} {...props} />
     </>
   );
+};
+
+const getOptionTerminalContentProps = (
+  props: OptionButtonProps,
+): Pick<ButtonProps, "startContent" | "endContent"> => {
+  const { option, userVote, icon } = props;
+  const isUserVotedOption = userVote?.selectedOption === option;
+
+  switch (option) {
+    case OpinionOption.Yes:
+      return { startContent: isUserVotedOption ? <CoinsImage /> : icon };
+    case OpinionOption.No:
+      return { endContent: isUserVotedOption ? <CoinsImage flip /> : icon };
+  }
+
+  return {};
 };
 
 type ConfirmOptionProps = ReturnType<typeof useDisclosure> & OptionButtonProps;

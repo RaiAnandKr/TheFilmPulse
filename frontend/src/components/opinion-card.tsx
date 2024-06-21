@@ -171,7 +171,7 @@ const Coins: React.FC<{
       flexDirection: props.iconAtEnd ? "row-reverse" : "row",
     }}
   >
-    <CoinsImage />
+    <CoinsImage flip={props.iconAtEnd} />
     <p>{numberInShorthand(props.coins)} </p>
   </div>
 );
