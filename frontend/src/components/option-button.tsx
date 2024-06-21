@@ -154,10 +154,10 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
                 <>
                   <Button
                     fullWidth
-                    color="danger"
+                    color="default"
                     variant="bordered"
                     onPress={onClose}
-                    className="font-bold"
+                    className="font-bold text-default-500"
                   >
                     Close
                   </Button>
