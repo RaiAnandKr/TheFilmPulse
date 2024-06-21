@@ -90,8 +90,8 @@ export const getFilms = async (
         predictionRange: [predictionData.min_value, predictionData.max_value],
         userPrediction: predictionData.user_vote?.answer || null,
         result: predictionData.correct_answer,
-        predictionStepValue: predictionData?.step_value || 25,
-        predictionScaleUnit: predictionData?.unit || "Crores",
+        predictionStepValue: predictionData.step_value || 25,
+        predictionScaleUnit: predictionData.unit || "Crores",
         // Adding dummy values to avoid breaking code because of type error.
         startDate: "2024-04-10",
       };
@@ -181,12 +181,16 @@ export const getOpinions = async (
 
 export const getPredictions = async (
   filmId: number,
+  limit: number,
   config?: FetchConfig,
 ): Promise<Prediction[]> => {
   try {
     let url = "/predictions";
     if (filmId) {
       url += `?film_id=${filmId}`;
+    }
+    if (limit) {
+      url += limit === 0 ? "" : `&limit=${limit}`; // Avoid adding limit=0 as it's unnecessary
     }
     const predictionsData = await get<any[]>(url, config);
 
@@ -195,20 +199,23 @@ export const getPredictions = async (
         type: PulseType.Prediction,
         predictionId: predictionData.id.toString(),
         title: predictionData.text,
-        filmId: predictionData.film_id,
+        filmId: predictionData.film_id.toString(),
         participationCount: predictionData.user_count,
-        meanPrediction: 100,
-        endDate: "2024-08-10",
+        meanPrediction: predictionData.mean_value || 0,
+        endDate: predictionData.end_date,
+        predictionRange: [predictionData.min_value, predictionData.max_value],
+        userPrediction: predictionData.user_vote?.answer || null,
+        result: predictionData.correct_answer,
+        predictionStepValue: predictionData.step_value || 25,
+        predictionScaleUnit: predictionData.scale_unit || "Crores",
+        // Adding dummy values to avoid breaking code because of type error.
         startDate: "2024-04-10",
-        predictionRange: predictionData.range,
-        predictionStepValue: predictionData.step_value,
-        predictionScaleUnit: predictionData.scale_unit,
       };
     });
 
     return predictions;
   } catch (error) {
-    throw new Error(`Error fetching opinions: ${(error as Error).message}`);
+    throw new Error(`Error fetching predictions: ${(error as Error).message}`);
   }
 };
 
