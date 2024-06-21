@@ -74,9 +74,6 @@ export const getFilms = async (
     const url = filmId ? `/films?film_id=${filmId}` : "/films";
     const filmsData = await get<any[]>(url, config);
 
-    // Convert the JSON response to align with schema defined in ../schema/
-    // TODO: Few fields need to be added to the API to support the full schema
-    // defined and used in the frontend code.
     const films: Film[] = filmsData.map((filmData) => {
       const predictionData = filmData.top_prediction;
       const topPrediction: Prediction = {
@@ -89,7 +86,6 @@ export const getFilms = async (
         endDate: predictionData.end_date,
         predictionRange: [predictionData.min_value, predictionData.max_value],
         userPrediction: predictionData.user_vote?.answer || null,
-        result: predictionData.correct_answer,
         predictionStepValue: predictionData.step_value || 25,
         predictionScaleUnit: predictionData.unit || "Crores",
         // Adding dummy values to avoid breaking code because of type error.
@@ -133,7 +129,6 @@ export const getOpinions = async (
     }
     const opinionsData = await get<any[]>(url, config);
 
-    // Convert the JSON response to align with schema defined in ../schema/
     const opinions: Opinion[] = opinionsData.map((opinionData) => {
       const yesVote: Vote = {
         option: OpinionOption.Yes,
@@ -147,16 +142,13 @@ export const getOpinions = async (
         coins: opinionData.no_coins,
       };
 
-      const userVote: UserVote | null = opinionData.user_vote
+      const userVote: UserVote | undefined = opinionData.user_vote
         ? {
           selectedOption: opinionData.user_vote.answer === 'yes' ? OpinionOption.Yes
-            : (opinionData.user_vote.answer === 'no' ? OpinionOption.No: null),
+            : (opinionData.user_vote.answer === 'no' ? OpinionOption.No: undefined),
           coinsUsed: opinionData.user_vote.coins,
         }
-        : null;
-
-      const result = opinionData.correct_answer === 'yes' ? OpinionOption.Yes
-        : (opinionData.correct_answer === 'no' ? opinionOption.No: null);
+        : undefined;
 
       return {
         type: PulseType.Opinion,
@@ -167,7 +159,6 @@ export const getOpinions = async (
         filmPosterSrc: opinionData.icon_url,
         votes: [yesVote, noVote],
         userVote: userVote,
-        result: result,
         // Adding dummy values to avoid breaking code because of type error
         startDate: "2024-04-10",
       };
@@ -205,7 +196,6 @@ export const getPredictions = async (
         endDate: predictionData.end_date,
         predictionRange: [predictionData.min_value, predictionData.max_value],
         userPrediction: predictionData.user_vote?.answer || null,
-        result: predictionData.correct_answer,
         predictionStepValue: predictionData.step_value || 25,
         predictionScaleUnit: predictionData.scale_unit || "Crores",
         // Adding dummy values to avoid breaking code because of type error.
