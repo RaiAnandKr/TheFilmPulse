@@ -5,7 +5,7 @@
 
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
-import type { Opinion, Vote } from "../schema/Opinion";
+import type { Opinion, Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { PulseType } from "~/schema/PulseType";
 
@@ -86,7 +86,7 @@ export const getFilms = async (
         filmId: predictionData.film_id.toString(),
         participationCount: predictionData.user_count,
         meanPrediction: predictionData.mean_value || 0,
-        endDate: predictionData.end_date || "2024-08-10",
+        endDate: predictionData.end_date,
         predictionRange: [predictionData.min_value, predictionData.max_value],
         userPrediction: predictionData.user_vote?.answer || null,
         result: predictionData.correct_answer,
@@ -147,16 +147,29 @@ export const getOpinions = async (
         coins: opinionData.no_coins,
       };
 
+      const userVote: UserVote | null = opinionData.user_vote
+        ? {
+          selectedOption: opinionData.user_vote.answer === 'yes' ? OpinionOption.Yes
+            : (opinionData.user_vote.answer === 'no' ? OpinionOption.No: null),
+          coinsUsed: opinionData.user_vote.coins,
+        }
+        : null;
+
+      const result = opinionData.correct_answer === 'yes' ? OpinionOption.Yes
+        : (opinionData.correct_answer === 'no' ? opinionOption.No: null);
+
       return {
         type: PulseType.Opinion,
         opinionId: opinionData.id.toString(),
         title: opinionData.text,
+        endDate: opinionData.end_date,
+        filmId: opinionData.film_id.toString(),
+        filmPosterSrc: opinionData.icon_url,
+        votes: [yesVote, noVote],
+        userVote: userVote,
+        result: result,
         // Adding dummy values to avoid breaking code because of type error
         startDate: "2024-04-10",
-        endDate: "2024-08-10",
-        filmId: opinionData.film_id.toString(),
-        filmPosterSrc: opinionData.film_poster_src,
-        votes: [yesVote, noVote],
       };
     });
 
