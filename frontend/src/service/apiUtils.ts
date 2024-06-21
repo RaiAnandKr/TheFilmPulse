@@ -37,6 +37,7 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
 export const get = async <T>(url: string, config?: FetchConfig): Promise<T> => {
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "GET",
+    credentials: "include", // Ensure cookies are included
     ...config,
     headers: {
       "Content-Type": "application/json",
@@ -53,6 +54,7 @@ export const post = async <T>(
 ): Promise<T> => {
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "POST",
+    credentials: "include", // Ensure cookies are included
     ...config,
     headers: {
       "Content-Type": "application/json",
@@ -79,15 +81,17 @@ export const getFilms = async (
       const predictionData = filmData.top_prediction;
       const topPrediction: Prediction = {
         type: PulseType.Prediction,
-        predictionId: predictionData.id,
+        predictionId: predictionData.id.toString(),
         title: predictionData.text,
-        filmId: predictionData.film_id,
+        filmId: predictionData.film_id.toString(),
         participationCount: predictionData.user_count,
+        meanPrediction: predictionData.mean_value || 0,
+        endDate: predictionData.end_date || "2024-08-10",
+        predictionRange: [predictionData.min_value, predictionData.max_value],
+        userPrediction: predictionData.user_vote?.answer || null,
+        result: predictionData.correct_answer,
         // Adding dummy values to avoid breaking code because of type error.
-        meanPrediction: 100,
-        endDate: "2024-08-10",
         startDate: "2024-04-10",
-        predictionRange: [0, 1000],
         predictionStepValue: 25,
         predictionScaleUnit: "Crores",
       };
@@ -95,10 +99,16 @@ export const getFilms = async (
       return {
         filmId: filmData.id.toString(),
         title: filmData.title,
+        filmDesc: filmData.summary,
         videoSrc: filmData.trailer_url,
         imgSrc: filmData.poster_url,
         topPrediction: topPrediction,
         releaseDate: filmData.release_date,
+        filmCasts: filmData.cast_metadata?.actors.join(", ") || "",
+        filmDirector: filmData.cast_metadata?.directors.join(", ") || "",
+        // Fetching a film isn't going to return all the prediction IDs (that's too much to ask from the backend).
+        // We should separately query the predictions for a film or film_id.
+        predictionIds: [topPrediction.predictionId]
       };
     });
 
