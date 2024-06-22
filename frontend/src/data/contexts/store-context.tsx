@@ -2,7 +2,7 @@
 
 import { type ReactNode, createContext, useRef, useContext } from "react";
 import { useStore } from "zustand";
-import { createMainStore, type MainStore } from "./store/main-store";
+import { createMainStore, type MainStore } from "../store/main-store";
 
 export type MainStoreApi = ReturnType<typeof createMainStore>;
 

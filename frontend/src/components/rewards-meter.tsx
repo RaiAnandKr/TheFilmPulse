@@ -6,7 +6,7 @@ import {
 } from "@nextui-org/react";
 import { useContext, useEffect, useMemo } from "react";
 import { REWARDS, getUserEarnedCoins } from "~/constants/mocks";
-import { RewardContext } from "~/data/reward-context";
+import { RewardContext } from "~/data/contexts/reward-context";
 import { gcdOfNumbers } from "~/utilities/gcdOfNumbers";
 
 const SLIDER_ID = "RewardsMeter";
