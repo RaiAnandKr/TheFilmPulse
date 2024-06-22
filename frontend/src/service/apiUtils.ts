@@ -170,6 +170,53 @@ export const getOpinions = async (
   }
 };
 
+
+export const getUserOpinions = async (
+  config?: FetchConfig,
+): Promise<Opinion[]> => {
+  try {
+    let url = "/user_opinions";
+    const userOpinionsData = await get<any[]>(url, config);
+
+    const userOpinions: Opinion[] = userOpinionsData.map((userOpinionData) => {
+      const yesVote: Vote = {
+        option: OpinionOption.Yes,
+        participationCount: userOpinionData.opinion.yes_count,
+        coins: userOpinionData.opinion.yes_coins,
+      };
+
+      const noVote: Vote = {
+        option: OpinionOption.No,
+        participationCount: userOpinionData.opinion.no_count,
+        coins: userOpinionData.opinion.no_coins,
+      };
+
+      const userVote: UserVote = {
+          selectedOption: userOpinionData.answer === 'yes' ? OpinionOption.Yes : OpinionOption.No,
+          coinsUsed: userOpinionData.coins,
+      }
+
+      return {
+        type: PulseType.Opinion,
+        opinionId: userOpinionData.opinion_id.toString(),
+        title: userOpinionData.opinion.text,
+        endDate: userOpinionData.opinion.end_date,
+        filmId: userOpinionData.opinion.film_id.toString(),
+        filmPosterSrc: userOpinionData.opinion.icon_url,
+        votes: [yesVote, noVote],
+        userVote: userVote,
+        // Adding dummy values to avoid breaking code because of type error
+        startDate: "2024-04-10",
+      };
+    });
+
+    return userOpinions;
+  } catch (error) {
+    throw new Error(`Error fetching user opinions: ${(error as Error).message}`);
+  }
+};
+
+
 export const getPredictions = async (
   filmId: number,
   limit: number,
