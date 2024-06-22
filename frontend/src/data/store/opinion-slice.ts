@@ -1,5 +1,6 @@
 import { StateCreator } from "zustand";
 import { Opinion } from "~/schema/Opinion";
+import { mergeArrayToMap } from "~/utilities/mergeArrayToMap";
 
 type OpinionState = {
   opinions: Map<Opinion["opinionId"], Opinion>;
@@ -7,6 +8,7 @@ type OpinionState = {
 
 type OpinionAction = {
   setTrendingOpinions: (opinions: Opinion[]) => void;
+  setActiveOpinions: (opinions: Opinion[]) => void;
 };
 
 export type OpinionSlice = OpinionState & OpinionAction;
@@ -20,15 +22,22 @@ export const createOpinionSlice: StateCreator<
   opinions: new Map(),
   setTrendingOpinions: (opinions) =>
     set(
-      {
-        opinions: new Map(
-          opinions.map((opinion) => [
-            opinion.opinionId,
-            { ...opinion, isTrending: true },
-          ]),
-        ),
-      },
+      (state) => ({
+        opinions: mergeArrayToMap(state.opinions, opinions, "opinionId", {
+          isTrending: true,
+        }),
+      }),
       false,
       "OpinionAction/setTrendingOpinions",
+    ),
+  setActiveOpinions: (opinions) =>
+    set(
+      (state) => ({
+        opinions: mergeArrayToMap(state.opinions, opinions, "opinionId", {
+          isActive: true,
+        }),
+      }),
+      false,
+      "OpinionAction/setActiveOpinions",
     ),
 });

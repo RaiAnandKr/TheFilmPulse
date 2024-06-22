@@ -13,7 +13,10 @@ export type Opinion = {
   userVote?: UserVote;
   filmPosterSrc?: string;
   result?: PulseResult<OpinionOption>;
-  isTrending?: boolean; // To be shown in home page. For client-side state-management.
+
+  // For client-side state management
+  isTrending?: boolean;
+  isActive?: boolean;
 };
 
 export type Vote = {

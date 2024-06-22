@@ -16,6 +16,7 @@ import { ForwardIcon } from "~/res/icons/forward";
 import { useLoadData } from "~/hooks/useLoadData";
 import { useMainStore } from "~/data/contexts/store-context";
 import { filterMapValues } from "~/utilities/filterMapValues";
+import { pick } from "~/utilities/pick";
 
 export default function Page() {
   return (
@@ -39,7 +40,7 @@ const TopOpinions = () => {
 
   useLoadData(
     "trendingOptions",
-    () => getOpinions({ isActive: true, limit: 5 }),
+    () => getOpinions({ isActive: true, limit: 3 }),
     setTrendingOpinions,
   );
 
@@ -70,10 +71,16 @@ const TopOpinions = () => {
 };
 
 const TrendingFilms = () => {
+  const { films, setFilms } = useMainStore((state) => ({
+    films: filterMapValues(state.films, (key, val) => true),
+    setFilms: state.setFilms,
+  }));
+  useLoadData("films", () => FILMS, setFilms);
+
   return (
     <>
       <SectionHeader title="Trending Films" />
-      {FILMS.map((film) => (
+      {films.map((film) => (
         <FilmPredictionCard key={film.filmId} film={film} />
       ))}
     </>

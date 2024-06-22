@@ -1,11 +1,14 @@
 import { StateCreator } from "zustand";
 import { Film } from "~/schema/Film";
+import { mergeArrayToMap } from "~/utilities/mergeArrayToMap";
 
 type FilmState = {
   films: Map<Film["filmId"], Film>;
 };
 
-type FilmAction = {};
+type FilmAction = {
+  setFilms: (films: Film[]) => void;
+};
 
 export type FilmSlice = FilmState & FilmAction;
 
@@ -14,4 +17,14 @@ export const createFilmSlice: StateCreator<
   [["zustand/devtools", never]],
   [],
   FilmSlice
-> = (set) => ({ films: new Map() });
+> = (set) => ({
+  films: new Map(),
+  setFilms: (films) =>
+    set(
+      (state) => ({
+        films: mergeArrayToMap(state.films, films, "filmId"),
+      }),
+      false,
+      "FilmAction/setFilms",
+    ),
+});
