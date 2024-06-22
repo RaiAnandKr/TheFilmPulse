@@ -87,7 +87,7 @@ export const getFilms = async (
         predictionRange: [predictionData.min_value, predictionData.max_value],
         userPrediction: predictionData.user_vote?.answer || null,
         predictionStepValue: predictionData.step_value || 25,
-        predictionScaleUnit: predictionData.unit || "Crores",
+        predictionScaleUnit: predictionData.unit || "",
         // Adding dummy values to avoid breaking code because of type error.
         startDate: "2024-04-10",
       };
@@ -216,6 +216,24 @@ export const getUserOpinions = async (
   }
 };
 
+export const postUserOpinion = async (
+  opinionId: number,
+  coins: number,
+  answer: string,
+  config?: FetchConfig,
+): Promise<void> => {
+  try {
+    const url = "/user_opinions";
+    const body = {
+      opinion_id: opinionId,
+      coins: coins,
+      answer: answer,
+    };
+    await post<void>(url, body, config);
+  } catch (error) {
+    throw new Error(`Error posting user opinion: ${(error as Error).message}`);
+  }
+};
 
 export const getPredictions = async (
   filmId: number,
@@ -244,7 +262,7 @@ export const getPredictions = async (
         predictionRange: [predictionData.min_value, predictionData.max_value],
         userPrediction: predictionData.user_vote?.answer || null,
         predictionStepValue: predictionData.step_value || 25,
-        predictionScaleUnit: predictionData.scale_unit || "Crores",
+        predictionScaleUnit: predictionData.scale_unit || "",
         // Adding dummy values to avoid breaking code because of type error.
         startDate: "2024-04-10",
       };
@@ -253,6 +271,38 @@ export const getPredictions = async (
     return predictions;
   } catch (error) {
     throw new Error(`Error fetching predictions: ${(error as Error).message}`);
+  }
+};
+
+export const getUserPredictions = async (
+  config?: FetchConfig,
+): Promise<Prediction[]> => {
+  try {
+    let url = "/user_predictions";
+    const userPredictionsData = await get<any[]>(url, config);
+
+    const userPredictions: Prediction[] = userPredictionsData.map((userPredictionData) => {
+      return {
+        type: PulseType.Prediction,
+        predictionId: userPredictionData.prediction_id.toString(),
+        title: userPredictionData.prediction.text,
+        filmId: userPredictionData.prediction.film_id.toString(),
+        participationCount: userPredictionData.prediction.user_count,
+        meanPrediction: userPredictionData.prediction.mean_value || 0,
+        endDate: userPredictionData.prediction.end_date,
+        predictionRange: [userPredictionData.prediction.min_value,
+          userPredictionData.prediction.max_value],
+        userPrediction: userPredictionData.answer,
+        predictionStepValue: userPredictionData.prediction.step_value || 25,
+        predictionScaleUnit: userPredictionData.prediction.scale_unit || "",
+        // Adding dummy values to avoid breaking code because of type error.
+        startDate: "2024-04-10",
+      };
+    });
+
+    return userPredictions;
+  } catch (error) {
+    throw new Error(`Error fetching user predictions: ${(error as Error).message}`);
   }
 };
 
@@ -275,21 +325,3 @@ export const postUserPrediction = async (
   }
 };
 
-export const postUserOpinion = async (
-  opinionId: number,
-  coins: number,
-  answer: string,
-  config?: FetchConfig,
-): Promise<void> => {
-  try {
-    const url = "/user_opinions";
-    const body = {
-      opinion_id: opinionId,
-      coins: coins,
-      answer: answer,
-    };
-    await post<void>(url, body, config);
-  } catch (error) {
-    throw new Error(`Error posting user opinion: ${(error as Error).message}`);
-  }
-};
