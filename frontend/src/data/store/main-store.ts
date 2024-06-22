@@ -8,16 +8,17 @@ import {
 import { createOpinionSlice, type OpinionSlice } from "./opinion-slice";
 import { createFilmSlice, type FilmSlice } from "./film-slice";
 
-type Store = UserSlice & PredictionSlice & OpinionSlice & FilmSlice;
+export type MainStore = UserSlice & PredictionSlice & OpinionSlice & FilmSlice;
 
-const middlewares = (stateCreator: StateCreator<Store, [], []>) =>
+const middlewares = (stateCreator: StateCreator<MainStore, [], []>) =>
   devtools(stateCreator, { name: "mainStore" });
 
-export const useBoundStore = create<Store>()(
-  middlewares((...a) => ({
-    ...createUserSlice(...a),
-    ...createPredictionSlice(...a),
-    ...createOpinionSlice(...a),
-    ...createFilmSlice(...a),
-  })),
-);
+export const createMainStore = () =>
+  create<MainStore>()(
+    middlewares((...a) => ({
+      ...createUserSlice(...a),
+      ...createPredictionSlice(...a),
+      ...createOpinionSlice(...a),
+      ...createFilmSlice(...a),
+    })),
+  );
