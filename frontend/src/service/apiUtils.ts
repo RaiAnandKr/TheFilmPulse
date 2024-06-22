@@ -8,6 +8,7 @@ import type { Prediction } from "~/schema/Prediction";
 import type { Opinion, Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { PulseType } from "~/schema/PulseType";
+import { CouponDetail } from "~/schema/CouponDetail";
 
 const BASE_URL =
   "https://backend.gentleisland-bcedf421.centralindia.azurecontainerapps.io";
@@ -171,11 +172,9 @@ export const getOpinions = async (
 };
 
 
-export const getUserOpinions = async (
-  config?: FetchConfig,
-): Promise<Opinion[]> => {
+export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> => {
   try {
-    let url = "/user_opinions";
+    const url = "/user_opinions";
     const userOpinionsData = await get<any[]>(url, config);
 
     const userOpinions: Opinion[] = userOpinionsData.map((userOpinionData) => {
@@ -274,11 +273,9 @@ export const getPredictions = async (
   }
 };
 
-export const getUserPredictions = async (
-  config?: FetchConfig,
-): Promise<Prediction[]> => {
+export const getUserPredictions = async (config?: FetchConfig): Promise<Prediction[]> => {
   try {
-    let url = "/user_predictions";
+    const url = "/user_predictions";
     const userPredictionsData = await get<any[]>(url, config);
 
     const userPredictions: Prediction[] = userPredictionsData.map((userPredictionData) => {
@@ -325,3 +322,23 @@ export const postUserPrediction = async (
   }
 };
 
+export const getVouchers = async (config?: FetchConfig): Promise<CouponDetail[]> => {
+  try {
+    const url = "/vouchers";
+    const vouchersData = await get<any[]>(url, config);
+
+    const vouchers: CouponDetail[] = vouchersData.map((voucher) => ({
+      couponId: voucher.id.toString(),
+      worthCoins: voucher.coins,
+      couponLogoSrc: voucher.icon_url,
+      couponInfo: voucher.summary,
+      couponBrandName: voucher.name,
+      couponExpiryDate: "2024-12-31", // Adding a dummy value for now
+      couponTnCs: voucher.terms ? [voucher.terms] : undefined,
+    }));
+
+    return vouchers;
+  } catch (error) {
+    throw new Error(`Error fetching vouchers: ${(error as Error).message}`);
+  }
+};
