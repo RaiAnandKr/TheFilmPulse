@@ -210,7 +210,6 @@ export const getPredictions = async (
 };
 
 export const postUserPrediction = async (
-  userId: number,
   predictionId: number,
   answer: number,
   config?: FetchConfig,
@@ -218,7 +217,6 @@ export const postUserPrediction = async (
   try {
     const url = "/user_predictions";
     const body = {
-      user_id: userId,
       prediction_id: predictionId,
       answer: answer,
     };
@@ -231,7 +229,6 @@ export const postUserPrediction = async (
 };
 
 export const postUserOpinion = async (
-  userId: number,
   opinionId: number,
   coins: number,
   answer: string,
@@ -240,7 +237,6 @@ export const postUserOpinion = async (
   try {
     const url = "/user_opinions";
     const body = {
-      user_id: userId,
       opinion_id: opinionId,
       coins: coins,
       answer: answer,
