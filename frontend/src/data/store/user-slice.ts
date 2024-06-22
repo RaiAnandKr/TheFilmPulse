@@ -16,9 +16,12 @@ type UserAction = {};
 
 export type UserSlice = UserState & UserAction;
 
-export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (
-  set,
-) => ({
+export const createUserSlice: StateCreator<
+  UserSlice,
+  [["zustand/devtools", never]],
+  [],
+  UserSlice
+> = (set) => ({
   userId: "",
   phone: "",
   handle: "",

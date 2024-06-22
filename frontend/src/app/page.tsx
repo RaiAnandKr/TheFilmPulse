@@ -13,6 +13,9 @@ import {
 import { useRouter } from "next/navigation";
 import { InfoIcon } from "~/res/icons/info";
 import { ForwardIcon } from "~/res/icons/forward";
+import { useLoadData } from "~/hooks/useLoadData";
+import { useMainStore } from "~/data/contexts/store-context";
+import { filterMapValues } from "~/utilities/filterMapValues";
 
 export default function Page() {
   return (
@@ -26,7 +29,19 @@ export default function Page() {
 const TopOpinions = () => {
   const router = useRouter();
 
-  const opinions = getOpinions({ isActive: true, limit: 5 });
+  const { trendingOpinions, setTrendingOpinions } = useMainStore((state) => ({
+    trendingOpinions: filterMapValues(
+      state.opinions,
+      (_, opinion) => !!opinion.isTrending,
+    ),
+    setTrendingOpinions: state.setTrendingOpinions,
+  }));
+
+  useLoadData(
+    "trendingOptions",
+    () => getOpinions({ isActive: true, limit: 5 }),
+    setTrendingOpinions,
+  );
 
   return (
     <>
@@ -43,9 +58,9 @@ const TopOpinions = () => {
       <div className="w-full overflow-x-auto">
         <div
           className="bg-success-to-danger flex min-w-full"
-          style={{ width: `calc(18rem * ${opinions.length || 1})` }} // 18rem is for w-72, which is card width
+          style={{ width: `calc(18rem * ${trendingOpinions.length || 1})` }} // 18rem is for w-72, which is card width
         >
-          {opinions.map((opinion) => (
+          {trendingOpinions.map((opinion) => (
             <OpinionCard opinion={opinion} key={opinion.opinionId} />
           ))}
         </div>

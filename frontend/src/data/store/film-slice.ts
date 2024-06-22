@@ -9,6 +9,9 @@ type FilmAction = {};
 
 export type FilmSlice = FilmState & FilmAction;
 
-export const createFilmSlice: StateCreator<FilmSlice, [], [], FilmSlice> = (
-  set,
-) => ({ films: new Map() });
+export const createFilmSlice: StateCreator<
+  FilmSlice,
+  [["zustand/devtools", never]],
+  [],
+  FilmSlice
+> = (set) => ({ films: new Map() });

@@ -11,7 +11,7 @@ import { createFilmSlice, type FilmSlice } from "./film-slice";
 export type MainStore = UserSlice & PredictionSlice & OpinionSlice & FilmSlice;
 
 const middlewares = (stateCreator: StateCreator<MainStore, [], []>) =>
-  devtools(stateCreator, { name: "mainStore" });
+  devtools(stateCreator, { name: "mainStore", serialize: { options: true } });
 
 export const createMainStore = () =>
   create<MainStore>()(

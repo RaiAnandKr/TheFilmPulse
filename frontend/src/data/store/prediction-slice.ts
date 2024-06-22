@@ -11,7 +11,7 @@ export type PredictionSlice = PredictionState & PredictionAction;
 
 export const createPredictionSlice: StateCreator<
   PredictionSlice,
-  [],
+  [["zustand/devtools", never]],
   [],
   PredictionSlice
 > = (set) => ({

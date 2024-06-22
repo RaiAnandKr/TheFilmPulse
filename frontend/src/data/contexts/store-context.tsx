@@ -3,6 +3,7 @@
 import { type ReactNode, createContext, useRef, useContext } from "react";
 import { useStore } from "zustand";
 import { createMainStore, type MainStore } from "../store/main-store";
+import { useShallow } from "zustand/react/shallow";
 
 export type MainStoreApi = ReturnType<typeof createMainStore>;
 
@@ -34,5 +35,5 @@ export const useMainStore = <T,>(selector: (store: MainStore) => T): T => {
     throw new Error(`useMainStore must be used within MainStoreProvider`);
   }
 
-  return useStore(mainStoreContext, selector);
+  return useStore(mainStoreContext, useShallow(selector));
 };
