@@ -1,4 +1,4 @@
-from flask import request, jsonify, has_request_context, g, make_response
+from flask import request, jsonify, has_request_context, g
 from flask.views import MethodView
 from dataclasses import is_dataclass, fields
 import dataclasses
@@ -298,10 +298,19 @@ class BaseUserAPIView(MethodView):
         return jsonify({'message': 'Method Not Allowed'}), 405
 
     def get(self):
+        """ This get method here doesn't return a json response. It simply returns the items
+        queried from DB and a get would have to be implemented further in the derived class
+        to act upon the items.
+        """
         if 'GET' not in self.methods:
             return self.method_not_allowed()
 
         query = self.model.query
+
+        user = g.user
+        # If an user is set, fetch predictions/opinions only for that user.
+        if user:
+            query = query.filter_by(user_id=user.id)
 
         # TODO: restrict to self.columns?
         for column in self.model.__table__.columns:
@@ -322,8 +331,7 @@ class BaseUserAPIView(MethodView):
             query = query.order_by(getattr(self.model, sort_by))
 
         items = query.all()
-        response = make_response(jsonify([self.serializer.serialize(item) for item in items]))
-        return response
+        return items
 
     def post(self):
         if 'POST' not in self.methods:
@@ -338,6 +346,16 @@ class BaseUserAPIView(MethodView):
 
 class UserPredictionView(BaseUserAPIView):
     model = UserPrediction
+
+    def get(self):
+        items = super().get()
+        results=[]
+        for item in items:
+            serialized_item = self.serializer.serialize(item)
+            serialized_item['prediction'] = self.serializer.serialize(item.prediction)
+            results.append(serialized_item)
+
+        return jsonify(results)
 
     def post(self):
         if 'POST' not in self.methods:
@@ -386,6 +404,16 @@ class UserPredictionView(BaseUserAPIView):
 
 class UserOpinionView(BaseUserAPIView):
     model = UserOpinion
+
+    def get(self):
+        items = super().get()
+        results = []
+        for item in items:
+            serialized_item = self.serializer.serialize(item)
+            serialized_item['opinion'] = self.serializer.serialize(item.opinion)
+            results.append(serialized_item)
+
+        return jsonify(results)
 
     def post(self):
         if 'POST' not in self.methods:
