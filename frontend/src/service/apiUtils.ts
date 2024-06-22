@@ -9,6 +9,7 @@ import type { Opinion, Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { PulseType } from "~/schema/PulseType";
 import { CouponDetail } from "~/schema/CouponDetail";
+import { PulseResult, PulseResultType } from "~/schema/PulseResult";
 
 const BASE_URL =
   "https://backend.gentleisland-bcedf421.centralindia.azurecontainerapps.io";
@@ -279,6 +280,14 @@ export const getUserPredictions = async (config?: FetchConfig): Promise<Predicti
     const userPredictionsData = await get<any[]>(url, config);
 
     const userPredictions: Prediction[] = userPredictionsData.map((userPredictionData) => {
+
+      const result: PulseResult<number> = {
+        type: PulseResultType.Won,
+        coinsResult: userPredictionData.coins_won,
+        ranking: userPredictionData.rank,
+        finalValue: userPredictionData.prediction.correct_answer,
+      };
+
       return {
         type: PulseType.Prediction,
         predictionId: userPredictionData.prediction_id.toString(),
@@ -292,6 +301,7 @@ export const getUserPredictions = async (config?: FetchConfig): Promise<Predicti
         userPrediction: userPredictionData.answer,
         predictionStepValue: userPredictionData.prediction.step_value || 25,
         predictionScaleUnit: userPredictionData.prediction.scale_unit || "",
+        result: result,
         // Adding dummy values to avoid breaking code because of type error.
         startDate: "2024-04-10",
       };
