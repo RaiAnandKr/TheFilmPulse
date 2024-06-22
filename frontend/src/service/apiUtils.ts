@@ -8,7 +8,7 @@ import type { Prediction } from "~/schema/Prediction";
 import type { Opinion, Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { PulseType } from "~/schema/PulseType";
-import { CouponDetail } from "~/schema/CouponDetail";
+import { CouponDetail, CouponCode } from "~/schema/CouponDetail";
 import { PulseResult, PulseResultType } from "~/schema/PulseResult";
 
 const BASE_URL =
@@ -362,5 +362,25 @@ export const getVouchers = async (config?: FetchConfig): Promise<CouponDetail[]>
     return vouchers;
   } catch (error) {
     throw new Error(`Error fetching vouchers: ${(error as Error).message}`);
+  }
+};
+
+// This will fetch just 1 coupon code corresponding to a coupon id (brand).
+export const getVoucherCode = async (couponId: number, limit: number = 1,
+  config?: FetchConfig): Promise<CouponCode[]> => {
+
+  try {
+    const url = `/voucher_codes?voucher_id=${couponId}&limit=1`
+    const voucherCodesData = await get<any[]>(url, config);
+
+    const voucherCodes: CouponCode[] = voucherCodesData.map(voucherCodeData => ({
+      couponCode: voucherCodeData.code,
+      expiryDate: voucherCodeData.expiry_date,
+    }));
+
+    return voucherCodes;
+
+  } catch (error) {
+    throw new Error(`Error fetching voucher code: ${(error as Error).message}`);
   }
 };
