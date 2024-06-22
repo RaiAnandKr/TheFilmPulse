@@ -196,6 +196,15 @@ export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> 
           coinsUsed: userOpinionData.coins,
       }
 
+      // Set the result only if the result computation is finished. Check that from the correct_answer field and if it's
+      // set or not.
+      const result: PulseResult<OpinionOption> | undefined = userOpinionData.opinion.correct_answer !== null ? {
+        type: userOpinionData.answer === userOpinionData.opinion.correct_answer ? PulseResultType.Won : PulseResultType.Lost,
+        coinsUsed: userOpinionData.coins,
+        coinsResult: userOpinionData.coins_won,
+        finalValue: userOpinionData.opinion.correct_answer === 'yes' ? OpinionOption.Yes : OpinionOption.No,
+      } : undefined;
+
       return {
         type: PulseType.Opinion,
         opinionId: userOpinionData.opinion_id.toString(),
@@ -205,6 +214,7 @@ export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> 
         filmPosterSrc: userOpinionData.opinion.icon_url,
         votes: [yesVote, noVote],
         userVote: userVote,
+        result: result,
         // Adding dummy values to avoid breaking code because of type error
         startDate: "2024-04-10",
       };
@@ -281,12 +291,14 @@ export const getUserPredictions = async (config?: FetchConfig): Promise<Predicti
 
     const userPredictions: Prediction[] = userPredictionsData.map((userPredictionData) => {
 
-      const result: PulseResult<number> = {
-        type: PulseResultType.Won,
+      // Populate result only if there is a rank in userPredictionData implying that the result
+      // computation has finished.
+      const result: PulseResult<number> | undefined = userPredictionData.rank !== null ? {
+        type: userPredictionData.coins_won > 0 ? PulseResultType.Won : PulseResultType.None,
         coinsResult: userPredictionData.coins_won,
         ranking: userPredictionData.rank,
         finalValue: userPredictionData.prediction.correct_answer,
-      };
+      } : undefined;
 
       return {
         type: PulseType.Prediction,
