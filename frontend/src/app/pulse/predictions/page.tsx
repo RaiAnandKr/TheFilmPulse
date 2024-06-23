@@ -4,11 +4,11 @@ import { PredictionCard } from "~/components/prediction-card";
 import { getPredictions } from "~/constants/mocks";
 import { useMainStore } from "~/data/contexts/store-context";
 import { useLoadData } from "~/data/hooks/useLoadData";
-import { filterMapValues } from "~/utilities/filterMapValues";
+import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
 
 const PredictionPage = () => {
   const { predictions, setActivePredictions } = useMainStore((state) => ({
-    predictions: filterMapValues(
+    predictions: filterMapValuesInArray(
       state.predictions,
       (_, prediction) => !!prediction.isActive,
     ),

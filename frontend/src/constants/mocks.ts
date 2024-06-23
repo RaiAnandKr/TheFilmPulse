@@ -258,15 +258,6 @@ const FILMS: Film[] = [
   },
 ];
 
-const getFilmInfo = (predictionId: string) => {
-  return FILMS.find(
-    (film) =>
-      film.filmId ===
-      PREDICTIONS.find((prediction) => prediction.predictionId === predictionId)
-        ?.filmId,
-  );
-};
-
 function isPulseActive(endDate: string) {
   return differenceInDays(new Date(), new Date(endDate)) > 0;
 }
@@ -532,7 +523,6 @@ const getCouponCode = async (couponId: string) => {
 export {
   getOpinions,
   FILMS,
-  getFilmInfo,
   getPredictions,
   getFilmInfoFromFilmId,
   getOpinionsFromFilmId,

@@ -19,7 +19,7 @@ import { BackIcon } from "~/res/icons/back";
 import { usePathname, useRouter } from "next/navigation";
 import { HOME_PATH } from "~/constants/paths";
 import { CoinsImage } from "~/res/images/CoinsImage";
-import { useLoadUserInfo } from "~/data/hooks/useLoadUserInfo";
+import { useLoadUserData } from "~/data/hooks/useLoadUserData";
 
 const menuItems: MenuItem[] = [
   {
@@ -100,7 +100,7 @@ const SpokePageHeader: React.FC = () => {
 };
 
 const LoginCumCoinsNavbarContent = () => {
-  const userTotalCoins = useLoadUserInfo((state) =>
+  const userTotalCoins = useLoadUserData((state) =>
     state.userCoins.reduce((acc, userCoin) => acc + userCoin.coins, 0),
   );
 

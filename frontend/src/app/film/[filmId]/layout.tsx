@@ -11,6 +11,7 @@ export default function FilmLayout({
   params: { filmId: string };
 }) {
   const filmId = params.filmId;
+  // TODO: api call to get filmInfo.
   const filmInfo = getFilmInfoFromFilmId(filmId);
 
   if (!filmInfo) {

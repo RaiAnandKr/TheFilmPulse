@@ -19,6 +19,8 @@ import { ResultChip } from "./result-chip";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { OptionButton } from "./option-button";
 import { useState } from "react";
+import type { MainStore } from "~/data/store/main-store";
+import { useMainStore } from "~/data/contexts/store-context";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -28,8 +30,10 @@ interface OpinionProps {
 
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
   const { useFullWidth, opinion, useFooter } = props;
-  const { title, endDate, filmPosterSrc, votes, userVote, filmId, result } =
+  const { title, endDate, votes, userVote, filmId, result, opinionId } =
     opinion;
+
+  const film = useMainStore((state) => opinionFilmSelector(state, opinionId));
 
   const router = useRouter();
 
@@ -61,7 +65,7 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
                 alt="Film Poster"
                 height={48}
                 src={
-                  filmPosterSrc ??
+                  film?.imgSrc ??
                   "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
                 }
                 width={48}
@@ -175,3 +179,13 @@ const Coins: React.FC<{
     <p>{numberInShorthand(props.coins)} </p>
   </div>
 );
+
+const opinionFilmSelector = (state: MainStore, opinionId: string) => {
+  const associatedFilmId = state.opinions.get(opinionId)?.filmId;
+  if (!associatedFilmId) {
+    return null;
+  }
+
+  const associatedFilm = state.films.get(associatedFilmId);
+  return associatedFilm;
+};

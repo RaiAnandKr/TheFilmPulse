@@ -1,4 +1,4 @@
-export const filterMapValues = <K, V>(
+export const filterMapValuesInArray = <K, V>(
   map: Map<K, V>,
   predicate: (key: K, value: V) => boolean,
 ): Array<V> => {

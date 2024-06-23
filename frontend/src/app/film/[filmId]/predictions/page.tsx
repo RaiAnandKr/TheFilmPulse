@@ -5,14 +5,14 @@ import { getPredictionsFromFilmId } from "~/constants/mocks";
 import { useMainStore } from "~/data/contexts/store-context";
 import { useLoadData } from "~/data/hooks/useLoadData";
 import { useScrollToTop } from "~/hooks/useScrollToTop";
-import { filterMapValues } from "~/utilities/filterMapValues";
+import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
 
 const FilmPredictionsPage = ({ params }: { params: { filmId: string } }) => {
   const { filmId } = params;
   useScrollToTop();
 
   const { filmPredictions, setFilmPredictions } = useMainStore((state) => ({
-    filmPredictions: filterMapValues(
+    filmPredictions: filterMapValuesInArray(
       state.predictions,
       (_, prediction) => prediction.filmId === filmId,
     ),

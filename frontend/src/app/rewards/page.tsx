@@ -4,18 +4,16 @@ import { Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 import { Rewards } from "~/components/rewards";
 import { OpinionCard } from "~/components/opinion-card";
 import { PredictionCard } from "~/components/prediction-card";
-import { getPastParticipations } from "~/constants/mocks";
 import { CoinType } from "~/schema/CoinType";
 import type { Opinion } from "~/schema/Opinion";
 import type { Prediction } from "~/schema/Prediction";
 import { PulseType } from "~/schema/PulseType";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 import { useMainStore } from "~/data/contexts/store-context";
-import { useLoadData } from "~/data/hooks/useLoadData";
-import { pick } from "~/utilities/pick";
-import { filterMapValues } from "~/utilities/filterMapValues";
+import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
 import { differenceInDays } from "~/utilities/differenceInDays";
 import { MainStore } from "~/data/store/main-store";
+import { useLoadPastParticipationsData } from "~/data/hooks/useLoadPastParticipationsData";
 
 const RewardsPage = () => {
   const userTotalCoins = useMainStore((state) =>
@@ -90,26 +88,11 @@ const CoinCard: React.FC<{
 };
 
 const PastParticipations = () => {
-  const { userPastParticipations, updateOpinions, updatePredictions } =
-    useMainStore((state) => ({
-      ...pick(state, ["updateOpinions", "updatePredictions"]),
-      userPastParticipations: userPastParticipationSelector(state),
-    }));
+  useLoadPastParticipationsData();
 
-  useLoadData("pastParticipations", getPastParticipations, (participations) => {
-    updateOpinions(
-      "userPastOpinions",
-      participations.filter(
-        (pulse) => pulse.type === PulseType.Opinion,
-      ) as Opinion[],
-    );
-    updatePredictions(
-      "userPastPredictions",
-      participations.filter(
-        (pulse) => pulse.type === PulseType.Prediction,
-      ) as Prediction[],
-    );
-  });
+  const { userPastParticipations } = useMainStore((state) => ({
+    userPastParticipations: userPastParticipationSelector(state),
+  }));
 
   return (
     <div className="bg-success-to-danger flex w-full flex-col p-3">
@@ -132,11 +115,11 @@ const userPastParticipationSelector = (
   state: MainStore,
 ): (Prediction | Opinion)[] => {
   return [
-    ...filterMapValues(
+    ...filterMapValuesInArray(
       state.predictions,
       (_, prediction) => !!(prediction.userPrediction && prediction.result),
     ),
-    ...filterMapValues(
+    ...filterMapValuesInArray(
       state.opinions,
       (_, opinion) => !!(opinion.userVote && opinion.result),
     ),

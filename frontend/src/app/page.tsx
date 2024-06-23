@@ -15,23 +15,22 @@ import { InfoIcon } from "~/res/icons/info";
 import { ForwardIcon } from "~/res/icons/forward";
 import { useLoadData } from "~/data/hooks/useLoadData";
 import { useMainStore } from "~/data/contexts/store-context";
-import { filterMapValues } from "~/utilities/filterMapValues";
-import { pick } from "~/utilities/pick";
+import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
 
 export default function Page() {
   return (
     <>
-      <TopOpinions />
+      <TrendingOpinions />
       <TrendingFilms />
     </>
   );
 }
 
-const TopOpinions = () => {
+const TrendingOpinions = () => {
   const router = useRouter();
 
   const { trendingOpinions, setTrendingOpinions } = useMainStore((state) => ({
-    trendingOpinions: filterMapValues(
+    trendingOpinions: filterMapValuesInArray(
       state.opinions,
       (_, opinion) => !!opinion.isTrending,
     ),
@@ -47,7 +46,7 @@ const TopOpinions = () => {
   return (
     <>
       <SectionHeader
-        title="Top Opinions"
+        title="Trending Opinions"
         onViewAllClick={() => router.push("/pulse")}
         info={
           <div className="px-1 py-2">
@@ -72,7 +71,7 @@ const TopOpinions = () => {
 
 const TrendingFilms = () => {
   const { films, setFilms } = useMainStore((state) => ({
-    films: filterMapValues(state.films, (key, val) => true),
+    films: filterMapValuesInArray(state.films, (key, val) => true),
     setFilms: state.setFilms,
   }));
   useLoadData("films", () => FILMS, setFilms);
