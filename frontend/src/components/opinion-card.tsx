@@ -30,10 +30,17 @@ interface OpinionProps {
 
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
   const { useFullWidth, opinion, useFooter } = props;
-  const { title, endDate, votes, userVote, filmId, result, opinionId } =
+  const { title, endDate, votes, filmId, result, opinionId, userVote } =
     opinion;
 
-  const film = useMainStore((state) => opinionFilmSelector(state, opinionId));
+  const { film, addUserOpinion } = useMainStore((state) => ({
+    film: opinionFilmSelector(state, opinionId),
+    addUserOpinion: state.addUserOpinion,
+  }));
+
+  const onOpinionConfirmed = (userVote: UserVote) => {
+    addUserOpinion(opinionId, userVote);
+  };
 
   const router = useRouter();
 
@@ -84,7 +91,11 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
       </CardBody>
       <CardFooter className="flex flex-none flex-col p-0 pt-2">
         <ParticipationTrend votes={votes} />
-        <Options votes={votes} userVote={userVote} />
+        <Options
+          votes={votes}
+          userVote={userVote}
+          onOpinionConfirmed={onOpinionConfirmed}
+        />
         {useFooter && (
           <TimerAndParticipations
             endDate={endDate}
@@ -97,8 +108,12 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
   );
 };
 
-const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
-  const { votes, userVote } = props;
+const Options: React.FC<{
+  votes: Vote[];
+  onOpinionConfirmed: (userVote: UserVote) => void;
+  userVote?: UserVote;
+}> = (props) => {
+  const { votes, userVote, onOpinionConfirmed } = props;
   const [hasVoted, setHasVoted] = useState(false);
 
   return (
@@ -114,8 +129,7 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
         }}
         votes={votes}
         userVote={userVote}
-        hasVoted={hasVoted}
-        setHasVoted={setHasVoted}
+        onOpinionConfirmed={onOpinionConfirmed}
       />
       <OptionButton
         key={votes[1]?.option ?? OpinionOption.No}
@@ -128,8 +142,7 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
         }}
         votes={votes}
         userVote={userVote}
-        hasVoted={hasVoted}
-        setHasVoted={setHasVoted}
+        onOpinionConfirmed={onOpinionConfirmed}
       />
     </div>
   );

@@ -17,6 +17,10 @@ type PredictionAction = {
     filmId: Prediction["filmId"],
     predictions: Prediction[],
   ) => void;
+  addUserPrediction: (
+    opinionId: Prediction["predictionId"],
+    predictionVal: number,
+  ) => void;
 };
 
 export type PredictionSlice = PredictionState & PredictionAction;
@@ -55,4 +59,14 @@ export const createPredictionSlice: StateCreator<
       { type: "setFilmPredictions", filmId },
       predictions,
     ),
+  addUserPrediction: (predictionId, predictionVal) => {
+    const prediction = get().predictions.get(predictionId);
+    get().updatePredictions(
+      { type: "addUserPrediction", predictionId },
+      prediction ? [prediction] : [],
+      {
+        userPrediction: predictionVal,
+      },
+    );
+  },
 });

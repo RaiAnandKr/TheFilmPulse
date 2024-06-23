@@ -16,6 +16,7 @@ import { ForwardIcon } from "~/res/icons/forward";
 import { useLoadData } from "~/data/hooks/useLoadData";
 import { useMainStore } from "~/data/contexts/store-context";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
+import { pick } from "~/utilities/pick";
 
 export default function Page() {
   return (
@@ -70,11 +71,15 @@ const TrendingOpinions = () => {
 };
 
 const TrendingFilms = () => {
-  const { films, setFilms } = useMainStore((state) => ({
+  const { films, setFilms, setFilmPredictions } = useMainStore((state) => ({
     films: filterMapValuesInArray(state.films, Boolean),
-    setFilms: state.setFilms,
+    ...pick(state, ["setFilms", "setFilmPredictions"]),
   }));
-  useLoadData("films", getFilms, setFilms);
+
+  useLoadData("films", getFilms, (films) => {
+    setFilms(films);
+    films.map((film) => setFilmPredictions(film.filmId, [film.topPrediction]));
+  });
 
   return (
     <>

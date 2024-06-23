@@ -1,5 +1,6 @@
 import type { StateCreator } from "zustand";
-import type { Opinion } from "~/schema/Opinion";
+import type { Opinion, UserVote } from "~/schema/Opinion";
+import { PulseType } from "~/schema/PulseType";
 import { mergeArrayToMap } from "~/utilities/mergeArrayToMap";
 
 type OpinionState = {
@@ -15,6 +16,7 @@ type OpinionAction = {
   setTrendingOpinions: (opinions: Opinion[]) => void;
   setActiveOpinions: (opinions: Opinion[]) => void;
   setFilmOpinions: (filmId: Opinion["filmId"], opinions: Opinion[]) => void;
+  addUserOpinion: (opinionId: Opinion["opinionId"], userVote: UserVote) => void;
 };
 
 export type OpinionSlice = OpinionState & OpinionAction;
@@ -54,4 +56,14 @@ export const createOpinionSlice: StateCreator<
     }),
   setFilmOpinions: (filmId, opinions) =>
     get().updateOpinions({ type: "setFilmOpinions", filmId }, opinions),
+  addUserOpinion: (opinionId, userVote) => {
+    const opinion = get().opinions.get(opinionId);
+    get().updateOpinions(
+      { type: "addUserOpinion", opinionId },
+      opinion ? [opinion] : [],
+      {
+        userVote,
+      },
+    );
+  },
 });
