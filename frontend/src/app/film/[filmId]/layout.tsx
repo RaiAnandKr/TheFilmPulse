@@ -1,6 +1,6 @@
 import { Chip, Image } from "@nextui-org/react";
 import { PulseTabs } from "~/components/pulse-tabs";
-import { FILMS, getFilmInfoFromFilmId } from "~/constants/mocks";
+import { getFilms, getFilmInfoFromFilmId } from "~/constants/mocks";
 import type { Film } from "~/schema/Film";
 
 export default function FilmLayout({
@@ -11,7 +11,7 @@ export default function FilmLayout({
   params: { filmId: string };
 }) {
   const filmId = params.filmId;
-  // TODO: api call to get filmInfo.
+  // TODO: api call to get filmInfo. This is Server Component.
   const filmInfo = getFilmInfoFromFilmId(filmId);
 
   if (!filmInfo) {
@@ -78,8 +78,8 @@ const FilmVisual: React.FC<{ film: Film }> = (props) => {
 };
 
 export async function generateStaticParams() {
-  // TODO: api call to get all films.
-  return FILMS.map((film) => ({
+  const films = await getFilms();
+  return films.map((film) => ({
     filmId: film.filmId,
   }));
 }

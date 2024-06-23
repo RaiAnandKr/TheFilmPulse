@@ -257,7 +257,7 @@ function isPulseActive(endDate: string) {
   return differenceInDays(new Date(), new Date(endDate)) > 0;
 }
 
-const getOpinions = ({
+const getOpinions = async ({
   isActive,
   limit,
 }: {
@@ -272,7 +272,7 @@ const getOpinions = ({
     .filter(Boolean);
 };
 
-const getPredictions = ({ isActive }: { isActive: boolean }) => {
+const getPredictions = async ({ isActive }: { isActive: boolean }) => {
   const predictions = [...PREDICTIONS];
 
   return predictions
@@ -284,18 +284,18 @@ const getFilmInfoFromFilmId = (filmId: string) => {
   return FILMS.find((film) => film.filmId === filmId);
 };
 
-const getOpinionsFromFilmId = (filmId: string) => {
+const getOpinionsFromFilmId = async (filmId: string) => {
   return OPINIONS.filter((opinion) => opinion.filmId === filmId);
 };
 
-const getPredictionsFromFilmId = (filmId: string) => {
+const getPredictionsFromFilmId = async (filmId: string) => {
   return PREDICTIONS.filter((prediction) => prediction.filmId === filmId);
 };
 
-const getPastParticipations = (): (Opinion | Prediction)[] => {
+const getPastParticipations = async (): Promise<(Opinion | Prediction)[]> => {
   return [
-    ...getOpinions({ isActive: false }),
-    ...getPredictions({ isActive: false }),
+    ...(await getOpinions({ isActive: false })),
+    ...(await getPredictions({ isActive: false })),
   ].filter(
     (pulse) =>
       !!(
@@ -498,7 +498,7 @@ const REWARDS: Reward[] = [
   },
 ];
 
-const getRewards = () => REWARDS;
+const getRewards = async () => REWARDS;
 
 const USER_COINS = [
   { type: CoinType.Earned, coins: 475, isRedeemable: true },
@@ -509,15 +509,17 @@ const USER_COINS = [
   },
 ];
 
-const getUserCoins = () => USER_COINS;
+const getUserCoins = async () => USER_COINS;
 
 const getCouponCode = async (couponId: string) => {
   return "STEALDEAL50";
 };
 
+const getFilms = async () => FILMS;
+
 export {
   getOpinions,
-  FILMS,
+  getFilms,
   getPredictions,
   getFilmInfoFromFilmId,
   getOpinionsFromFilmId,

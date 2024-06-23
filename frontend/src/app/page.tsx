@@ -2,7 +2,7 @@
 
 import { OpinionCard } from "../components/opinion-card";
 import { FilmPredictionCard } from "../components/film-prediction-card";
-import { FILMS, getOpinions } from "../constants/mocks";
+import { getFilms, getOpinions } from "../constants/mocks";
 import { colors } from "../styles/colors";
 import {
   Button,
@@ -74,7 +74,7 @@ const TrendingFilms = () => {
     films: filterMapValuesInArray(state.films, Boolean),
     setFilms: state.setFilms,
   }));
-  useLoadData("films", () => FILMS, setFilms);
+  useLoadData("films", getFilms, setFilms);
 
   return (
     <>
