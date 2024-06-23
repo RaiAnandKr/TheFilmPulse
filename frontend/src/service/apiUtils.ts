@@ -366,7 +366,7 @@ export const getVouchers = async (config?: FetchConfig): Promise<CouponDetail[]>
 };
 
 // This will fetch just 1 coupon code corresponding to a coupon id (brand).
-export const getVoucherCode = async (couponId: number, limit: number = 1,
+export const getVoucherCode = async (couponId: number, limit = 1,
   config?: FetchConfig): Promise<CouponCode[]> => {
 
   try {
