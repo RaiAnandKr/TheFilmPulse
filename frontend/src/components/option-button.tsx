@@ -14,10 +14,11 @@ import type { Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { numberInShorthand } from "../utilities/numberInShorthand";
 import { useState } from "react";
-import { getUserEarnedCoins } from "~/constants/mocks";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import type { ClassValue } from "tailwind-variants";
 import { TickIcon } from "~/res/icons/tick";
+import { userEarnedCoinsSelector } from "~/data/store/selectors/userEarnedCoinsSelector";
+import { useMainStore } from "~/data/contexts/store-context";
 
 interface OptionButtonProps {
   option: OpinionOption;
@@ -84,8 +85,9 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
     props;
 
   const label = option;
-  const earnedCoins = getUserEarnedCoins();
-  const defaultCoinsToBet = Math.floor(earnedCoins * 0.3);
+
+  const userEarnedCoins = useMainStore(userEarnedCoinsSelector);
+  const defaultCoinsToBet = Math.floor(userEarnedCoins * 0.3);
 
   const [hasConfirmedOption, setHasConfirmedOption] = useState(false);
   const [coinstToBet, setCoinsToBet] = useState(defaultCoinsToBet);
@@ -127,15 +129,15 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
                 formatOptions={{
                   style: "decimal",
                 }}
-                maxValue={earnedCoins}
+                maxValue={userEarnedCoins}
                 marks={[
                   {
                     value: 0,
                     label: "0",
                   },
                   {
-                    value: earnedCoins,
-                    label: earnedCoins.toString(),
+                    value: userEarnedCoins,
+                    label: userEarnedCoins.toString(),
                   },
                 ]}
                 value={coinstToBet}

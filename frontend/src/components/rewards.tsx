@@ -1,8 +1,10 @@
 import { Coupon } from "./coupon";
-import { getRewards, getUserEarnedCoins } from "~/constants/mocks";
+import { getRewards } from "~/constants/mocks";
 import { RewardsMeter } from "./rewards-meter";
 import { RewardContext, RewardProvider } from "~/data/contexts/reward-context";
 import { useContext } from "react";
+import { userEarnedCoinsSelector } from "~/data/store/selectors/userEarnedCoinsSelector";
+import { useMainStore } from "~/data/contexts/store-context";
 
 export const Rewards = () => {
   return (
@@ -22,6 +24,9 @@ export const Rewards = () => {
 
 const Coupons = () => {
   const [rewardPointer] = useContext(RewardContext);
+
+  const userEarnedCoins = useMainStore(userEarnedCoinsSelector);
+
   const eligibleCoupons = getRewards().find(
     (reward) => reward.checkpoint === rewardPointer,
   )?.coupons;
@@ -34,7 +39,7 @@ const Coupons = () => {
     );
   }
 
-  const isCouponDisabled = getUserEarnedCoins() < rewardPointer;
+  const isCouponDisabled = userEarnedCoins < rewardPointer;
 
   return eligibleCoupons.map((coupon) => (
     <Coupon

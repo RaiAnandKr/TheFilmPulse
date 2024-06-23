@@ -515,7 +515,7 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
 const getRewards = () => REWARDS;
 
 const USER_COINS = [
-  { type: CoinType.Earned, coins: 450, isRedeemable: true },
+  { type: CoinType.Earned, coins: 475, isRedeemable: true },
   {
     type: CoinType.Bonus,
     coins: 50,
@@ -553,7 +553,6 @@ export {
   getPredictionsFromFilmId,
   getRewards,
   getUserCoins,
-  getUserEarnedCoins,
   getMaxRedeemableCoins,
   getPastParticipations,
   getCouponCode,

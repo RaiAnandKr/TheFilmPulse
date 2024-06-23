@@ -19,6 +19,7 @@ import { BackIcon } from "~/res/icons/back";
 import { usePathname, useRouter } from "next/navigation";
 import { HOME_PATH } from "~/constants/paths";
 import { CoinsImage } from "~/res/images/CoinsImage";
+import { useLoadUserInfo } from "~/data/hooks/useLoadUserInfo";
 
 const menuItems: MenuItem[] = [
   {
@@ -98,23 +99,29 @@ const SpokePageHeader: React.FC = () => {
   );
 };
 
-const LoginCumCoinsNavbarContent = () => (
-  <NavbarContent className={styles.noflex} justify="end">
-    <NavbarItem className="hidden lg:flex">
-      <Link href="#">Login</Link>
-    </NavbarItem>
-    <NavbarItem>
-      <Button
-        variant="flat"
-        startContent={<CoinsImage />}
-        className="font-bold"
-        color="warning"
-      >
-        500
-      </Button>
-    </NavbarItem>
-  </NavbarContent>
-);
+const LoginCumCoinsNavbarContent = () => {
+  const userTotalCoins = useLoadUserInfo((state) =>
+    state.userCoins.reduce((acc, userCoin) => acc + userCoin.coins, 0),
+  );
+
+  return (
+    <NavbarContent className={styles.noflex} justify="end">
+      <NavbarItem className="hidden lg:flex">
+        <Link href="#">Login</Link>
+      </NavbarItem>
+      <NavbarItem>
+        <Button
+          variant="flat"
+          startContent={<CoinsImage />}
+          className="font-bold"
+          color="warning"
+        >
+          {userTotalCoins}
+        </Button>
+      </NavbarItem>
+    </NavbarContent>
+  );
+};
 
 const AvatarDropdown = () => (
   <Dropdown placement="bottom-end">

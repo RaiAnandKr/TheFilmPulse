@@ -4,7 +4,7 @@ import { Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 import { Rewards } from "~/components/rewards";
 import { OpinionCard } from "~/components/opinion-card";
 import { PredictionCard } from "~/components/prediction-card";
-import { getPastParticipations, getUserCoins } from "~/constants/mocks";
+import { getPastParticipations } from "~/constants/mocks";
 import { CoinType } from "~/schema/CoinType";
 import type { Opinion } from "~/schema/Opinion";
 import type { Prediction } from "~/schema/Prediction";
@@ -17,34 +17,36 @@ import { filterMapValues } from "~/utilities/filterMapValues";
 import { differenceInDays } from "~/utilities/differenceInDays";
 import { MainStore } from "~/data/store/main-store";
 
-const RewardsPage = () => (
-  <>
-    <SectionHeader
-      title={
-        <div className="flex justify-between">
-          <span>Total Coins : </span>
-          <span>{500} </span>
-        </div>
-      }
-    />
-    <CoinsInfo />
-    <SectionHeader title="Rewards" />
-    <Rewards />
-    <SectionHeader title="Past Participations" />
-    <PastParticipations />
-  </>
-);
+const RewardsPage = () => {
+  const userTotalCoins = useMainStore((state) =>
+    state.userCoins.reduce((acc, userCoin) => acc + userCoin.coins, 0),
+  );
+
+  return (
+    <>
+      <SectionHeader
+        title={
+          <div className="flex justify-between">
+            <span>Total Coins : </span>
+            <span>{userTotalCoins} </span>
+          </div>
+        }
+      />
+      <CoinsInfo />
+      <SectionHeader title="Rewards" />
+      <Rewards />
+      <SectionHeader title="Past Participations" />
+      <PastParticipations />
+    </>
+  );
+};
 
 const SectionHeader: React.FC<{ title: string | JSX.Element }> = (props) => (
   <h2 className="p-2 font-bold text-primary">{props.title}</h2>
 );
 
 const CoinsInfo = () => {
-  const { userCoins, setUserCoins } = useMainStore((state) =>
-    pick(state, ["userCoins", "setUserCoins"]),
-  );
-
-  useLoadData("getUserCoins", getUserCoins, setUserCoins);
+  const userCoins = useMainStore((state) => state.userCoins);
 
   return (
     <div className="bg-success-to-danger flex w-full justify-evenly gap-3 p-2 py-3">

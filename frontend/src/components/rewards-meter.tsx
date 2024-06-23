@@ -5,8 +5,10 @@ import {
   type SliderValue,
 } from "@nextui-org/react";
 import { useContext, useEffect, useMemo } from "react";
-import { getRewards, getUserEarnedCoins } from "~/constants/mocks";
+import { getRewards } from "~/constants/mocks";
 import { RewardContext } from "~/data/contexts/reward-context";
+import { useMainStore } from "~/data/contexts/store-context";
+import { userEarnedCoinsSelector } from "~/data/store/selectors/userEarnedCoinsSelector";
 import { gcdOfNumbers } from "~/utilities/gcdOfNumbers";
 
 const SLIDER_ID = "RewardsMeter";
@@ -15,7 +17,8 @@ export const RewardsMeter = () => {
   const checkpointCount = getRewards().length;
   const maxValue = getRewards()[checkpointCount - 1]?.checkpoint ?? 0;
   const step = gcdOfNumbers(getRewards().map((reward) => reward.checkpoint));
-  const userEarnedCoins = getUserEarnedCoins();
+
+  const userEarnedCoins = useMainStore(userEarnedCoinsSelector);
 
   const [rewardPointer, setRewardPointer] = useContext(RewardContext);
   const onChange = (value: SliderValue) => {
