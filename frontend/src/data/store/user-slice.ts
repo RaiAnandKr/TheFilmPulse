@@ -7,12 +7,14 @@ type UserState = {
   userId: string;
   phone: string;
   handle: string;
-  coinInfo: { type: CoinType; coins: number }[];
+  userCoins: { type: CoinType; coins: number; isRedeemable?: boolean }[];
   userPredictions: Map<Prediction["predictionId"], { prediction: number }>;
   userOpinions: Map<Opinion["opinionId"], { userVote: UserVote }>;
 };
 
-type UserAction = {};
+type UserAction = {
+  setUserCoins: (userCoins: UserState["userCoins"]) => void;
+};
 
 export type UserSlice = UserState & UserAction;
 
@@ -25,7 +27,15 @@ export const createUserSlice: StateCreator<
   userId: "",
   phone: "",
   handle: "",
-  coinInfo: [],
+  userCoins: [],
   userPredictions: new Map(),
   userOpinions: new Map(),
+  setUserCoins: (userCoins) =>
+    set(
+      {
+        userCoins,
+      },
+      false,
+      "UserAction/setUserCoins",
+    ),
 });

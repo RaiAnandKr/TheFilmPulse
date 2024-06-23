@@ -63,7 +63,7 @@ const OPINIONS: Opinion[] = [
     opinionId: "d",
     title: "Will there be sequel of Kalki?",
     startDate: "May 25, 2024",
-    endDate: "July 5, 2024",
+    endDate: "June 15, 2024",
     filmId: "film-1",
     votes: [
       { option: OpinionOption.Yes, participationCount: 168, coins: 2430 },
@@ -83,7 +83,7 @@ const OPINIONS: Opinion[] = [
     opinionId: "e",
     title: "Will Fahad Fasil die in Pushpa 2?",
     startDate: "May 25, 2024",
-    endDate: "September 2, 2024",
+    endDate: "June 2, 2024",
     filmId: "film-2",
     votes: [
       { option: OpinionOption.Yes, participationCount: 75, coins: 1230 },
@@ -306,6 +306,19 @@ const getPredictionsFromFilmId = (filmId: string) => {
   return PREDICTIONS.filter((prediction) => prediction.filmId === filmId);
 };
 
+const getPastParticipations = (): (Opinion | Prediction)[] => {
+  return [
+    ...getOpinions({ isActive: false }),
+    ...getPredictions({ isActive: false }),
+  ].filter(
+    (pulse) =>
+      !!(
+        ((pulse as Opinion).userVote ?? (pulse as Prediction).userPrediction) &&
+        pulse.result
+      ),
+  );
+};
+
 const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
   {
     checkpoint: 200,
@@ -499,13 +512,18 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
   },
 ];
 
+const getRewards = () => REWARDS;
+
 const USER_COINS = [
+  { type: CoinType.Earned, coins: 450, isRedeemable: true },
   {
     type: CoinType.Bonus,
     coins: 50,
+    isRedeemable: false,
   },
-  { type: CoinType.Earned, coins: 450 },
 ];
+
+const getUserCoins = () => USER_COINS;
 
 const getUserEarnedCoins = () =>
   USER_COINS.find((userCoin) => userCoin.type === CoinType.Earned)?.coins ?? 0;
@@ -533,9 +551,10 @@ export {
   getFilmInfoFromFilmId,
   getOpinionsFromFilmId,
   getPredictionsFromFilmId,
-  REWARDS,
-  USER_COINS,
+  getRewards,
+  getUserCoins,
   getUserEarnedCoins,
   getMaxRedeemableCoins,
+  getPastParticipations,
   getCouponCode,
 };

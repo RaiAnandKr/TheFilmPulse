@@ -37,19 +37,16 @@ export const createOpinionSlice: StateCreator<
         ),
       }),
       false,
-      actionName,
+      `OpinionAction/${actionName}`,
     ),
   setTrendingOpinions: (opinions) =>
-    get().updateOpinions("OpinionAction/setTrendingOpinions", opinions, {
+    get().updateOpinions("setTrendingOpinions", opinions, {
       isTrending: true,
     }),
   setActiveOpinions: (opinions) =>
-    get().updateOpinions("OpinionAction/setActiveOpinions", opinions, {
+    get().updateOpinions("setActiveOpinions", opinions, {
       isActive: true,
     }),
   setFilmOpinions: (filmId, opinions) =>
-    get().updateOpinions(
-      { type: "OpinionAction/setFilmOpinions", filmId },
-      opinions,
-    ),
+    get().updateOpinions({ type: "setFilmOpinions", filmId }, opinions),
 });

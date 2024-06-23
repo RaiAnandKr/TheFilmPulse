@@ -39,19 +39,15 @@ export const createPredictionSlice: StateCreator<
         ),
       }),
       false,
-      actionName,
+      `PredictionAction/${actionName}`,
     ),
   setActivePredictions: (predictions) =>
-    get().updatePredictions(
-      "PredictionAction/setActivePredictions",
-      predictions,
-      {
-        isActive: true,
-      },
-    ),
+    get().updatePredictions("setActivePredictions", predictions, {
+      isActive: true,
+    }),
   setFilmPredictions: (filmId, predictions) =>
     get().updatePredictions(
-      { type: "PredictionAction/setFilmPredictions", filmId },
+      { type: "setFilmPredictions", filmId },
       predictions,
     ),
 });

@@ -1,5 +1,5 @@
 import { Coupon } from "./coupon";
-import { REWARDS, getUserEarnedCoins } from "~/constants/mocks";
+import { getRewards, getUserEarnedCoins } from "~/constants/mocks";
 import { RewardsMeter } from "./rewards-meter";
 import { RewardContext, RewardProvider } from "~/data/contexts/reward-context";
 import { useContext } from "react";
@@ -22,7 +22,7 @@ export const Rewards = () => {
 
 const Coupons = () => {
   const [rewardPointer] = useContext(RewardContext);
-  const eligibleCoupons = REWARDS.find(
+  const eligibleCoupons = getRewards().find(
     (reward) => reward.checkpoint === rewardPointer,
   )?.coupons;
 

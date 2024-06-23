@@ -3,7 +3,7 @@
 import { OpinionCard } from "~/components/opinion-card";
 import { getOpinionsFromFilmId } from "~/constants/mocks";
 import { useMainStore } from "~/data/contexts/store-context";
-import { useLoadData } from "~/hooks/useLoadData";
+import { useLoadData } from "~/data/hooks/useLoadData";
 import { useScrollToTop } from "~/hooks/useScrollToTop";
 import { filterMapValues } from "~/utilities/filterMapValues";
 
@@ -20,7 +20,7 @@ const FilmOpinionsPage = ({ params }: { params: { filmId: string } }) => {
   }));
 
   useLoadData(
-    `filmOpinions_${filmId}`,
+    `filmOpinions?filmId=${filmId}`,
     () => getOpinionsFromFilmId(filmId),
     (opinions) => setFilmOpinions(filmId, opinions),
   );

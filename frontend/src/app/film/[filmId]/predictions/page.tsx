@@ -3,7 +3,7 @@
 import { PredictionCard } from "~/components/prediction-card";
 import { getPredictionsFromFilmId } from "~/constants/mocks";
 import { useMainStore } from "~/data/contexts/store-context";
-import { useLoadData } from "~/hooks/useLoadData";
+import { useLoadData } from "~/data/hooks/useLoadData";
 import { useScrollToTop } from "~/hooks/useScrollToTop";
 import { filterMapValues } from "~/utilities/filterMapValues";
 
@@ -20,7 +20,7 @@ const FilmPredictionsPage = ({ params }: { params: { filmId: string } }) => {
   }));
 
   useLoadData(
-    `filmPredictions_${filmId}`,
+    `filmPredictions?filmId=${filmId}`,
     () => getPredictionsFromFilmId(filmId),
     (predictions) => setFilmPredictions(filmId, predictions),
   );

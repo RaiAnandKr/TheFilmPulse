@@ -4,12 +4,18 @@ import { Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 import { Rewards } from "~/components/rewards";
 import { OpinionCard } from "~/components/opinion-card";
 import { PredictionCard } from "~/components/prediction-card";
-import { getOpinions, getPredictions } from "~/constants/mocks";
+import { getPastParticipations, getUserCoins } from "~/constants/mocks";
 import { CoinType } from "~/schema/CoinType";
 import type { Opinion } from "~/schema/Opinion";
 import type { Prediction } from "~/schema/Prediction";
 import { PulseType } from "~/schema/PulseType";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
+import { useMainStore } from "~/data/contexts/store-context";
+import { useLoadData } from "~/data/hooks/useLoadData";
+import { pick } from "~/utilities/pick";
+import { filterMapValues } from "~/utilities/filterMapValues";
+import { differenceInDays } from "~/utilities/differenceInDays";
+import { MainStore } from "~/data/store/main-store";
 
 const RewardsPage = () => (
   <>
@@ -34,10 +40,22 @@ const SectionHeader: React.FC<{ title: string | JSX.Element }> = (props) => (
 );
 
 const CoinsInfo = () => {
+  const { userCoins, setUserCoins } = useMainStore((state) =>
+    pick(state, ["userCoins", "setUserCoins"]),
+  );
+
+  useLoadData("getUserCoins", getUserCoins, setUserCoins);
+
   return (
     <div className="bg-success-to-danger flex w-full justify-evenly gap-3 p-2 py-3">
-      <CoinCard coinType={CoinType.Earned} coins={450} subText="Redeemable" />
-      <CoinCard coinType={CoinType.Bonus} coins={50} subText="Non-redeemable" />
+      {userCoins.map((userCoin) => (
+        <CoinCard
+          key={userCoin.type}
+          coinType={userCoin.type}
+          coins={userCoin.coins}
+          subText={userCoin.isRedeemable ? "Redeemable" : "Non-redeemable"}
+        />
+      ))}
     </div>
   );
 };
@@ -70,20 +88,30 @@ const CoinCard: React.FC<{
 };
 
 const PastParticipations = () => {
-  const pastParticipationsByUser: (Opinion | Prediction)[] = [
-    ...getOpinions({ isActive: false }),
-    ...getPredictions({ isActive: false }),
-  ].filter(
-    (pulse) =>
-      !!(
-        ((pulse as Opinion).userVote ?? (pulse as Prediction).userPrediction) &&
-        pulse.result
-      ),
-  );
+  const { userPastParticipations, updateOpinions, updatePredictions } =
+    useMainStore((state) => ({
+      ...pick(state, ["updateOpinions", "updatePredictions"]),
+      userPastParticipations: userPastParticipationSelector(state),
+    }));
+
+  useLoadData("pastParticipations", getPastParticipations, (participations) => {
+    updateOpinions(
+      "userPastOpinions",
+      participations.filter(
+        (pulse) => pulse.type === PulseType.Opinion,
+      ) as Opinion[],
+    );
+    updatePredictions(
+      "userPastPredictions",
+      participations.filter(
+        (pulse) => pulse.type === PulseType.Prediction,
+      ) as Prediction[],
+    );
+  });
 
   return (
     <div className="bg-success-to-danger flex w-full flex-col p-3">
-      {pastParticipationsByUser.map((pulse) =>
+      {userPastParticipations.map((pulse) =>
         pulse.type === PulseType.Opinion ? (
           <OpinionCard opinion={pulse} key={pulse.opinionId} useFullWidth />
         ) : (
@@ -95,6 +123,23 @@ const PastParticipations = () => {
         ),
       )}
     </div>
+  );
+};
+
+const userPastParticipationSelector = (
+  state: MainStore,
+): (Prediction | Opinion)[] => {
+  return [
+    ...filterMapValues(
+      state.predictions,
+      (_, prediction) => !!(prediction.userPrediction && prediction.result),
+    ),
+    ...filterMapValues(
+      state.opinions,
+      (_, opinion) => !!(opinion.userVote && opinion.result),
+    ),
+  ].sort((pulse1, pulse2) =>
+    differenceInDays(new Date(pulse2.endDate), new Date(pulse1.endDate)),
   );
 };
 
