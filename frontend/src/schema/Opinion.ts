@@ -11,7 +11,6 @@ export type Opinion = {
   filmId: string;
   votes: Vote[];
   userVote?: UserVote;
-  filmPosterSrc?: string;
   result?: PulseResult<OpinionOption>;
 
   // For client-side state management
