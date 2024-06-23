@@ -1,4 +1,4 @@
-export const mergeArrayToMap = <V extends {}>(
+export const mergeArrayToMap = <V extends object>(
   map: Map<string, V>,
   arr: Array<V>,
   propertyAsMapKey: keyof V,

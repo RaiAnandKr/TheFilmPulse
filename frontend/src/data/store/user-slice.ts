@@ -1,4 +1,4 @@
-import { StateCreator } from "zustand";
+import type { StateCreator } from "zustand";
 import type { CoinType } from "~/schema/CoinType";
 import type { Prediction } from "~/schema/Prediction";
 import type { Opinion, UserVote } from "~/schema/Opinion";

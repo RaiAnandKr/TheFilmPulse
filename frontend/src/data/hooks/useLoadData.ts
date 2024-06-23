@@ -13,11 +13,15 @@ export const useLoadData = <T>(
       if (fetchRecord.has(dataKey)) {
         return;
       }
-      const val = await fetcher();
+
+      // TODO: convert fetcher to promise and await on it
+      const val = fetcher();
       storeSetter(val);
       fetchRecord.set(dataKey, true);
     };
 
-    asyncFn();
-  }, []);
+    asyncFn().catch((err) =>
+      console.log(`[Error] Loading Data with key: ${dataKey}.`, err),
+    );
+  }, [dataKey]);
 };

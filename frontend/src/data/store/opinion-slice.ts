@@ -1,5 +1,5 @@
-import { StateCreator } from "zustand";
-import { Opinion } from "~/schema/Opinion";
+import type { StateCreator } from "zustand";
+import type { Opinion } from "~/schema/Opinion";
 import { mergeArrayToMap } from "~/utilities/mergeArrayToMap";
 
 type OpinionState = {
@@ -37,7 +37,12 @@ export const createOpinionSlice: StateCreator<
         ),
       }),
       false,
-      `OpinionAction/${actionName}`,
+      typeof actionName === "string"
+        ? `OpinionAction/${actionName}`
+        : {
+            ...(actionName as object),
+            type: `OpinionAction/${actionName.type}`,
+          },
     ),
   setTrendingOpinions: (opinions) =>
     get().updateOpinions("setTrendingOpinions", opinions, {

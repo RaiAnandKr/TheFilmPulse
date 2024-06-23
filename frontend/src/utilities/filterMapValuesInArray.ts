@@ -3,7 +3,7 @@ export const filterMapValuesInArray = <K, V>(
   predicate: (key: K, value: V) => boolean,
 ): Array<V> => {
   const filteredArray = Array<V>();
-  for (let [k, v] of map) {
+  for (const [k, v] of map) {
     if (predicate(k, v)) {
       filteredArray.push(v);
     }

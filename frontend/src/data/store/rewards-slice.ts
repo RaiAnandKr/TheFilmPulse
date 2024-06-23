@@ -1,5 +1,5 @@
-import { StateCreator } from "zustand";
-import { Reward } from "~/schema/Reward";
+import type { StateCreator } from "zustand";
+import type { Reward } from "~/schema/Reward";
 
 type RewardState = {
   rewards: Reward[];

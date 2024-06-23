@@ -4,10 +4,10 @@ import {
   type SliderStepMark,
   type SliderValue,
 } from "@nextui-org/react";
-import { DependencyList, useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, type DependencyList } from "react";
 import { RewardContext } from "~/data/contexts/reward-context";
 import { useMainStore } from "~/data/contexts/store-context";
-import { MainStore } from "~/data/store/main-store";
+import type { MainStore } from "~/data/store/main-store";
 import { userEarnedCoinsSelector } from "~/data/store/selectors/userEarnedCoinsSelector";
 import { gcdOfNumbers } from "~/utilities/gcdOfNumbers";
 
@@ -28,7 +28,7 @@ export const RewardsMeter = () => {
 
   useEffect(
     () => setRewardPointer(userMaxRedeemableCoins),
-    [userMaxRedeemableCoins],
+    [userMaxRedeemableCoins, setRewardPointer],
   );
 
   const onChange = (value: SliderValue) => {

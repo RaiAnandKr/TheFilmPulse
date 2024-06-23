@@ -12,7 +12,7 @@ import { numberInShorthand } from "~/utilities/numberInShorthand";
 import { useMainStore } from "~/data/contexts/store-context";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
 import { differenceInDays } from "~/utilities/differenceInDays";
-import { MainStore } from "~/data/store/main-store";
+import type { MainStore } from "~/data/store/main-store";
 import { useLoadPastParticipationsData } from "~/data/hooks/useLoadPastParticipationsData";
 
 const RewardsPage = () => {

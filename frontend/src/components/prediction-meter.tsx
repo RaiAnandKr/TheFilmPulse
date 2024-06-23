@@ -51,7 +51,13 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
           userPredictionValue={predictionPointer}
         />
       ),
-    [noButton, onPrediction],
+    [
+      noButton,
+      onPrediction,
+      meanPrediction,
+      predictionScaleUnitLabel,
+      predictionPointer,
+    ],
   );
 
   return (

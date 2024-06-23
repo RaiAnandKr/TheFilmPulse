@@ -1,4 +1,4 @@
-import { StateCreator } from "zustand";
+import type { StateCreator } from "zustand";
 import type { Prediction } from "~/schema/Prediction";
 import { mergeArrayToMap } from "~/utilities/mergeArrayToMap";
 
@@ -39,7 +39,12 @@ export const createPredictionSlice: StateCreator<
         ),
       }),
       false,
-      `PredictionAction/${actionName}`,
+      typeof actionName === "string"
+        ? `PredictionAction/${actionName}`
+        : {
+            ...(actionName as object),
+            type: `PredictionAction/${actionName.type}`,
+          },
     ),
   setActivePredictions: (predictions) =>
     get().updatePredictions("setActivePredictions", predictions, {

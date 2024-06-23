@@ -1,5 +1,5 @@
-import { StateCreator } from "zustand";
-import { Film } from "~/schema/Film";
+import type { StateCreator } from "zustand";
+import type { Film } from "~/schema/Film";
 import { mergeArrayToMap } from "~/utilities/mergeArrayToMap";
 
 type FilmState = {

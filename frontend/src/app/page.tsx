@@ -71,7 +71,7 @@ const TrendingOpinions = () => {
 
 const TrendingFilms = () => {
   const { films, setFilms } = useMainStore((state) => ({
-    films: filterMapValuesInArray(state.films, (key, val) => true),
+    films: filterMapValuesInArray(state.films, Boolean),
     setFilms: state.setFilms,
   }));
   useLoadData("films", () => FILMS, setFilms);

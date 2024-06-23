@@ -8,7 +8,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  ButtonProps,
+  type ButtonProps,
 } from "@nextui-org/react";
 import type { Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
@@ -35,7 +35,7 @@ interface OptionButtonProps {
 }
 
 export const OptionButton: React.FC<OptionButtonProps> = (props) => {
-  const { userVote, option, classNames, icon, hasVoted, setHasVoted } = props;
+  const { userVote, option, classNames, hasVoted } = props;
   const disclosure = useDisclosure();
 
   const label = option;
