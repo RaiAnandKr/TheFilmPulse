@@ -1,10 +1,16 @@
 import { Coupon } from "./coupon";
-import { REWARDS, getUserEarnedCoins } from "~/constants/mocks";
+import { getRewards } from "~/constants/mocks";
 import { RewardsMeter } from "./rewards-meter";
-import { RewardContext, RewardProvider } from "~/data/reward-context";
+import { RewardContext, RewardProvider } from "~/data/contexts/reward-context";
 import { useContext } from "react";
+import { userEarnedCoinsSelector } from "~/data/store/selectors/userEarnedCoinsSelector";
+import { useMainStore } from "~/data/contexts/store-context";
+import { useLoadData } from "~/data/hooks/useLoadData";
 
 export const Rewards = () => {
+  const setRewards = useMainStore((state) => state.setRewards);
+  useLoadData("getRewards", getRewards, setRewards);
+
   return (
     <RewardProvider>
       <div className="flex h-full w-full flex-col bg-default-100 p-3">
@@ -22,9 +28,13 @@ export const Rewards = () => {
 
 const Coupons = () => {
   const [rewardPointer] = useContext(RewardContext);
-  const eligibleCoupons = REWARDS.find(
-    (reward) => reward.checkpoint === rewardPointer,
-  )?.coupons;
+
+  const { userEarnedCoins, eligibleCoupons } = useMainStore((state) => ({
+    userEarnedCoins: userEarnedCoinsSelector(state),
+    eligibleCoupons: state.rewards.find(
+      (reward) => reward.checkpoint === rewardPointer,
+    )?.coupons,
+  }));
 
   if (!eligibleCoupons) {
     return (
@@ -34,7 +44,7 @@ const Coupons = () => {
     );
   }
 
-  const isCouponDisabled = getUserEarnedCoins() < rewardPointer;
+  const isCouponDisabled = userEarnedCoins < rewardPointer;
 
   return eligibleCoupons.map((coupon) => (
     <Coupon

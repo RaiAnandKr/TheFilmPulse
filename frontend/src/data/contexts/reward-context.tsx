@@ -1,10 +1,8 @@
 import React, { createContext, useState } from "react";
-import { getMaxRedeemableCoins } from "~/constants/mocks";
 
 const useRewardState = () => {
-  const userRedeemableCoins = getMaxRedeemableCoins();
-
-  return useState(userRedeemableCoins);
+  const initialPointerPosition = 0;
+  return useState(initialPointerPosition);
 };
 
 export const RewardContext = createContext<ReturnType<typeof useRewardState>>([

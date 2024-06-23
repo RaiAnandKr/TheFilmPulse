@@ -13,7 +13,7 @@ import PrimeVideo from "~/res/images/PrimeVideo.webp";
 import Hotstar from "~/res/images/Hotstar.png";
 import Imax from "~/res/images/Imax.png";
 import { CoinType } from "~/schema/CoinType";
-import type { CouponDetail } from "~/schema/CouponDetail";
+import type { Reward } from "~/schema/Reward";
 
 const OPINIONS: Opinion[] = [
   {
@@ -29,7 +29,6 @@ const OPINIONS: Opinion[] = [
       { option: OpinionOption.No, participationCount: 129, coins: 3875 },
     ],
     userVote: { selectedOption: OpinionOption.Yes, coinsUsed: 25 },
-    filmPosterSrc: Kalki.src,
   },
   {
     type: PulseType.Opinion,
@@ -43,7 +42,6 @@ const OPINIONS: Opinion[] = [
       { option: OpinionOption.No, participationCount: 180, coins: 3975 },
     ],
     userVote: { selectedOption: OpinionOption.No, coinsUsed: 12 },
-    filmPosterSrc: Pushpa2.src,
   },
   {
     type: PulseType.Opinion,
@@ -56,21 +54,19 @@ const OPINIONS: Opinion[] = [
       { option: OpinionOption.Yes, participationCount: 68, coins: 2230 },
       { option: OpinionOption.No, participationCount: 126, coins: 2955 },
     ],
-    filmPosterSrc: Pushpa2.src,
   },
   {
     type: PulseType.Opinion,
     opinionId: "d",
     title: "Will there be sequel of Kalki?",
     startDate: "May 25, 2024",
-    endDate: "July 5, 2024",
+    endDate: "June 15, 2024",
     filmId: "film-1",
     votes: [
       { option: OpinionOption.Yes, participationCount: 168, coins: 2430 },
       { option: OpinionOption.No, participationCount: 196, coins: 3455 },
     ],
     userVote: { selectedOption: OpinionOption.No, coinsUsed: 12 },
-    filmPosterSrc: Kalki.src,
     result: {
       type: PulseResultType.Lost,
       coinsUsed: 12,
@@ -83,14 +79,13 @@ const OPINIONS: Opinion[] = [
     opinionId: "e",
     title: "Will Fahad Fasil die in Pushpa 2?",
     startDate: "May 25, 2024",
-    endDate: "September 2, 2024",
+    endDate: "June 2, 2024",
     filmId: "film-2",
     votes: [
       { option: OpinionOption.Yes, participationCount: 75, coins: 1230 },
       { option: OpinionOption.No, participationCount: 128, coins: 1995 },
     ],
     userVote: { selectedOption: OpinionOption.Yes, coinsUsed: 85 },
-    filmPosterSrc: Pushpa2.src,
     result: {
       type: PulseResultType.Won,
       coinsUsed: 85,
@@ -258,15 +253,6 @@ const FILMS: Film[] = [
   },
 ];
 
-const getFilmInfo = (predictionId: string) => {
-  return FILMS.find(
-    (film) =>
-      film.filmId ===
-      PREDICTIONS.find((prediction) => prediction.predictionId === predictionId)
-        ?.filmId,
-  );
-};
-
 function isPulseActive(endDate: string) {
   return differenceInDays(new Date(), new Date(endDate)) > 0;
 }
@@ -306,7 +292,20 @@ const getPredictionsFromFilmId = (filmId: string) => {
   return PREDICTIONS.filter((prediction) => prediction.filmId === filmId);
 };
 
-const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
+const getPastParticipations = (): (Opinion | Prediction)[] => {
+  return [
+    ...getOpinions({ isActive: false }),
+    ...getPredictions({ isActive: false }),
+  ].filter(
+    (pulse) =>
+      !!(
+        ((pulse as Opinion).userVote ?? (pulse as Prediction).userPrediction) &&
+        pulse.result
+      ),
+  );
+};
+
+const REWARDS: Reward[] = [
   {
     checkpoint: 200,
     coupons: [
@@ -499,27 +498,18 @@ const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
   },
 ];
 
+const getRewards = () => REWARDS;
+
 const USER_COINS = [
+  { type: CoinType.Earned, coins: 475, isRedeemable: true },
   {
     type: CoinType.Bonus,
     coins: 50,
+    isRedeemable: false,
   },
-  { type: CoinType.Earned, coins: 450 },
 ];
 
-const getUserEarnedCoins = () =>
-  USER_COINS.find((userCoin) => userCoin.type === CoinType.Earned)?.coins ?? 0;
-
-const getMaxRedeemableCoins = () => {
-  const earnedCoins = getUserEarnedCoins();
-  return REWARDS.reduce((maxRedeemableCoins, reward) => {
-    if (reward.checkpoint > earnedCoins) {
-      return maxRedeemableCoins;
-    }
-
-    return Math.max(reward.checkpoint, maxRedeemableCoins);
-  }, 0);
-};
+const getUserCoins = () => USER_COINS;
 
 const getCouponCode = async (couponId: string) => {
   return "STEALDEAL50";
@@ -528,14 +518,12 @@ const getCouponCode = async (couponId: string) => {
 export {
   getOpinions,
   FILMS,
-  getFilmInfo,
   getPredictions,
   getFilmInfoFromFilmId,
   getOpinionsFromFilmId,
   getPredictionsFromFilmId,
-  REWARDS,
-  USER_COINS,
-  getUserEarnedCoins,
-  getMaxRedeemableCoins,
+  getRewards,
+  getUserCoins,
+  getPastParticipations,
   getCouponCode,
 };

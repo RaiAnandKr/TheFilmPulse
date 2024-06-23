@@ -8,15 +8,17 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  type ButtonProps,
 } from "@nextui-org/react";
 import type { Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { numberInShorthand } from "../utilities/numberInShorthand";
 import { useState } from "react";
-import { getUserEarnedCoins } from "~/constants/mocks";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import type { ClassValue } from "tailwind-variants";
 import { TickIcon } from "~/res/icons/tick";
+import { userEarnedCoinsSelector } from "~/data/store/selectors/userEarnedCoinsSelector";
+import { useMainStore } from "~/data/contexts/store-context";
 
 interface OptionButtonProps {
   option: OpinionOption;
@@ -33,7 +35,7 @@ interface OptionButtonProps {
 }
 
 export const OptionButton: React.FC<OptionButtonProps> = (props) => {
-  const { userVote, option, classNames, icon, hasVoted, setHasVoted } = props;
+  const { userVote, option, classNames, hasVoted } = props;
   const disclosure = useDisclosure();
 
   const label = option;
@@ -49,15 +51,31 @@ export const OptionButton: React.FC<OptionButtonProps> = (props) => {
         variant={variant}
         color={classNames.buttonColor}
         fullWidth
-        startContent={isUserVotedOption ? <CoinsImage /> : icon}
         onPress={disclosure.onOpen}
         className={className}
+        {...getOptionTerminalContentProps(props)}
       >
         {isUserVotedOption ? numberInShorthand(userVote.coinsUsed) : label}
       </Button>
       <ConfirmOption {...disclosure} {...props} />
     </>
   );
+};
+
+const getOptionTerminalContentProps = (
+  props: OptionButtonProps,
+): Pick<ButtonProps, "startContent" | "endContent"> => {
+  const { option, userVote, icon } = props;
+  const isUserVotedOption = userVote?.selectedOption === option;
+
+  switch (option) {
+    case OpinionOption.Yes:
+      return { startContent: isUserVotedOption ? <CoinsImage /> : icon };
+    case OpinionOption.No:
+      return { endContent: isUserVotedOption ? <CoinsImage flip /> : icon };
+  }
+
+  return {};
 };
 
 type ConfirmOptionProps = ReturnType<typeof useDisclosure> & OptionButtonProps;
@@ -67,8 +85,9 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
     props;
 
   const label = option;
-  const earnedCoins = getUserEarnedCoins();
-  const defaultCoinsToBet = Math.floor(earnedCoins * 0.3);
+
+  const userEarnedCoins = useMainStore(userEarnedCoinsSelector);
+  const defaultCoinsToBet = Math.floor(userEarnedCoins * 0.3);
 
   const [hasConfirmedOption, setHasConfirmedOption] = useState(false);
   const [coinstToBet, setCoinsToBet] = useState(defaultCoinsToBet);
@@ -110,15 +129,15 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
                 formatOptions={{
                   style: "decimal",
                 }}
-                maxValue={earnedCoins}
+                maxValue={userEarnedCoins}
                 marks={[
                   {
                     value: 0,
                     label: "0",
                   },
                   {
-                    value: earnedCoins,
-                    label: earnedCoins.toString(),
+                    value: userEarnedCoins,
+                    label: userEarnedCoins.toString(),
                   },
                 ]}
                 value={coinstToBet}
@@ -154,10 +173,10 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
                 <>
                   <Button
                     fullWidth
-                    color="danger"
+                    color="default"
                     variant="bordered"
                     onPress={onClose}
-                    className="font-bold"
+                    className="font-bold text-default-500"
                   >
                     Close
                   </Button>

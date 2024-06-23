@@ -15,4 +15,7 @@ export type Prediction = {
   predictionScaleUnit?: string; //Eg. "Cr"
   userPrediction?: number;
   result?: PulseResult<number>;
+
+  // For client-side state management
+  isActive?: boolean;
 };

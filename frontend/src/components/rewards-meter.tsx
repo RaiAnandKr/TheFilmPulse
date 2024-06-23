@@ -4,27 +4,48 @@ import {
   type SliderStepMark,
   type SliderValue,
 } from "@nextui-org/react";
-import { useContext, useEffect, useMemo } from "react";
-import { REWARDS, getUserEarnedCoins } from "~/constants/mocks";
-import { RewardContext } from "~/data/reward-context";
+import { useContext, useEffect, useMemo, type DependencyList } from "react";
+import { RewardContext } from "~/data/contexts/reward-context";
+import { useMainStore } from "~/data/contexts/store-context";
+import type { MainStore } from "~/data/store/main-store";
+import { userEarnedCoinsSelector } from "~/data/store/selectors/userEarnedCoinsSelector";
 import { gcdOfNumbers } from "~/utilities/gcdOfNumbers";
 
 const SLIDER_ID = "RewardsMeter";
 
 export const RewardsMeter = () => {
-  const checkpointCount = REWARDS.length;
-  const maxValue = REWARDS[checkpointCount - 1]?.checkpoint ?? 0;
-  const step = gcdOfNumbers(REWARDS.map((reward) => reward.checkpoint));
-  const userEarnedCoins = getUserEarnedCoins();
+  const { maxValue, checkpoints, userEarnedCoins, userMaxRedeemableCoins } =
+    useMainStore((state) => ({
+      maxValue: state.rewards.length
+        ? state.rewards[state.rewards.length - 1]?.checkpoint ?? 0
+        : 0,
+      checkpoints: state.rewards.map((reward) => reward.checkpoint),
+      userEarnedCoins: userEarnedCoinsSelector(state),
+      userMaxRedeemableCoins: maxRedeemableCoinsSelector(state),
+    }));
 
   const [rewardPointer, setRewardPointer] = useContext(RewardContext);
+
+  useEffect(
+    () => setRewardPointer(userMaxRedeemableCoins),
+    [userMaxRedeemableCoins, setRewardPointer],
+  );
+
   const onChange = (value: SliderValue) => {
     setRewardPointer(getSliderValueInNumber(value));
   };
 
-  const marks = useMemo(() => getMarks(userEarnedCoins), [userEarnedCoins]);
+  const step = useMemo(() => gcdOfNumbers(checkpoints), [checkpoints]);
+  const marks = useMemo(
+    () => getMarks(userEarnedCoins, checkpoints),
+    [userEarnedCoins, checkpoints],
+  );
 
-  useStyleUserMark();
+  useStyleUserMark([marks]);
+
+  if (!maxValue) {
+    return null;
+  }
 
   return (
     <Slider
@@ -36,7 +57,6 @@ export const RewardsMeter = () => {
       minValue={0}
       maxValue={maxValue}
       step={step}
-      formatOptions={{ style: "decimal" }}
       marks={marks}
       classNames={{
         base: "max-w-md gap-3 h-20",
@@ -69,11 +89,12 @@ export const RewardsMeter = () => {
   );
 };
 
-const getMarks = (userCoins: number) => {
-  const marks: SliderStepMark[] = REWARDS.map((reward) => ({
-    value: reward.checkpoint,
-    label: reward.checkpoint.toString(),
+const getMarks = (userCoins: number, checkpoints: number[]) => {
+  const marks: SliderStepMark[] = checkpoints.map((checkpoint) => ({
+    value: checkpoint,
+    label: checkpoint.toString(),
   }));
+
   // add user coins in marks
   marks.push({
     value: userCoins,
@@ -83,7 +104,7 @@ const getMarks = (userCoins: number) => {
   return marks;
 };
 
-const useStyleUserMark = () => {
+const useStyleUserMark = (dependencies?: DependencyList) => {
   useEffect(() => {
     const markNodes = document.querySelectorAll<HTMLDivElement>(
       `#${SLIDER_ID} [data-slot="mark"]`,
@@ -101,8 +122,19 @@ const useStyleUserMark = () => {
       "top-[200%] text-primary font-bold opacity-100 mt-0",
       "before:w-0 before:h-0 before:border-x-[6px] before:border-b-[6px] before:border-x-transparent before:border-b-primary before:border-solid before:absolute before:top-[-110%] before:left-1/2 before:ml-[-6px]",
     );
-  }, []);
+  }, dependencies);
 };
 
 const getSliderValueInNumber = (value: SliderValue) =>
   typeof value === "number" ? value : value[1] ?? 0;
+
+const maxRedeemableCoinsSelector = (state: MainStore) => {
+  const earnedCoins = userEarnedCoinsSelector(state);
+  return state.rewards.reduce((maxRedeemableCoins, reward) => {
+    if (reward.checkpoint > earnedCoins) {
+      return maxRedeemableCoins;
+    }
+
+    return Math.max(reward.checkpoint, maxRedeemableCoins);
+  }, 0);
+};

@@ -11,6 +11,7 @@ export default function FilmLayout({
   params: { filmId: string };
 }) {
   const filmId = params.filmId;
+  // TODO: api call to get filmInfo.
   const filmInfo = getFilmInfoFromFilmId(filmId);
 
   if (!filmInfo) {
@@ -77,6 +78,7 @@ const FilmVisual: React.FC<{ film: Film }> = (props) => {
 };
 
 export async function generateStaticParams() {
+  // TODO: api call to get all films.
   return FILMS.map((film) => ({
     filmId: film.filmId,
   }));

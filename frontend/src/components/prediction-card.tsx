@@ -9,11 +9,12 @@ import {
 import type { Prediction } from "~/schema/Prediction";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
-import { getFilmInfo } from "~/constants/mocks";
 import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
 import { TrophyIcon } from "~/res/icons/trophy";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
+import { useMainStore } from "~/data/contexts/store-context";
+import type { MainStore } from "~/data/store/main-store";
 
 interface PredictionCardProps {
   prediction: Prediction;
@@ -23,7 +24,9 @@ interface PredictionCardProps {
 
 export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
   const { prediction, noHeader, isResult } = props;
-  const film = getFilmInfo(prediction.predictionId);
+  const film = useMainStore((state) =>
+    predictionFilmSelector(state, prediction.predictionId),
+  );
 
   const router = useRouter();
 
@@ -129,4 +132,14 @@ const PredictionResult: React.FC<
       )}
     </div>
   );
+};
+
+const predictionFilmSelector = (state: MainStore, predictionId: string) => {
+  const associatedFilmId = state.predictions.get(predictionId)?.filmId;
+  if (!associatedFilmId) {
+    return null;
+  }
+
+  const associatedFilm = state.films.get(associatedFilmId);
+  return associatedFilm;
 };

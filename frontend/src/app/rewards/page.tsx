@@ -4,40 +4,58 @@ import { Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 import { Rewards } from "~/components/rewards";
 import { OpinionCard } from "~/components/opinion-card";
 import { PredictionCard } from "~/components/prediction-card";
-import { getOpinions, getPredictions } from "~/constants/mocks";
 import { CoinType } from "~/schema/CoinType";
 import type { Opinion } from "~/schema/Opinion";
 import type { Prediction } from "~/schema/Prediction";
 import { PulseType } from "~/schema/PulseType";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
+import { useMainStore } from "~/data/contexts/store-context";
+import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
+import { differenceInDays } from "~/utilities/differenceInDays";
+import type { MainStore } from "~/data/store/main-store";
+import { useLoadPastParticipationsData } from "~/data/hooks/useLoadPastParticipationsData";
 
-const RewardsPage = () => (
-  <>
-    <SectionHeader
-      title={
-        <div className="flex justify-between">
-          <span>Total Coins : </span>
-          <span>{500} </span>
-        </div>
-      }
-    />
-    <CoinsInfo />
-    <SectionHeader title="Rewards" />
-    <Rewards />
-    <SectionHeader title="Past Participations" />
-    <PastParticipations />
-  </>
-);
+const RewardsPage = () => {
+  const userTotalCoins = useMainStore((state) =>
+    state.userCoins.reduce((acc, userCoin) => acc + userCoin.coins, 0),
+  );
+
+  return (
+    <>
+      <SectionHeader
+        title={
+          <div className="flex justify-between">
+            <span>Total Coins : </span>
+            <span>{userTotalCoins} </span>
+          </div>
+        }
+      />
+      <CoinsInfo />
+      <SectionHeader title="Rewards" />
+      <Rewards />
+      <SectionHeader title="Past Participations" />
+      <PastParticipations />
+    </>
+  );
+};
 
 const SectionHeader: React.FC<{ title: string | JSX.Element }> = (props) => (
   <h2 className="p-2 font-bold text-primary">{props.title}</h2>
 );
 
 const CoinsInfo = () => {
+  const userCoins = useMainStore((state) => state.userCoins);
+
   return (
     <div className="bg-success-to-danger flex w-full justify-evenly gap-3 p-2 py-3">
-      <CoinCard coinType={CoinType.Earned} coins={450} subText="Redeemable" />
-      <CoinCard coinType={CoinType.Bonus} coins={50} subText="Non-redeemable" />
+      {userCoins.map((userCoin) => (
+        <CoinCard
+          key={userCoin.type}
+          coinType={userCoin.type}
+          coins={userCoin.coins}
+          subText={userCoin.isRedeemable ? "Redeemable" : "Non-redeemable"}
+        />
+      ))}
     </div>
   );
 };
@@ -70,20 +88,15 @@ const CoinCard: React.FC<{
 };
 
 const PastParticipations = () => {
-  const pastParticipationsByUser: (Opinion | Prediction)[] = [
-    ...getOpinions({ isActive: false }),
-    ...getPredictions({ isActive: false }),
-  ].filter(
-    (pulse) =>
-      !!(
-        ((pulse as Opinion).userVote ?? (pulse as Prediction).userPrediction) &&
-        pulse.result
-      ),
-  );
+  useLoadPastParticipationsData();
+
+  const { userPastParticipations } = useMainStore((state) => ({
+    userPastParticipations: userPastParticipationSelector(state),
+  }));
 
   return (
     <div className="bg-success-to-danger flex w-full flex-col p-3">
-      {pastParticipationsByUser.map((pulse) =>
+      {userPastParticipations.map((pulse) =>
         pulse.type === PulseType.Opinion ? (
           <OpinionCard opinion={pulse} key={pulse.opinionId} useFullWidth />
         ) : (
@@ -95,6 +108,23 @@ const PastParticipations = () => {
         ),
       )}
     </div>
+  );
+};
+
+const userPastParticipationSelector = (
+  state: MainStore,
+): (Prediction | Opinion)[] => {
+  return [
+    ...filterMapValuesInArray(
+      state.predictions,
+      (_, prediction) => !!(prediction.userPrediction && prediction.result),
+    ),
+    ...filterMapValuesInArray(
+      state.opinions,
+      (_, opinion) => !!(opinion.userVote && opinion.result),
+    ),
+  ].sort((pulse1, pulse2) =>
+    differenceInDays(new Date(pulse2.endDate), new Date(pulse1.endDate)),
   );
 };
 

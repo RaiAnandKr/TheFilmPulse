@@ -1,7 +1,11 @@
 import Coins from "~/res/images/Coins.png";
-import { Image } from "@nextui-org/react";
+import { Image, cn } from "@nextui-org/react";
 
-export const CoinsImage = () => (
+interface IconImageProps {
+  flip?: boolean;
+}
+
+export const CoinsImage: React.FC<IconImageProps> = (props) => (
   <Image
     removeWrapper
     alt="Coins"
@@ -9,5 +13,6 @@ export const CoinsImage = () => (
     width={24}
     src={Coins.src}
     radius="none"
+    className={cn(props.flip ? "-scale-x-100" : "")}
   />
 );
