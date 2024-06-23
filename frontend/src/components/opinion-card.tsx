@@ -20,6 +20,8 @@ import { CoinsImage } from "~/res/images/CoinsImage";
 import { OptionButton } from "./option-button";
 import type { MainStore } from "~/data/store/main-store";
 import { useMainStore } from "~/data/contexts/store-context";
+import { pick } from "~/utilities/pick";
+import { CoinType } from "~/schema/CoinType";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -32,13 +34,14 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
   const { title, endDate, votes, filmId, result, opinionId, userVote } =
     opinion;
 
-  const { film, addUserOpinion } = useMainStore((state) => ({
+  const { film, addUserOpinion, updateUserCoins } = useMainStore((state) => ({
     film: opinionFilmSelector(state, opinionId),
-    addUserOpinion: state.addUserOpinion,
+    ...pick(state, ["addUserOpinion", "updateUserCoins"]),
   }));
 
   const onOpinionConfirmed = (userVote: UserVote) => {
     addUserOpinion(opinionId, userVote);
+    updateUserCoins(CoinType.Earned, userVote.coinsUsed /* deductBy */);
   };
 
   const router = useRouter();
