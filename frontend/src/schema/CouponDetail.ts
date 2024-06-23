@@ -7,3 +7,8 @@ export interface CouponDetail {
   couponExpiryDate: string;
   couponTnCs?: string[];
 }
+
+export interface CouponCode {
+  couponCode: string;
+  expiryDate: string;
+}

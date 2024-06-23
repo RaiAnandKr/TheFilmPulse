@@ -25,6 +25,6 @@ export type Vote = {
 };
 
 export type UserVote = {
-  selectedOption: OpinionOption;
+  selectedOption?: OpinionOption;
   coinsUsed: number;
 };
