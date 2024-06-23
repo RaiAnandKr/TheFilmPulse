@@ -1,6 +1,5 @@
 import type { StateCreator } from "zustand";
 import type { Opinion, UserVote } from "~/schema/Opinion";
-import { PulseType } from "~/schema/PulseType";
 import { mergeArrayToMap } from "~/utilities/mergeArrayToMap";
 
 type OpinionState = {

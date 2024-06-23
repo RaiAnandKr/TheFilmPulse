@@ -18,7 +18,6 @@ import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { OptionButton } from "./option-button";
-import { useState } from "react";
 import type { MainStore } from "~/data/store/main-store";
 import { useMainStore } from "~/data/contexts/store-context";
 
@@ -114,7 +113,6 @@ const Options: React.FC<{
   userVote?: UserVote;
 }> = (props) => {
   const { votes, userVote, onOpinionConfirmed } = props;
-  const [hasVoted, setHasVoted] = useState(false);
 
   return (
     <div className="flex w-full justify-between gap-2 pb-1 pt-2.5">

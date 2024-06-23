@@ -203,7 +203,7 @@ const FILMS: Film[] = [
     releaseDate: "June 15",
     topPrediction: PREDICTIONS.find(
       (prediction) => prediction.predictionId === "film-1-prediction-1",
-    )!!,
+    )!,
     predictionIds: [
       "film-1-prediction-1",
       "film-1-prediction-1",
@@ -222,7 +222,7 @@ const FILMS: Film[] = [
     releaseDate: "July 12",
     topPrediction: PREDICTIONS.find(
       (prediction) => prediction.predictionId === "film-2-prediction-3",
-    )!!,
+    )!,
     predictionIds: [
       "film-2-prediction-1",
       "film-2-prediction-1",
