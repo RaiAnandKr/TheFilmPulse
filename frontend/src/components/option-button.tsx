@@ -29,17 +29,16 @@ interface OptionButtonProps {
   };
   icon: JSX.Element;
   votes: Vote[];
-  hasVoted: boolean;
-  setHasVoted: (value: boolean) => void;
+  onOpinionConfirmed: (userVote: UserVote) => void;
   userVote?: UserVote;
 }
 
 export const OptionButton: React.FC<OptionButtonProps> = (props) => {
-  const { userVote, option, classNames, hasVoted } = props;
+  const { userVote, option, classNames } = props;
   const disclosure = useDisclosure();
 
   const label = option;
-  const shouldDisable = hasVoted || !!userVote;
+  const shouldDisable = !!userVote;
   const isUserVotedOption = userVote?.selectedOption === option;
   const variant = isUserVotedOption ? "flat" : "bordered";
   const className = isUserVotedOption ? "disabled:opacity-75" : "";
@@ -81,8 +80,14 @@ const getOptionTerminalContentProps = (
 type ConfirmOptionProps = ReturnType<typeof useDisclosure> & OptionButtonProps;
 
 const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
-  const { isOpen, onOpenChange, option, classNames, votes, setHasVoted } =
-    props;
+  const {
+    isOpen,
+    onOpenChange,
+    option,
+    classNames,
+    votes,
+    onOpinionConfirmed,
+  } = props;
 
   const label = option;
 
@@ -99,7 +104,10 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
 
   const onConfirmButtonPress = (onClose: () => void) => {
     setHasConfirmedOption(true);
-    setHasVoted(true);
+    onOpinionConfirmed({
+      selectedOption: option,
+      coinsUsed: coinstToBet,
+    });
     setTimeout(onClose, 2000);
   };
 

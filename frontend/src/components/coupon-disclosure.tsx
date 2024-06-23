@@ -12,8 +12,10 @@ import {
 } from "@nextui-org/react";
 import type { CouponDetail } from "~/schema/CouponDetail";
 import { useState } from "react";
-import { getCouponCode } from "~/constants/mocks";
+import { getCouponCode, postUpdateUserCoins } from "~/constants/mocks";
 import { CoinsImage } from "~/res/images/CoinsImage";
+import { useMainStore } from "~/data/contexts/store-context";
+import { CoinType } from "~/schema/CoinType";
 
 type CouponDisclosureProps = ReturnType<typeof useDisclosure> & CouponDetail;
 
@@ -30,9 +32,16 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
 
   const [couponCode, setCouponCode] = useState<string | undefined>(undefined);
 
+  const updateUserCoins = useMainStore((state) => state.updateUserCoins);
+
   const onClaim = async () => {
     const couponCode = await getCouponCode(couponId);
     setCouponCode(couponCode);
+
+    updateUserCoins(CoinType.Earned, worthCoins /* deductBy */);
+    postUpdateUserCoins(CoinType.Earned, worthCoins /* deductBy */).catch(
+      console.log,
+    );
   };
 
   return (

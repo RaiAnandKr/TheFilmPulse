@@ -5,7 +5,7 @@ const fetchRecord = new Map<string, boolean>();
 // Ensures loading of data to store only once per session.
 export const useLoadData = <T>(
   dataKey: string,
-  fetcher: () => T,
+  fetcher: () => Promise<T>,
   storeSetter: (val: T) => void,
 ) => {
   useEffect(() => {
@@ -14,8 +14,7 @@ export const useLoadData = <T>(
         return;
       }
 
-      // TODO: convert fetcher to promise and await on it
-      const val = fetcher();
+      const val = await fetcher();
       storeSetter(val);
       fetchRecord.set(dataKey, true);
     };

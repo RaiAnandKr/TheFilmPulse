@@ -28,7 +28,8 @@ export const RewardsMeter = () => {
 
   useEffect(
     () => setRewardPointer(userMaxRedeemableCoins),
-    [userMaxRedeemableCoins, setRewardPointer],
+    [setRewardPointer, maxValue],
+    // "maxValue" is initialized with 0 and changes when we have rewards data, hence is used to initialise reward pointer then.
   );
 
   const onChange = (value: SliderValue) => {

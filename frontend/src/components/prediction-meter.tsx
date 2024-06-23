@@ -2,6 +2,8 @@ import { Slider, cn, type SliderValue } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 import type { Prediction } from "~/schema/Prediction";
 import { PredictButton } from "./predict-button";
+import { useMainStore } from "~/data/contexts/store-context";
+import { postUserPrediction } from "~/constants/mocks";
 
 export interface PredictionMeterProps {
   prediction: Prediction;
@@ -14,18 +16,15 @@ export interface PredictionMeterProps {
 export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
   const { prediction, inDarkTheme, pivotLabel, pivotValue, noButton } = props;
   const {
-    userPrediction,
     predictionScaleUnit,
     predictionStepValue,
     predictionRange,
     meanPrediction,
+    predictionId,
+    userPrediction,
   } = prediction;
 
-  const [hasPredicted, setHasPredicted] = useState(false);
-
-  const onPrediction = () => {
-    setHasPredicted(true);
-  };
+  const addUserPrediction = useMainStore((state) => state.addUserPrediction);
 
   const defaultValue = (predictionRange[0] + predictionRange[1]) / 2;
 
@@ -39,6 +38,11 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
   const [predictionPointer, setPredictionPointer] = useState(defaultValue);
   const onChange = (value: SliderValue) => {
     setPredictionPointer(getSliderValueInNumber(value));
+  };
+
+  const onPrediction = () => {
+    addUserPrediction(predictionId, predictionPointer);
+    postUserPrediction(predictionId, predictionPointer).catch(console.log);
   };
 
   const endContentElement = useMemo(
@@ -63,7 +67,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
   return (
     <Slider
       label={prediction.title}
-      isDisabled={hasPredicted || !!userPrediction}
+      isDisabled={!!userPrediction}
       color="warning"
       showTooltip
       step={predictionStepValue}
@@ -79,7 +83,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
         },
       ]}
       defaultValue={defaultValue}
-      value={hasPredicted ? userPrediction : predictionPointer}
+      value={userPrediction ?? predictionPointer}
       fillOffset={effectivePivotValue}
       className={cn(
         "mb-3 h-20 max-w-md flex-auto text-tiny",

@@ -1,19 +1,16 @@
 import type { StateCreator } from "zustand";
 import type { CoinType } from "~/schema/CoinType";
-import type { Prediction } from "~/schema/Prediction";
-import type { Opinion, UserVote } from "~/schema/Opinion";
 
 type UserState = {
   userId: string;
   phone: string;
   handle: string;
   userCoins: { type: CoinType; coins: number; isRedeemable?: boolean }[];
-  userPredictions: Map<Prediction["predictionId"], { prediction: number }>;
-  userOpinions: Map<Opinion["opinionId"], { userVote: UserVote }>;
 };
 
 type UserAction = {
   setUserCoins: (userCoins: UserState["userCoins"]) => void;
+  updateUserCoins: (type: CoinType, deductBy: number) => void;
 };
 
 export type UserSlice = UserState & UserAction;
@@ -28,8 +25,6 @@ export const createUserSlice: StateCreator<
   phone: "",
   handle: "",
   userCoins: [],
-  userPredictions: new Map(),
-  userOpinions: new Map(),
   setUserCoins: (userCoins) =>
     set(
       {
@@ -37,5 +32,23 @@ export const createUserSlice: StateCreator<
       },
       false,
       "UserAction/setUserCoins",
+    ),
+  updateUserCoins: (type, deductBy) =>
+    set(
+      (state) => {
+        const updatedCoins = [...state.userCoins];
+        const targetCoinCategory = updatedCoins.find(
+          (userCoin) => userCoin.type === type,
+        );
+        if (targetCoinCategory) {
+          targetCoinCategory.coins -= deductBy;
+        }
+
+        return {
+          userCoins: updatedCoins,
+        };
+      },
+      false,
+      "UserAction/updateUserCoins",
     ),
 });

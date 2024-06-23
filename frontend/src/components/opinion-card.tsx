@@ -18,9 +18,11 @@ import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { OptionButton } from "./option-button";
-import { useState } from "react";
 import type { MainStore } from "~/data/store/main-store";
 import { useMainStore } from "~/data/contexts/store-context";
+import { pick } from "~/utilities/pick";
+import { CoinType } from "~/schema/CoinType";
+import { postUpdateUserCoins, postUserOpinion } from "~/constants/mocks";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -30,10 +32,24 @@ interface OpinionProps {
 
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
   const { useFullWidth, opinion, useFooter } = props;
-  const { title, endDate, votes, userVote, filmId, result, opinionId } =
+  const { title, endDate, votes, filmId, result, opinionId, userVote } =
     opinion;
 
-  const film = useMainStore((state) => opinionFilmSelector(state, opinionId));
+  const { film, addUserOpinion, updateUserCoins } = useMainStore((state) => ({
+    film: opinionFilmSelector(state, opinionId),
+    ...pick(state, ["addUserOpinion", "updateUserCoins"]),
+  }));
+
+  const onOpinionConfirmed = (userVote: UserVote) => {
+    addUserOpinion(opinionId, userVote);
+    postUserOpinion(opinionId, userVote).catch(console.log);
+
+    updateUserCoins(CoinType.Earned, userVote.coinsUsed /* deductBy */);
+    postUpdateUserCoins(
+      CoinType.Earned,
+      userVote.coinsUsed /* deductBy */,
+    ).catch(console.log);
+  };
 
   const router = useRouter();
 
@@ -84,7 +100,11 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
       </CardBody>
       <CardFooter className="flex flex-none flex-col p-0 pt-2">
         <ParticipationTrend votes={votes} />
-        <Options votes={votes} userVote={userVote} />
+        <Options
+          votes={votes}
+          userVote={userVote}
+          onOpinionConfirmed={onOpinionConfirmed}
+        />
         {useFooter && (
           <TimerAndParticipations
             endDate={endDate}
@@ -97,9 +117,12 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
   );
 };
 
-const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
-  const { votes, userVote } = props;
-  const [hasVoted, setHasVoted] = useState(false);
+const Options: React.FC<{
+  votes: Vote[];
+  onOpinionConfirmed: (userVote: UserVote) => void;
+  userVote?: UserVote;
+}> = (props) => {
+  const { votes, userVote, onOpinionConfirmed } = props;
 
   return (
     <div className="flex w-full justify-between gap-2 pb-1 pt-2.5">
@@ -114,8 +137,7 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
         }}
         votes={votes}
         userVote={userVote}
-        hasVoted={hasVoted}
-        setHasVoted={setHasVoted}
+        onOpinionConfirmed={onOpinionConfirmed}
       />
       <OptionButton
         key={votes[1]?.option ?? OpinionOption.No}
@@ -128,8 +150,7 @@ const Options: React.FC<{ votes: Vote[]; userVote?: UserVote }> = (props) => {
         }}
         votes={votes}
         userVote={userVote}
-        hasVoted={hasVoted}
-        setHasVoted={setHasVoted}
+        onOpinionConfirmed={onOpinionConfirmed}
       />
     </div>
   );

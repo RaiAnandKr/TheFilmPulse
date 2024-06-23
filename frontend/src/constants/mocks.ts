@@ -1,6 +1,6 @@
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
-import { type Opinion } from "../schema/Opinion";
+import { type UserVote, type Opinion } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import Kalki from "../res/images/Kalki.jpeg";
 import Pushpa2 from "../res/images/Pushpa2.jpg";
@@ -183,7 +183,6 @@ const PREDICTIONS: Prediction[] = [
     startDate: "May 20, 2024",
     endDate: "July 12, 2024",
     meanPrediction: 2100,
-    userPrediction: 1450,
     participationCount: 8929,
     predictionRange: [0, 3000],
     predictionStepValue: 50,
@@ -202,20 +201,9 @@ const FILMS: Film[] = [
     filmDesc:
       "Kalki 2898 AD is an upcoming Indian epic science fiction action film, shot primarily in Telugu with some scenes reshot in Hindi. Inspired by Hindu scriptures, the film is set in a post-apocalyptic world, in the year 2898 AD. ",
     releaseDate: "June 15",
-    topPrediction: {
-      type: PulseType.Prediction,
-      predictionId: "film-1-prediction-1",
-      title: "Week 1 box office collection",
-      filmId: "film-1",
-      startDate: "May 26, 2024",
-      endDate: "June 15, 2024",
-      meanPrediction: 400,
-      participationCount: 3748,
-      userPrediction: 775,
-      predictionRange: [0, 1000],
-      predictionStepValue: 25,
-      predictionScaleUnit: "Crores",
-    },
+    topPrediction: PREDICTIONS.find(
+      (prediction) => prediction.predictionId === "film-1-prediction-1",
+    )!,
     predictionIds: [
       "film-1-prediction-1",
       "film-1-prediction-1",
@@ -232,19 +220,9 @@ const FILMS: Film[] = [
     filmDesc:
       "Pushpa 2: The Rule, is an upcoming Indian Telugu-language action drama film produced by Naveen Yerneni and Yalamanchili Ravi Shankar under their Mythri Movie Makers banner. It is the second installment in the Pushpa film series and the sequel to Pushpa: The Rise.",
     releaseDate: "July 12",
-    topPrediction: {
-      type: PulseType.Prediction,
-      predictionId: "film-2-prediction-3",
-      title: "Lifetime collection (including overseas, theaters, OTT)",
-      filmId: "film-2",
-      startDate: "May 20, 2024",
-      endDate: "July 12, 2024",
-      meanPrediction: 2100,
-      participationCount: 8929,
-      predictionRange: [0, 3000],
-      predictionStepValue: 50,
-      predictionScaleUnit: "Crores",
-    },
+    topPrediction: PREDICTIONS.find(
+      (prediction) => prediction.predictionId === "film-2-prediction-3",
+    )!,
     predictionIds: [
       "film-2-prediction-1",
       "film-2-prediction-1",
@@ -257,7 +235,7 @@ function isPulseActive(endDate: string) {
   return differenceInDays(new Date(), new Date(endDate)) > 0;
 }
 
-const getOpinions = ({
+const getOpinions = async ({
   isActive,
   limit,
 }: {
@@ -272,7 +250,7 @@ const getOpinions = ({
     .filter(Boolean);
 };
 
-const getPredictions = ({ isActive }: { isActive: boolean }) => {
+const getPredictions = async ({ isActive }: { isActive: boolean }) => {
   const predictions = [...PREDICTIONS];
 
   return predictions
@@ -284,18 +262,18 @@ const getFilmInfoFromFilmId = (filmId: string) => {
   return FILMS.find((film) => film.filmId === filmId);
 };
 
-const getOpinionsFromFilmId = (filmId: string) => {
+const getOpinionsFromFilmId = async (filmId: string) => {
   return OPINIONS.filter((opinion) => opinion.filmId === filmId);
 };
 
-const getPredictionsFromFilmId = (filmId: string) => {
+const getPredictionsFromFilmId = async (filmId: string) => {
   return PREDICTIONS.filter((prediction) => prediction.filmId === filmId);
 };
 
-const getPastParticipations = (): (Opinion | Prediction)[] => {
+const getPastParticipations = async (): Promise<(Opinion | Prediction)[]> => {
   return [
-    ...getOpinions({ isActive: false }),
-    ...getPredictions({ isActive: false }),
+    ...(await getOpinions({ isActive: false })),
+    ...(await getPredictions({ isActive: false })),
   ].filter(
     (pulse) =>
       !!(
@@ -498,7 +476,7 @@ const REWARDS: Reward[] = [
   },
 ];
 
-const getRewards = () => REWARDS;
+const getRewards = async () => REWARDS;
 
 const USER_COINS = [
   { type: CoinType.Earned, coins: 475, isRedeemable: true },
@@ -509,15 +487,35 @@ const USER_COINS = [
   },
 ];
 
-const getUserCoins = () => USER_COINS;
+const getUserCoins = async () => USER_COINS;
 
 const getCouponCode = async (couponId: string) => {
   return "STEALDEAL50";
 };
 
+const getFilms = async () => FILMS;
+
+const postUserOpinion = async (
+  opinionId: Opinion["opinionId"],
+  userVote: UserVote,
+) => {
+  console.log(opinionId, userVote);
+};
+
+const postUserPrediction = async (
+  predictionId: Prediction["predictionId"],
+  predictionVal: number,
+) => {
+  console.log(predictionId, predictionVal);
+};
+
+const postUpdateUserCoins = async (type: CoinType, deductBy: number) => {
+  console.log(type, deductBy);
+};
+
 export {
   getOpinions,
-  FILMS,
+  getFilms,
   getPredictions,
   getFilmInfoFromFilmId,
   getOpinionsFromFilmId,
@@ -526,4 +524,7 @@ export {
   getUserCoins,
   getPastParticipations,
   getCouponCode,
+  postUserOpinion,
+  postUserPrediction,
+  postUpdateUserCoins,
 };
