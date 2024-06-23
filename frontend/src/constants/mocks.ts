@@ -13,7 +13,7 @@ import PrimeVideo from "~/res/images/PrimeVideo.webp";
 import Hotstar from "~/res/images/Hotstar.png";
 import Imax from "~/res/images/Imax.png";
 import { CoinType } from "~/schema/CoinType";
-import type { CouponDetail } from "~/schema/CouponDetail";
+import type { Reward } from "~/schema/Reward";
 
 const OPINIONS: Opinion[] = [
   {
@@ -319,7 +319,7 @@ const getPastParticipations = (): (Opinion | Prediction)[] => {
   );
 };
 
-const REWARDS: { checkpoint: number; coupons: CouponDetail[] }[] = [
+const REWARDS: Reward[] = [
   {
     checkpoint: 200,
     coupons: [
@@ -525,20 +525,6 @@ const USER_COINS = [
 
 const getUserCoins = () => USER_COINS;
 
-const getUserEarnedCoins = () =>
-  USER_COINS.find((userCoin) => userCoin.type === CoinType.Earned)?.coins ?? 0;
-
-const getMaxRedeemableCoins = () => {
-  const earnedCoins = getUserEarnedCoins();
-  return REWARDS.reduce((maxRedeemableCoins, reward) => {
-    if (reward.checkpoint > earnedCoins) {
-      return maxRedeemableCoins;
-    }
-
-    return Math.max(reward.checkpoint, maxRedeemableCoins);
-  }, 0);
-};
-
 const getCouponCode = async (couponId: string) => {
   return "STEALDEAL50";
 };
@@ -553,7 +539,6 @@ export {
   getPredictionsFromFilmId,
   getRewards,
   getUserCoins,
-  getMaxRedeemableCoins,
   getPastParticipations,
   getCouponCode,
 };
