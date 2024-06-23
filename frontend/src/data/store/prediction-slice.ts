@@ -18,7 +18,7 @@ type PredictionAction = {
     predictions: Prediction[],
   ) => void;
   addUserPrediction: (
-    opinionId: Prediction["predictionId"],
+    predictionId: Prediction["predictionId"],
     predictionVal: number,
   ) => void;
 };

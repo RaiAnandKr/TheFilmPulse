@@ -22,6 +22,7 @@ import type { MainStore } from "~/data/store/main-store";
 import { useMainStore } from "~/data/contexts/store-context";
 import { pick } from "~/utilities/pick";
 import { CoinType } from "~/schema/CoinType";
+import { postUpdateUserCoins, postUserOpinion } from "~/constants/mocks";
 
 interface OpinionProps {
   opinion: Opinion;
@@ -41,7 +42,10 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 
   const onOpinionConfirmed = (userVote: UserVote) => {
     addUserOpinion(opinionId, userVote);
+    postUserOpinion(opinionId, userVote);
+
     updateUserCoins(CoinType.Earned, userVote.coinsUsed /* deductBy */);
+    postUpdateUserCoins(CoinType.Earned, userVote.coinsUsed /* deductBy */);
   };
 
   const router = useRouter();

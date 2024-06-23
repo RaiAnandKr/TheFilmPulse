@@ -1,6 +1,6 @@
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
-import { type Opinion } from "../schema/Opinion";
+import { UserVote, type Opinion } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import Kalki from "../res/images/Kalki.jpeg";
 import Pushpa2 from "../res/images/Pushpa2.jpg";
@@ -495,6 +495,24 @@ const getCouponCode = async (couponId: string) => {
 
 const getFilms = async () => FILMS;
 
+const postUserOpinion = async (
+  opinionId: Opinion["opinionId"],
+  userVote: UserVote,
+) => {
+  console.log(opinionId, userVote);
+};
+
+const postUserPrediction = async (
+  predictionId: Prediction["predictionId"],
+  predictionVal: number,
+) => {
+  console.log(predictionId, predictionVal);
+};
+
+const postUpdateUserCoins = async (type: CoinType, deductBy: number) => {
+  console.log(type, deductBy);
+};
+
 export {
   getOpinions,
   getFilms,
@@ -506,4 +524,7 @@ export {
   getUserCoins,
   getPastParticipations,
   getCouponCode,
+  postUserOpinion,
+  postUserPrediction,
+  postUpdateUserCoins,
 };
