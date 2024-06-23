@@ -1,6 +1,6 @@
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
-import { UserVote, type Opinion } from "../schema/Opinion";
+import { type UserVote, type Opinion } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import Kalki from "../res/images/Kalki.jpeg";
 import Pushpa2 from "../res/images/Pushpa2.jpg";

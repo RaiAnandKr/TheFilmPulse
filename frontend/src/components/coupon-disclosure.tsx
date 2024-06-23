@@ -39,7 +39,9 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
     setCouponCode(couponCode);
 
     updateUserCoins(CoinType.Earned, worthCoins /* deductBy */);
-    postUpdateUserCoins(CoinType.Earned, worthCoins /* deductBy */);
+    postUpdateUserCoins(CoinType.Earned, worthCoins /* deductBy */).catch(
+      console.log,
+    );
   };
 
   return (

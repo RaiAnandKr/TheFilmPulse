@@ -42,7 +42,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
 
   const onPrediction = () => {
     addUserPrediction(predictionId, predictionPointer);
-    postUserPrediction(predictionId, predictionPointer);
+    postUserPrediction(predictionId, predictionPointer).catch(console.log);
   };
 
   const endContentElement = useMemo(
