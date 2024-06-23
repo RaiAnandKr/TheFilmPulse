@@ -77,6 +77,7 @@ const FilmVisual: React.FC<{ film: Film }> = (props) => {
 };
 
 export async function generateStaticParams() {
+  // TODO: api call to get all films.
   return FILMS.map((film) => ({
     filmId: film.filmId,
   }));

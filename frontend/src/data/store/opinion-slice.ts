@@ -7,8 +7,14 @@ type OpinionState = {
 };
 
 type OpinionAction = {
+  updateOpinions: <A extends string | { type: string }>(
+    actionName: A,
+    opinions: Opinion[],
+    addMoreProperties?: Partial<Opinion>,
+  ) => void;
   setTrendingOpinions: (opinions: Opinion[]) => void;
   setActiveOpinions: (opinions: Opinion[]) => void;
+  setFilmOpinions: (filmId: Opinion["filmId"], opinions: Opinion[]) => void;
 };
 
 export type OpinionSlice = OpinionState & OpinionAction;
@@ -18,26 +24,32 @@ export const createOpinionSlice: StateCreator<
   [["zustand/devtools", never]],
   [],
   OpinionSlice
-> = (set) => ({
+> = (set, get) => ({
   opinions: new Map(),
-  setTrendingOpinions: (opinions) =>
+  updateOpinions: (actionName, opinions, addMoreProperties) =>
     set(
       (state) => ({
-        opinions: mergeArrayToMap(state.opinions, opinions, "opinionId", {
-          isTrending: true,
-        }),
+        opinions: mergeArrayToMap(
+          state.opinions,
+          opinions,
+          "opinionId",
+          addMoreProperties,
+        ),
       }),
       false,
-      "OpinionAction/setTrendingOpinions",
+      actionName,
     ),
+  setTrendingOpinions: (opinions) =>
+    get().updateOpinions("OpinionAction/setTrendingOpinions", opinions, {
+      isTrending: true,
+    }),
   setActiveOpinions: (opinions) =>
-    set(
-      (state) => ({
-        opinions: mergeArrayToMap(state.opinions, opinions, "opinionId", {
-          isActive: true,
-        }),
-      }),
-      false,
-      "OpinionAction/setActiveOpinions",
+    get().updateOpinions("OpinionAction/setActiveOpinions", opinions, {
+      isActive: true,
+    }),
+  setFilmOpinions: (filmId, opinions) =>
+    get().updateOpinions(
+      { type: "OpinionAction/setFilmOpinions", filmId },
+      opinions,
     ),
 });
