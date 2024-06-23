@@ -156,5 +156,6 @@ class VoucherCode(db.Model):
     voucher_id: Mapped[int] = mapped_column(Integer, ForeignKey('voucher.id'))
     code: Mapped[str] = mapped_column(String(100), nullable=False)
     expiry_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    claimed_user_id: Mapped[int] = mapped_column(Integer, nullable=True)
 
     voucher = relationship("Voucher", back_populates="voucher_codes")
