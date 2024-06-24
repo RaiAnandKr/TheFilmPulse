@@ -1,3 +1,4 @@
+import os
 from flask import request, jsonify, has_request_context, g
 from flask.views import MethodView
 from dataclasses import is_dataclass, fields
@@ -5,6 +6,7 @@ import dataclasses
 from datetime import datetime
 import pytz
 from sqlalchemy import or_
+from cryptography.fernet import Fernet
 
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 from sqlalchemy.sql import sqltypes
@@ -260,13 +262,72 @@ class VoucherView(BaseAPIView):
 
     decorators = []
 
+ENCRYPTION_KEY = os.getenv('ENCRYPTION_KEY', 'Ggm1M5JGlB6wDmfhVMIzMdmRqctsJKXWzOemNDixIBI=')
+cipher = Fernet(ENCRYPTION_KEY.encode())
+
+def encrypt(code):
+    encrypted_code = cipher.encrypt(code.encode())
+    return encrypted_code.decode()
+
 class VoucherCodeView(BaseAPIView):
     model = VoucherCode
     sort_by = 'expiry_date'
     sort_order = 'asc'
 
-    decorators = []
+    methods = ['GET', 'POST']
 
+    decorators = [load_user_strict]
+
+    def get(self):
+        if 'GET' not in self.methods:
+            return self.method_not_allowed()
+
+        user = g.user
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        claimed = request.args.get('claimed')
+        voucher_id = request.args.get('voucher_id')
+        if voucher_id:
+            voucher_id = int(voucher_id)
+
+        query = self.model.query
+
+        if claimed == 'true':
+            # Return all voucher codes claimed by the user
+            voucher_codes = query.filter_by(claimed_user_id=user.id).all()
+
+            for vc in voucher_codes:
+                vc.code = encrypt(vc.code)
+
+            return jsonify([self.serializer.serialize(vc) for vc in voucher_codes])
+
+        if not voucher_id:
+            return jsonify({'error': 'One of claimed or voucher_id args should be set'}), 400
+
+        # Assume that a new voucher code is being redeemed by a user.
+        # Return one unclaimed voucher code for the given voucher_id with the earliest expiry date
+        query = query.filter_by(voucher_id=voucher_id, claimed_user_id=None)
+        query = query.order_by(VoucherCode.expiry_date.asc()).limit(1)
+
+        voucher_codes = query.all()
+
+        if not voucher_codes:
+            return jsonify({'error': 'No unclaimed voucher code available'}), 400
+
+        # There will be only 1 voucher code
+        voucher_code = voucher_codes[0]
+
+        if user.earned_coins < voucher_code.voucher.coins:
+            return jsonify({'error': 'User has insufficient coins to claim this voucher'}), 400
+
+        user.earned_coins -= voucher_code.voucher.coins
+        voucher_code.claimed_user_id = user.id
+
+        db.session.commit()
+
+        voucher_code.code = encrypt(voucher_code.code)
+        return jsonify([self.serializer.serialize(voucher_code)])
 
 # This class is to deal with user's participations in different contests we have on the
 # platform.
@@ -362,6 +423,9 @@ class UserPredictionView(BaseUserAPIView):
             return self.method_not_allowed()
 
         user = g.user
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
         user_id = user.id
 
         data = request.get_json()
@@ -370,9 +434,6 @@ class UserPredictionView(BaseUserAPIView):
         data['user_id'] = user_id
         prediction_id = data.get('prediction_id')
         answer = data.get('answer')
-
-        if not user:
-            return jsonify({'error': 'User not found'}), 404
 
         prediction = Prediction.query.filter_by(id=prediction_id).first()
         if not prediction:
@@ -420,6 +481,9 @@ class UserOpinionView(BaseUserAPIView):
             return self.method_not_allowed()
 
         user = g.user
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
         user_id = user.id
 
         data = request.get_json()
@@ -430,9 +494,6 @@ class UserOpinionView(BaseUserAPIView):
         opinion_id = data.get('opinion_id')
         coins_to_deduct = data.get('coins')
         answer = data.get('answer').lower()
-
-        if not user:
-            return jsonify({'error': 'User not found'}), 404
 
         opinion = Opinion.query.filter_by(id=opinion_id).first()
         if not opinion:
