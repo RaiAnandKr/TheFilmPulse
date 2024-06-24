@@ -2,6 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+
+import CryptoJS from 'crypto-js';
 
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
@@ -365,8 +368,15 @@ export const getVouchers = async (config?: FetchConfig): Promise<CouponDetail[]>
   }
 };
 
+const secretKey = 'Ggm1M5JGlB6wDmfhVMIzMdmRqctsJKXWzOemNDixIBI='
+
+export const decrypt = (encryptedText: string): string => {
+  const bytes = CryptoJS.AES.decrypt(encryptedText, secretKey);
+  return bytes.toString(CryptoJS.enc.Utf8);
+};
+
 // This will fetch just 1 coupon code corresponding to a coupon id (brand).
-export const getVoucherCode = async (couponId: number, limit = 1,
+export const getVoucherCode = async (couponId: number,
   config?: FetchConfig): Promise<CouponCode[]> => {
 
   try {
@@ -374,7 +384,7 @@ export const getVoucherCode = async (couponId: number, limit = 1,
     const voucherCodesData = await get<any[]>(url, config);
 
     const voucherCodes: CouponCode[] = voucherCodesData.map(voucherCodeData => ({
-      couponCode: voucherCodeData.code,
+      couponCode: decrypt(voucherCodeData.code),
       expiryDate: voucherCodeData.expiry_date,
     }));
 
@@ -382,5 +392,22 @@ export const getVoucherCode = async (couponId: number, limit = 1,
 
   } catch (error) {
     throw new Error(`Error fetching voucher code: ${(error as Error).message}`);
+  }
+};
+
+export const getClaimedVouchers = async (config?: FetchConfig): Promise<CouponCode[]> => {
+  try {
+    const url = `/voucher_codes?claimed=true`
+    const voucherCodesData = await get<any[]>(url, config);
+
+    const voucherCodes: CouponCode[] = voucherCodesData.map(voucherCodeData => ({
+      couponCode: decrypt(voucherCodeData.code),
+      expiryDate: voucherCodeData.expiry_date,
+    }));
+
+    return voucherCodes;
+
+  } catch (error) {
+    throw new Error(`Error fetching claimed vouchers for users: ${(error as Error).message}`);
   }
 };
