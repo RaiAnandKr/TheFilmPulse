@@ -293,14 +293,21 @@ class VoucherCodeView(BaseAPIView):
 
         query = self.model.query
 
+        # Return all voucher codes claimed by the user
         if claimed == 'true':
-            # Return all voucher codes claimed by the user
             voucher_codes = query.filter_by(claimed_user_id=user.id).all()
 
+            results = []
+            # Encrypt each of the voucher code and also return the voucher info along with
+            # the voucher codes.
             for vc in voucher_codes:
                 vc.code = encrypt(vc.code)
+                serialized_vc = self.serializer.serialize(vc)
+                serialized_vc['voucher'] = self.serializer.serialize(vc.voucher)
 
-            return jsonify([self.serializer.serialize(vc) for vc in voucher_codes])
+                results.append(serialized_vc)
+
+            return jsonify(results)
 
         if not voucher_id:
             return jsonify({'error': 'One of claimed or voucher_id args should be set'}), 400
