@@ -22,6 +22,8 @@ class DataBaseConfig(object):
 
 class JWTConfig(object):
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET')
+    # .sample.tld is the safest way for most modern browsers
+    JWT_COOKIE_DOMAIN = os.environ.get('COOKIE_DOMAIN', default='.thefilmpulse.com')
     JWT_TOKEN_LOCATION = ["cookies"]
     JWT_COOKIE_SECURE = True
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=30)
