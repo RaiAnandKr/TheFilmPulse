@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import CryptoJS from 'crypto-js';
+import fernet from 'fernet';
 
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
@@ -15,7 +15,7 @@ import { CouponDetail, CouponCode } from "~/schema/CouponDetail";
 import { PulseResult, PulseResultType } from "~/schema/PulseResult";
 
 const BASE_URL =
-  "https://backend.gentleisland-bcedf421.centralindia.azurecontainerapps.io";
+  "https://backend.thefilmpulse.com";
 
 interface FetchConfig extends RequestInit {
   headers?: HeadersInit;
@@ -369,10 +369,19 @@ export const getVouchers = async (config?: FetchConfig): Promise<CouponDetail[]>
 };
 
 const secretKey = 'Ggm1M5JGlB6wDmfhVMIzMdmRqctsJKXWzOemNDixIBI='
+const secret = new fernet.Secret(secretKey)
 
 export const decrypt = (encryptedText: string): string => {
-  const bytes = CryptoJS.AES.decrypt(encryptedText, secretKey);
-  return bytes.toString(CryptoJS.enc.Utf8);
+  try {
+    const token = new fernet.Token({
+      secret: secret,
+      token: encryptedText,
+      ttl: 0,  // Time-to-live (ttl) set to 0 means the token will never expire
+    });
+    return token.decode();
+  } catch (error) {
+    throw new Error(`Decryption failed: ${(error as Error).message}`);
+  }
 };
 
 // This will fetch just 1 coupon code corresponding to a coupon id (brand).
