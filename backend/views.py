@@ -114,13 +114,10 @@ class BaseAPIView(MethodView):
         results = []
         user = g.user
 
-        # If there is no logged in user, just return an empty dictionary for user_vote.
+        # If there is no logged in user, there is no user_vote to be returned and hence return the queried
+        # items.
         if not user:
-            for item in items:
-                serialized_item = self.serializer.serialize(item)
-                serialized_item['user_vote'] = {}
-                results.append(serialized_item)
-            return jsonify(results)
+            return jsonify([self.serializer.serialize(item) for item in items])
 
         user_id = user.id
         # For each prediction (or opinion), find if the logged in user has a vote and add it in the result.
@@ -131,10 +128,8 @@ class BaseAPIView(MethodView):
             else:
                 user_vote = UserPrediction.query.filter_by(user_id=user_id, prediction_id=item.id).first()
 
-            serialized_item['user_vote'] = (
-                self.serializer.serialize(user_vote)
-                if user_vote else {}
-            )
+            if user_vote:
+                serialized_item['user_vote'] = self.serializer.serialize(user_vote)
             results.append(serialized_item)
 
         return jsonify(results)
@@ -241,10 +236,10 @@ class FilmView(BaseAPIView):
             # For each prediction, get the user_vote if there is a logged in user and if it has already voted in
             # that prediction.
             serialized_top_prediction = self.serializer.serialize(top_prediction)
-            serialized_top_prediction['user_vote'] = {}
             if user:
                 user_vote = UserPrediction.query.filter_by(user_id=user.id, prediction_id=top_prediction.id).first()
-                serialized_top_prediction['user_vote'] = self.serializer.serialize(user_vote) if user_vote else {}
+                if user_vote:
+                    serialized_top_prediction['user_vote'] = self.serializer.serialize(user_vote)
             serialized_item['top_prediction'] = serialized_top_prediction
             results.append(serialized_item)
 
