@@ -17,11 +17,11 @@ class BaseSerializer:
             return self._serialize_dataclass(item)
         return self._serialize_model(item)
 
-    # The main aim here is to return the dates in simple YYYY-MM-DD format and not in datetime
-    # format and hence make everything go through this method.
+    # The main aim here is to return the dates in a format which is expected
+    # by the frontend.
     def _get_value(self, value):
         if isinstance(value, datetime):
-            return value.strftime('%Y-%m-%d')
+            return value.strftime('%B %d, %Y')
         return value
 
     def _serialize_dataclass(self, item):
