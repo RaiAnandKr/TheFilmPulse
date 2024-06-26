@@ -20,6 +20,9 @@ from sqlalchemy.exc import IntegrityError
 # Setting the server's timezone to Indian Standard Time
 SERVER_TIMEZONE = 'Asia/Kolkata'
 
+def current_date():
+    tz = pytz.timezone(SERVER_TIMEZONE)
+    return datetime.now(tz).date()
 
 class BaseAPIView(MethodView):
     model = None
@@ -90,15 +93,13 @@ class BaseAPIView(MethodView):
         if film_title and self.model in [Prediction, Opinion]:
             query = query.join(Film).filter(Film.title.contains(film_title))
 
-        include_closed = request.args.get('include_closed', '').lower() == 'true'
+        include_inactive = request.args.get('include_inactive', '').lower() == 'true'
         # Only return those predictions / opinions which either don't have an end_date
         # or their end_date hasn't passed yet if the client isn't explicitly asking for
-        # closed games as well.
-        if self.model in [Prediction, Opinion] and not include_closed:
-            # Get the current date in the server's timezone
-            tz = pytz.timezone(SERVER_TIMEZONE)
-            current_date = datetime.now(tz).date()
-            query = query.filter(or_(self.model.end_date >= current_date, self.model.end_date == None))
+        # inactive games as well.
+        if self.model in [Prediction, Opinion] and not include_inactive:
+            query = query.filter(or_(self.model.end_date >= current_date(),
+                                     self.model.end_date == None))
 
         query = self.sorting_get(request, query)
         query = self.pagination_get(request, query)
@@ -389,6 +390,20 @@ class BaseUserAPIView(MethodView):
                 if type(column.type) is sqltypes.Integer:
                     value = int(value)
                 query = query.filter(getattr(self.model, column.name) == value)
+
+        # The way our APIs are designed, we will be returning user response/participations
+        # as part of the /opinions and /predictions API for active ones. So hitting
+        # /user_opinions or /user_predictions will be done in a bid to fetch the past
+        # participations of a user. And hence, by default we will return user participations
+        # in closed games only unless the 'include_active' query param is set.
+        include_active = request.args.get('include_active', '').lower() == 'true'
+        if self.model == UserOpinion and not include_active:
+            query = query.join(Opinion, UserOpinion.opinion_id == Opinion.id)
+            query = query.filter(Opinion.end_date < current_date())
+
+        if self.model == UserPrediction and not include_active:
+            query = query.join(Prediction, UserPrediction.prediction_id == Prediction.id)
+            query = query.filter(Prediction.end_date < current_date())
 
         # TODO: convert sort and pagination to mixins
         sort_by = request.args.get('sort_by', self.sort_by)
