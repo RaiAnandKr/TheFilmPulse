@@ -355,14 +355,14 @@ export const getUserPredictions = async (config?: FetchConfig): Promise<Predicti
 };
 
 export const postUserPrediction = async (
-  predictionId: number,
+  predictionId: string | number,
   answer: number,
   config?: FetchConfig,
 ): Promise<void> => {
   try {
     const url = "/user_predictions";
     const body = {
-      prediction_id: predictionId,
+      prediction_id: toNumber(predictionId),
       answer: answer,
     };
     await post<void>(url, body, config);

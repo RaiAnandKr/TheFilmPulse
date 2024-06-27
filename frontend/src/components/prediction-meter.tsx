@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import type { Prediction } from "~/schema/Prediction";
 import { PredictButton } from "./predict-button";
 import { useMainStore } from "~/data/contexts/store-context";
-import { postUserPrediction } from "~/constants/mocks";
+import { postUserPrediction } from "~/service/apiUtils";
 
 export interface PredictionMeterProps {
   prediction: Prediction;

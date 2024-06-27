@@ -98,7 +98,7 @@ const OPINIONS: Opinion[] = [
 const PREDICTIONS: Prediction[] = [
   {
     type: PulseType.Prediction,
-    predictionId: "film-1-prediction-1",
+    predictionId: "1",
     title: "Week 1 box office collection",
     filmId: "film-1",
     startDate: "May 26, 2024",
@@ -112,7 +112,7 @@ const PREDICTIONS: Prediction[] = [
   },
   {
     type: PulseType.Prediction,
-    predictionId: "film-1-prediction-2",
+    predictionId: "2",
     title: "Week 1 IMDB rating",
     filmId: "film-1",
     startDate: "May 26, 2024",
@@ -125,7 +125,7 @@ const PREDICTIONS: Prediction[] = [
   },
   {
     type: PulseType.Prediction,
-    predictionId: "film-1-prediction-3",
+    predictionId: "3",
     title: "Lifetime collection", // Needs clear naming
     filmId: "film-1",
     startDate: "May 26, 2024",
@@ -145,7 +145,7 @@ const PREDICTIONS: Prediction[] = [
   },
   {
     type: PulseType.Prediction,
-    predictionId: "film-2-prediction-1",
+    predictionId: "4",
     title: "Week 1 box office collection",
     filmId: "film-2",
     startDate: "May 20, 2024",
@@ -158,7 +158,7 @@ const PREDICTIONS: Prediction[] = [
   },
   {
     type: PulseType.Prediction,
-    predictionId: "film-2-prediction-2",
+    predictionId: "5",
     title: "Week 1 IMDB rating",
     filmId: "film-2",
     startDate: "May 20, 2024",
@@ -177,7 +177,7 @@ const PREDICTIONS: Prediction[] = [
   },
   {
     type: PulseType.Prediction,
-    predictionId: "film-2-prediction-3",
+    predictionId: "6",
     title: "Lifetime collection (including overseas, theaters, OTT)",
     filmId: "film-2",
     startDate: "May 20, 2024",
@@ -202,12 +202,12 @@ const FILMS: Film[] = [
       "Kalki 2898 AD is an upcoming Indian epic science fiction action film, shot primarily in Telugu with some scenes reshot in Hindi. Inspired by Hindu scriptures, the film is set in a post-apocalyptic world, in the year 2898 AD. ",
     releaseDate: "June 15",
     topPrediction: PREDICTIONS.find(
-      (prediction) => prediction.predictionId === "film-1-prediction-1",
+      (prediction) => prediction.predictionId === "1",
     )!,
     predictionIds: [
-      "film-1-prediction-1",
-      "film-1-prediction-1",
-      "film-1-prediction-1",
+      "1",
+      "2",
+      "3",
     ],
   },
   {
@@ -221,12 +221,12 @@ const FILMS: Film[] = [
       "Pushpa 2: The Rule, is an upcoming Indian Telugu-language action drama film produced by Naveen Yerneni and Yalamanchili Ravi Shankar under their Mythri Movie Makers banner. It is the second installment in the Pushpa film series and the sequel to Pushpa: The Rise.",
     releaseDate: "July 12",
     topPrediction: PREDICTIONS.find(
-      (prediction) => prediction.predictionId === "film-2-prediction-3",
+      (prediction) => prediction.predictionId === "6",
     )!,
     predictionIds: [
-      "film-2-prediction-1",
-      "film-2-prediction-1",
-      "film-2-prediction-1",
+      "4",
+      "5",
+      "6",
     ],
   },
 ];
