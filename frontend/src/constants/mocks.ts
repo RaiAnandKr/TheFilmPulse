@@ -15,6 +15,8 @@ import Imax from "~/res/images/Imax.png";
 import { CoinType } from "~/schema/CoinType";
 import type { Reward } from "~/schema/Reward";
 
+import type { CouponCode } from "~/schema/CouponDetail";
+
 const OPINIONS: Opinion[] = [
   {
     type: PulseType.Opinion,
@@ -277,7 +279,7 @@ const REWARDS: Reward[] = [
     checkpoint: 200,
     coupons: [
       {
-        couponId: "coupon-1",
+        couponId: "1",
         couponLogoSrc: Pvr.src,
         couponInfo:
           "Get Flat 50% Cashback Up To Rs 200 on PVR tickets. T&C apply.",
@@ -290,7 +292,7 @@ const REWARDS: Reward[] = [
         ],
       },
       {
-        couponId: "coupon-2",
+        couponId: "2",
         couponLogoSrc: Hotstar.src,
         couponInfo:
           "Watch ICC T20 World Cup Cricket Matches For Free On Hotstar. T&C apply.",
@@ -307,7 +309,7 @@ const REWARDS: Reward[] = [
     checkpoint: 400,
     coupons: [
       {
-        couponId: "coupon-3",
+        couponId: "3",
         couponLogoSrc: Netflix.src,
         couponInfo:
           "Netflix Premium Subscriptions starting At Rs 649. T&C apply.",
@@ -319,7 +321,7 @@ const REWARDS: Reward[] = [
         ],
       },
       {
-        couponId: "coupon-4",
+        couponId: "4",
         couponLogoSrc: PrimeVideo.src,
         couponInfo:
           "Amazon Prime Subscription Plan starts At Rs 299. T&C apply.",
@@ -336,7 +338,7 @@ const REWARDS: Reward[] = [
     checkpoint: 600,
     coupons: [
       {
-        couponId: "coupon-5",
+        couponId: "5",
         couponLogoSrc: Pvr.src,
         couponInfo:
           "Get Flat 60% Cashback Up To Rs 300 on PVR tickets. T&C apply.",
@@ -349,7 +351,7 @@ const REWARDS: Reward[] = [
         ],
       },
       {
-        couponId: "coupon-6",
+        couponId: "6",
         couponLogoSrc: Netflix.src,
         couponInfo:
           "Netflix Premium Subscriptions starting At Rs 449. T&C apply.",
@@ -361,7 +363,7 @@ const REWARDS: Reward[] = [
         ],
       },
       {
-        couponId: "coupon-7",
+        couponId: "7",
         couponLogoSrc: PrimeVideo.src,
         couponInfo:
           "Amazon Prime Subscription Plan starts At Rs 199. T&C apply.",
@@ -378,7 +380,7 @@ const REWARDS: Reward[] = [
     checkpoint: 800,
     coupons: [
       {
-        couponId: "coupon-8",
+        couponId: "8",
         couponLogoSrc: Imax.src,
         couponInfo:
           "Get Flat 60% Cashback Up To Rs 500 on IMAX 3D tickets. T&C apply.",
@@ -390,7 +392,7 @@ const REWARDS: Reward[] = [
         ],
       },
       {
-        couponId: "coupon-9",
+        couponId: "9",
         couponLogoSrc: Netflix.src,
         couponInfo:
           "Netflix Premium Subscriptions starting At Rs 349. T&C apply.",
@@ -399,7 +401,7 @@ const REWARDS: Reward[] = [
         couponExpiryDate: "July 25, 2024",
       },
       {
-        couponId: "coupon-10",
+        couponId: "10",
         couponLogoSrc: PrimeVideo.src,
         couponInfo:
           "Amazon Prime Subscription Plan starts At Rs 99. T&C apply.",
@@ -416,7 +418,7 @@ const REWARDS: Reward[] = [
     checkpoint: 1000,
     coupons: [
       {
-        couponId: "coupon-11",
+        couponId: "11",
         couponLogoSrc: Pvr.src,
         couponInfo:
           "Get Flat 60% Cashback Up To Rs 400 on PVR tickets. T&C apply.",
@@ -429,7 +431,7 @@ const REWARDS: Reward[] = [
         ],
       },
       {
-        couponId: "coupon-12",
+        couponId: "12",
         couponLogoSrc: Imax.src,
         couponInfo:
           "Get Flat 60% Cashback Up To Rs 600 on IMAX 3D tickets. T&C apply.",
@@ -438,7 +440,7 @@ const REWARDS: Reward[] = [
         couponExpiryDate: "July 25, 2024",
       },
       {
-        couponId: "coupon-13",
+        couponId: "13",
         couponLogoSrc: Netflix.src,
         couponInfo:
           "Netflix Premium Subscriptions starting At Rs 299. T&C apply.",
@@ -450,7 +452,7 @@ const REWARDS: Reward[] = [
         ],
       },
       {
-        couponId: "coupon-14",
+        couponId: "14",
         couponLogoSrc: PrimeVideo.src,
         couponInfo:
           "Amazon Prime Subscription Plan free for 1 year. T&C apply.",
@@ -478,8 +480,11 @@ const USER_COINS = [
 
 const getUserCoins = async () => USER_COINS;
 
-const getCouponCode = async (couponId: string) => {
-  return "STEALDEAL50";
+const getCouponCode = async (couponId: string): Promise<CouponCode> => {
+  return {
+    code: "STEALDEAL50",
+    expiryDate: "July 25, 2024",
+  };
 };
 
 const getFilms = async () => FILMS;

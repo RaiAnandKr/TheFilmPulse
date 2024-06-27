@@ -9,6 +9,6 @@ export interface CouponDetail {
 }
 
 export interface CouponCode {
-  couponCode: string;
+  code: string;
   expiryDate: string;
 }

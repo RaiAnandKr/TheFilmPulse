@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import type { CouponDetail } from "~/schema/CouponDetail";
 import { useState } from "react";
-import { getCouponCode } from "~/constants/mocks";
+import { getCouponCode } from "~/service/apiUtils";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { useMainStore } from "~/data/contexts/store-context";
 import { CoinType } from "~/schema/CoinType";
@@ -35,10 +35,14 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
   const updateUserCoins = useMainStore((state) => state.updateUserCoins);
 
   const onClaim = async () => {
-    const couponCode = await getCouponCode(couponId);
-    setCouponCode(couponCode);
-
-    updateUserCoins(CoinType.Earned, worthCoins /* deductBy */);
+    const couponCode = await getCouponCode(couponId).catch(console.log);
+    if (couponCode) {
+      setCouponCode(couponCode.code);
+      updateUserCoins(CoinType.Earned, worthCoins /* deductBy */);
+    } else {
+      // TODO: Handle this in a much better way for users sake.
+      console.log('No coupon code found.');
+    }
   };
 
   return (

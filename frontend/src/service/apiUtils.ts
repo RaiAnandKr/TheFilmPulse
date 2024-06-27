@@ -401,38 +401,45 @@ export const decrypt = (encryptedText: string): string => {
 };
 
 // This will fetch just 1 coupon code corresponding to a coupon id (brand).
-export const getVoucherCode = async (couponId: number,
-  config?: FetchConfig): Promise<CouponCode[]> => {
+export const getCouponCode = async (couponId: string | number,
+  config?: FetchConfig): Promise<CouponCode | null> => {
 
   try {
-    const url = `/voucher_codes?voucher_id=${couponId}&limit=1`
-    const voucherCodesData = await get<any[]>(url, config);
+    const numericCouponId = toNumber(couponId);
+    const url = `/voucher_codes?voucher_id=${numericCouponId}&limit=1`;
+    const couponCodesData = await get<any[]>(url, config);
 
-    const voucherCodes: CouponCode[] = voucherCodesData.map(voucherCodeData => ({
-      couponCode: decrypt(voucherCodeData.code),
-      expiryDate: voucherCodeData.expiry_date,
-    }));
+    // Ensure there's at least one coupon code returned
+    if (couponCodesData.length === 0) {
+      return null;
+    }
 
-    return voucherCodes;
+    const couponCodeData = couponCodesData[0];
+    const couponCode: CouponCode = {
+      code: decrypt(couponCodeData.code),
+      expiryDate: couponCodeData.expiry_date,
+    };
+
+    return couponCode;
 
   } catch (error) {
-    throw new Error(`Error fetching voucher code: ${(error as Error).message}`);
+    throw new Error(`Error fetching coupon code: ${(error as Error).message}`);
   }
 };
 
-export const getClaimedVouchers = async (config?: FetchConfig): Promise<CouponCode[]> => {
+export const getClaimedCoupons = async (config?: FetchConfig): Promise<CouponCode[]> => {
   try {
-    const url = `/voucher_codes?claimed=true`
-    const voucherCodesData = await get<any[]>(url, config);
+    const url = `/voucher_codes?claimed=true`;
+    const couponCodesData = await get<any[]>(url, config);
 
-    const voucherCodes: CouponCode[] = voucherCodesData.map(voucherCodeData => ({
-      couponCode: decrypt(voucherCodeData.code),
-      expiryDate: voucherCodeData.expiry_date,
+    const couponCodes: CouponCode[] = couponCodesData.map(couponCodeData => ({
+      code: decrypt(couponCodeData.code),
+      expiryDate: couponCodeData.expiry_date,
     }));
 
-    return voucherCodes;
+    return couponCodes;
 
   } catch (error) {
-    throw new Error(`Error fetching claimed vouchers for users: ${(error as Error).message}`);
+    throw new Error(`Error fetching claimed coupons for users: ${(error as Error).message}`);
   }
 };
