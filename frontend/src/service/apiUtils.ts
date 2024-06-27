@@ -119,8 +119,6 @@ export const getFilms = async (
         userPrediction: predictionData.user_vote?.answer || null,
         predictionStepValue: predictionData.step_value || 25,
         predictionScaleUnit: predictionData.unit || "",
-        // Adding dummy values to avoid breaking code because of type error.
-        startDate: "2024-04-10",
       };
 
       return {
@@ -190,8 +188,6 @@ export const getOpinions = async (
         filmPosterSrc: opinionData.icon_url,
         votes: [yesVote, noVote],
         userVote: userVote,
-        // Adding dummy values to avoid breaking code because of type error
-        startDate: "2024-04-10",
       };
     });
 
@@ -244,8 +240,6 @@ export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> 
         votes: [yesVote, noVote],
         userVote: userVote,
         result: result,
-        // Adding dummy values to avoid breaking code because of type error
-        startDate: "2024-04-10",
       };
     });
 
@@ -302,8 +296,6 @@ export const getPredictions = async (
         userPrediction: predictionData.user_vote?.answer || null,
         predictionStepValue: predictionData.step_value || 25,
         predictionScaleUnit: predictionData.scale_unit || "",
-        // Adding dummy values to avoid breaking code because of type error.
-        startDate: "2024-04-10",
       };
     });
 
@@ -343,8 +335,6 @@ export const getUserPredictions = async (config?: FetchConfig): Promise<Predicti
         predictionStepValue: userPredictionData.prediction.step_value || 25,
         predictionScaleUnit: userPredictionData.prediction.scale_unit || "",
         result: result,
-        // Adding dummy values to avoid breaking code because of type error.
-        startDate: "2024-04-10",
       };
     });
 

@@ -6,7 +6,6 @@ export type Opinion = {
   type: PulseType.Opinion;
   opinionId: string;
   title: string;
-  startDate: string;
   endDate: string;
   filmId: string;
   votes: Vote[];

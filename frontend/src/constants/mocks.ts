@@ -1,6 +1,6 @@
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
-import { type UserVote, type Opinion } from "../schema/Opinion";
+import { type Opinion } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import Kalki from "../res/images/Kalki.jpeg";
 import Pushpa2 from "../res/images/Pushpa2.jpg";
@@ -21,7 +21,6 @@ const OPINIONS: Opinion[] = [
     opinionId: "1",
     title:
       "Will Kalki cross Jawaan's first day box office collection of Rs. 75 Crore in India?",
-    startDate: "May 26, 2024",
     endDate: "August 15, 2024",
     filmId: "film-1",
     votes: [
@@ -34,7 +33,6 @@ const OPINIONS: Opinion[] = [
     type: PulseType.Opinion,
     opinionId: "2",
     title: "Will Puspa 2 include cameo from Lord Bobby?",
-    startDate: "May 20, 2024",
     endDate: "July 17, 2024",
     filmId: "film-2",
     votes: [
@@ -47,7 +45,6 @@ const OPINIONS: Opinion[] = [
     type: PulseType.Opinion,
     opinionId: "3",
     title: "Will there be sequel of Pushpa 2?",
-    startDate: "May 25, 2024",
     endDate: "July 15, 2024",
     filmId: "film-2",
     votes: [
@@ -59,7 +56,6 @@ const OPINIONS: Opinion[] = [
     type: PulseType.Opinion,
     opinionId: "4",
     title: "Will there be sequel of Kalki?",
-    startDate: "May 25, 2024",
     endDate: "June 15, 2024",
     filmId: "film-1",
     votes: [
@@ -78,7 +74,6 @@ const OPINIONS: Opinion[] = [
     type: PulseType.Opinion,
     opinionId: "5",
     title: "Will Fahad Fasil die in Pushpa 2?",
-    startDate: "May 25, 2024",
     endDate: "June 2, 2024",
     filmId: "film-2",
     votes: [
@@ -101,7 +96,6 @@ const PREDICTIONS: Prediction[] = [
     predictionId: "1",
     title: "Week 1 box office collection",
     filmId: "film-1",
-    startDate: "May 26, 2024",
     endDate: "June 15, 2024",
     participationCount: 3748,
     meanPrediction: 400,
@@ -115,7 +109,6 @@ const PREDICTIONS: Prediction[] = [
     predictionId: "2",
     title: "Week 1 IMDB rating",
     filmId: "film-1",
-    startDate: "May 26, 2024",
     endDate: "June 15, 2024",
     participationCount: 4786,
     meanPrediction: 8.2,
@@ -128,7 +121,6 @@ const PREDICTIONS: Prediction[] = [
     predictionId: "3",
     title: "Lifetime collection", // Needs clear naming
     filmId: "film-1",
-    startDate: "May 26, 2024",
     endDate: "June 1, 2024",
     meanPrediction: 1250,
     userPrediction: 1950,
@@ -148,7 +140,6 @@ const PREDICTIONS: Prediction[] = [
     predictionId: "4",
     title: "Week 1 box office collection",
     filmId: "film-2",
-    startDate: "May 20, 2024",
     endDate: "July 12, 2024",
     meanPrediction: 750,
     participationCount: 6783,
@@ -161,7 +152,6 @@ const PREDICTIONS: Prediction[] = [
     predictionId: "5",
     title: "Week 1 IMDB rating",
     filmId: "film-2",
-    startDate: "May 20, 2024",
     endDate: "June 4, 2024",
     userPrediction: 8.0,
     participationCount: 4786,
@@ -180,7 +170,6 @@ const PREDICTIONS: Prediction[] = [
     predictionId: "6",
     title: "Lifetime collection (including overseas, theaters, OTT)",
     filmId: "film-2",
-    startDate: "May 20, 2024",
     endDate: "July 12, 2024",
     meanPrediction: 2100,
     participationCount: 8929,
