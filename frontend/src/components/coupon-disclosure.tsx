@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import type { CouponDetail } from "~/schema/CouponDetail";
 import { useState } from "react";
-import { getCouponCode, postUpdateUserCoins } from "~/constants/mocks";
+import { getCouponCode } from "~/constants/mocks";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { useMainStore } from "~/data/contexts/store-context";
 import { CoinType } from "~/schema/CoinType";
@@ -39,9 +39,6 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
     setCouponCode(couponCode);
 
     updateUserCoins(CoinType.Earned, worthCoins /* deductBy */);
-    postUpdateUserCoins(CoinType.Earned, worthCoins /* deductBy */).catch(
-      console.log,
-    );
   };
 
   return (

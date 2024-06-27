@@ -510,10 +510,6 @@ const postUserPrediction = async (
   console.log(predictionId, predictionVal);
 };
 
-const postUpdateUserCoins = async (type: CoinType, deductBy: number) => {
-  console.log(type, deductBy);
-};
-
 export {
   getOpinions,
   getFilms,
@@ -527,5 +523,4 @@ export {
   getCouponCode,
   postUserOpinion,
   postUserPrediction,
-  postUpdateUserCoins,
 };
