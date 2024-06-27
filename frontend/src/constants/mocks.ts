@@ -18,7 +18,7 @@ import type { Reward } from "~/schema/Reward";
 const OPINIONS: Opinion[] = [
   {
     type: PulseType.Opinion,
-    opinionId: "a",
+    opinionId: "1",
     title:
       "Will Kalki cross Jawaan's first day box office collection of Rs. 75 Crore in India?",
     startDate: "May 26, 2024",
@@ -32,7 +32,7 @@ const OPINIONS: Opinion[] = [
   },
   {
     type: PulseType.Opinion,
-    opinionId: "b",
+    opinionId: "2",
     title: "Will Puspa 2 include cameo from Lord Bobby?",
     startDate: "May 20, 2024",
     endDate: "July 17, 2024",
@@ -45,7 +45,7 @@ const OPINIONS: Opinion[] = [
   },
   {
     type: PulseType.Opinion,
-    opinionId: "c",
+    opinionId: "3",
     title: "Will there be sequel of Pushpa 2?",
     startDate: "May 25, 2024",
     endDate: "July 15, 2024",
@@ -57,7 +57,7 @@ const OPINIONS: Opinion[] = [
   },
   {
     type: PulseType.Opinion,
-    opinionId: "d",
+    opinionId: "4",
     title: "Will there be sequel of Kalki?",
     startDate: "May 25, 2024",
     endDate: "June 15, 2024",
@@ -76,7 +76,7 @@ const OPINIONS: Opinion[] = [
   },
   {
     type: PulseType.Opinion,
-    opinionId: "e",
+    opinionId: "5",
     title: "Will Fahad Fasil die in Pushpa 2?",
     startDate: "May 25, 2024",
     endDate: "June 2, 2024",
@@ -497,9 +497,10 @@ const getFilms = async () => FILMS;
 
 const postUserOpinion = async (
   opinionId: Opinion["opinionId"],
-  userVote: UserVote,
+  coins: string | number,
+  option: OpinionOption | undefined,
 ) => {
-  console.log(opinionId, userVote);
+  console.log(opinionId, coins, option);
 };
 
 const postUserPrediction = async (

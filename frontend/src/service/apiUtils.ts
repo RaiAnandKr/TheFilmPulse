@@ -25,6 +25,17 @@ interface ErrorResponse {
   error?: string;
 }
 
+export const toNumber = (value: string | number): number => {
+  if (typeof value === 'string') {
+    const numberValue = parseInt(value, 10);
+    if (isNaN(numberValue)) {
+      throw new Error(`Invalid value: ${value}. Cannot be converted to a number.`);
+    }
+    return numberValue;
+  }
+  return value;
+};
+
 const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
     const errorData: ErrorResponse = await response.json();
@@ -245,17 +256,17 @@ export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> 
 };
 
 export const postUserOpinion = async (
-  opinionId: number,
-  coins: number,
-  answer: string,
+  opinionId: string | number,
+  coins: string | number,
+  option: OpinionOption | undefined,
   config?: FetchConfig,
 ): Promise<void> => {
   try {
     const url = "/user_opinions";
     const body = {
-      opinion_id: opinionId,
-      coins: coins,
-      answer: answer,
+      opinion_id: toNumber(opinionId),
+      coins: toNumber(coins),
+      answer: option === OpinionOption.Yes ? 'yes' : 'no',
     };
     await post<void>(url, body, config);
   } catch (error) {
