@@ -178,16 +178,26 @@ class UserView(BaseAPIView):
     decorators = [load_user_strict]
 
     def get(self):
-        return self.serializer.serialize(g.user)
+        user = g.user
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        serialized_user = self.serializer.serialize(user)
+        serialized_user['max_opinion_coins'] = max(
+            40, 0.4 * (user.bonus_coins + user.earned_coins)
+        )
+        return jsonify(serialized_user)
 
     def put(self, *args, **kwargs):
         # TODO: proper serializer 🥲
         user = g.user
+        # There is no need to update coins for a user from an endpoint POV
+        # hence, don't check for those fields.
         user.username = request.json.get('username')
         user.email = request.json.get('email')
         user.state = request.json.get('state')
         db.session.commit()
-        return self.serializer.serialize(user)
+        return jsonify(self.serializer.serialize(user))
 
 
 class FilmView(BaseAPIView):
@@ -372,9 +382,11 @@ class BaseUserAPIView(MethodView):
         query = self.model.query
 
         user = g.user
-        # If an user is set, fetch predictions/opinions only for that user.
-        if user:
-            query = query.filter_by(user_id=user.id)
+        if not user:
+            return jsonify({'message': 'User not found'}), 404
+
+        # Fetch predictions/opinions only for the logged in user.
+        query = query.filter_by(user_id=user.id)
 
         # TODO: restrict to self.columns?
         for column in self.model.__table__.columns:

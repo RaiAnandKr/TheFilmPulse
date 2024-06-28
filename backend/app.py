@@ -97,21 +97,6 @@ def login():
         pass
     pass
 
-
-@app.route("/coins", methods=['GET'])
-@load_user_strict
-def get_coins():
-    user = g.user
-    if not user:
-        return jsonify({'message': 'User not found'}), 404
-
-    return jsonify({
-        'bonus_coins': user.bonus_coins,
-        'earned_coins': user.earned_coins,
-        'max_opinion_coins': max(40, 0.4 * (user.bonus_coins + user.earned_coins))
-    })
-
-
 def add_api(path: str, view: Type[View]):
     app.add_url_rule(path, view_func=view.as_view(path))
 
