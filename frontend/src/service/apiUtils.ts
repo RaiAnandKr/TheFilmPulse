@@ -143,10 +143,11 @@ export const getFilms = async (
   }
 };
 
-export const getFilmInfoFromFilmId = async (filmId: string | number): Promise<Film> => {
-  console.log("testing all")
+export const getFilmInfoFromFilmId = async (filmId: string | number): Promise<Film | null> => {
   const films = await getFilms(filmId);
-  return films[0];
+  // Explicitly handle the case where films[0] is undefined
+  const film = films[0] ?? null; // Use nullish coalescing to handle undefined
+  return film;
 };
 
 interface GetOpinionsOptions {
