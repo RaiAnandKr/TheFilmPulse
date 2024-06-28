@@ -98,7 +98,7 @@ export const post = async <T>(
 };
 
 export const getFilms = async (
-  filmId: number | string,
+  filmId?: number | string,
   config?: FetchConfig,
 ): Promise<Film[]> => {
   try {

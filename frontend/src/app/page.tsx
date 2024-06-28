@@ -2,7 +2,7 @@
 
 import { OpinionCard } from "../components/opinion-card";
 import { FilmPredictionCard } from "../components/film-prediction-card";
-import { getFilms } from "../constants/mocks";
+import { getFilms } from "../service/apiUtils";
 import { getOpinions } from "../service/apiUtils";
 import { colors } from "../styles/colors";
 import {
