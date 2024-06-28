@@ -144,8 +144,8 @@ export const getFilms = async (
 };
 
 interface GetOpinionsOptions {
-  filmId?: number;
-  limit?: number;
+  filmId?: string | number;
+  limit?: string | number;
   isActive?: boolean;
   config?: FetchConfig;
 }
@@ -218,6 +218,9 @@ export const getOpinions = async ({
   }
 };
 
+export const getOpinionsFromFilmId = async (filmId: string | number): Promise<Opinion[]> => {
+  return getOpinions({ filmId: filmId });
+};
 
 export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> => {
   try {

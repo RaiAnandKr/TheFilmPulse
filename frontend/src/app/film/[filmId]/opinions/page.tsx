@@ -1,7 +1,7 @@
 "use client";
 
 import { OpinionCard } from "~/components/opinion-card";
-import { getOpinionsFromFilmId } from "~/constants/mocks";
+import { getOpinionsFromFilmId } from "~/service/apiUtils";
 import { useMainStore } from "~/data/contexts/store-context";
 import { useLoadData } from "~/data/hooks/useLoadData";
 import { useScrollToTop } from "~/hooks/useScrollToTop";
