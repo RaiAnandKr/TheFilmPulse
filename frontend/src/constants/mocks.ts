@@ -24,7 +24,7 @@ const OPINIONS: Opinion[] = [
     title:
       "Will Kalki cross Jawaan's first day box office collection of Rs. 75 Crore in India?",
     endDate: "August 15, 2024",
-    filmId: "film-1",
+    filmId: "1",
     votes: [
       { option: OpinionOption.Yes, participationCount: 250, coins: 8235 },
       { option: OpinionOption.No, participationCount: 129, coins: 3875 },
@@ -36,7 +36,7 @@ const OPINIONS: Opinion[] = [
     opinionId: "2",
     title: "Will Puspa 2 include cameo from Lord Bobby?",
     endDate: "July 17, 2024",
-    filmId: "film-2",
+    filmId: "2",
     votes: [
       { option: OpinionOption.Yes, participationCount: 214, coins: 4230 },
       { option: OpinionOption.No, participationCount: 180, coins: 3975 },
@@ -48,7 +48,7 @@ const OPINIONS: Opinion[] = [
     opinionId: "3",
     title: "Will there be sequel of Pushpa 2?",
     endDate: "July 15, 2024",
-    filmId: "film-2",
+    filmId: "2",
     votes: [
       { option: OpinionOption.Yes, participationCount: 68, coins: 2230 },
       { option: OpinionOption.No, participationCount: 126, coins: 2955 },
@@ -59,7 +59,7 @@ const OPINIONS: Opinion[] = [
     opinionId: "4",
     title: "Will there be sequel of Kalki?",
     endDate: "June 15, 2024",
-    filmId: "film-1",
+    filmId: "1",
     votes: [
       { option: OpinionOption.Yes, participationCount: 168, coins: 2430 },
       { option: OpinionOption.No, participationCount: 196, coins: 3455 },
@@ -77,7 +77,7 @@ const OPINIONS: Opinion[] = [
     opinionId: "5",
     title: "Will Fahad Fasil die in Pushpa 2?",
     endDate: "June 2, 2024",
-    filmId: "film-2",
+    filmId: "2",
     votes: [
       { option: OpinionOption.Yes, participationCount: 75, coins: 1230 },
       { option: OpinionOption.No, participationCount: 128, coins: 1995 },
@@ -97,7 +97,7 @@ const PREDICTIONS: Prediction[] = [
     type: PulseType.Prediction,
     predictionId: "1",
     title: "Week 1 box office collection",
-    filmId: "film-1",
+    filmId: "1",
     endDate: "June 15, 2024",
     participationCount: 3748,
     meanPrediction: 400,
@@ -110,7 +110,7 @@ const PREDICTIONS: Prediction[] = [
     type: PulseType.Prediction,
     predictionId: "2",
     title: "Week 1 IMDB rating",
-    filmId: "film-1",
+    filmId: "1",
     endDate: "June 15, 2024",
     participationCount: 4786,
     meanPrediction: 8.2,
@@ -122,7 +122,7 @@ const PREDICTIONS: Prediction[] = [
     type: PulseType.Prediction,
     predictionId: "3",
     title: "Lifetime collection", // Needs clear naming
-    filmId: "film-1",
+    filmId: "1",
     endDate: "June 1, 2024",
     meanPrediction: 1250,
     userPrediction: 1950,
@@ -141,7 +141,7 @@ const PREDICTIONS: Prediction[] = [
     type: PulseType.Prediction,
     predictionId: "4",
     title: "Week 1 box office collection",
-    filmId: "film-2",
+    filmId: "2",
     endDate: "July 12, 2024",
     meanPrediction: 750,
     participationCount: 6783,
@@ -153,7 +153,7 @@ const PREDICTIONS: Prediction[] = [
     type: PulseType.Prediction,
     predictionId: "5",
     title: "Week 1 IMDB rating",
-    filmId: "film-2",
+    filmId: "2",
     endDate: "June 4, 2024",
     userPrediction: 8.0,
     participationCount: 4786,
@@ -171,7 +171,7 @@ const PREDICTIONS: Prediction[] = [
     type: PulseType.Prediction,
     predictionId: "6",
     title: "Lifetime collection (including overseas, theaters, OTT)",
-    filmId: "film-2",
+    filmId: "2",
     endDate: "July 12, 2024",
     meanPrediction: 2100,
     participationCount: 8929,
@@ -183,7 +183,7 @@ const PREDICTIONS: Prediction[] = [
 
 const FILMS: Film[] = [
   {
-    filmId: "film-1",
+    filmId: "1",
     title: "Kalki",
     videoSrc: "https://www.youtube.com/embed/bC36d8e3bb0",
     imgSrc: Kalki.src,
@@ -202,7 +202,7 @@ const FILMS: Film[] = [
     ],
   },
   {
-    filmId: "film-2",
+    filmId: "2",
     title: "Pushpa 2",
     videoSrc: "https://www.youtube.com/embed/aj0TXpTgbUM",
     imgSrc: Pushpa2.src,

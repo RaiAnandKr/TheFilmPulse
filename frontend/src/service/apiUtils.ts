@@ -289,19 +289,40 @@ export const postUserOpinion = async (
   }
 };
 
-export const getPredictions = async (
-  filmId: number,
-  limit: number,
-  config?: FetchConfig,
-): Promise<Prediction[]> => {
+interface GetPredictionsOptions {
+  filmId?: number;
+  limit?: number;
+  isActive?: boolean;
+  config?: FetchConfig;
+}
+
+export const getPredictions = async ({
+  filmId,
+  limit,
+  isActive,
+  config,
+}: GetPredictionsOptions = {}): Promise<Prediction[]> => {
   try {
     let url = "/predictions";
+
+    const queryParams: string[] = [];
+
     if (filmId) {
-      url += `?film_id=${filmId}`;
+      queryParams.push(`film_id=${filmId}`);
     }
+
     if (limit) {
-      url += limit === 0 ? "" : `&limit=${limit}`; // Avoid adding limit=0 as it's unnecessary
+      queryParams.push(`limit=${limit}`);
     }
+
+    if (isActive === false || isActive === undefined) {
+      queryParams.push(`include_inactive=true`);
+    }
+
+    if (queryParams.length > 0) {
+      url += `?${queryParams.join('&')}`;
+    }
+
     const predictionsData = await get<any[]>(url, config);
 
     const predictions: Prediction[] = predictionsData.map((predictionData) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { PredictionCard } from "~/components/prediction-card";
-import { getPredictions } from "~/constants/mocks";
+import { getPredictions } from "~/service/apiUtils";
 import { useMainStore } from "~/data/contexts/store-context";
 import { useLoadData } from "~/data/hooks/useLoadData";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
