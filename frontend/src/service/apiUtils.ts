@@ -143,19 +143,40 @@ export const getFilms = async (
   }
 };
 
-export const getOpinions = async (
-  filmId: number,
-  limit: number,
-  config?: FetchConfig,
-): Promise<Opinion[]> => {
+interface GetOpinionsOptions {
+  filmId?: number;
+  limit?: number;
+  isActive?: boolean;
+  config?: FetchConfig;
+}
+
+export const getOpinions = async ({
+  filmId,
+  limit,
+  isActive,
+  config,
+}: GetOpinionsOptions = {}): Promise<Opinion[]> => {
   try {
     let url = "/opinions";
+
+    const queryParams: string[] = [];
+
     if (filmId) {
-      url += `?film_id=${filmId}`;
+      queryParams.push(`film_id=${filmId}`);
     }
+
     if (limit) {
-      url += limit === 0 ? "" : `&limit=${limit}`; // Avoid adding limit=0 as it's unnecessary
+      queryParams.push(`limit=${limit}`);
     }
+
+    if (isActive === false || isActive === undefined) {
+      queryParams.push(`include_inactive=true`);
+    }
+
+    if (queryParams.length > 0) {
+      url += `?${queryParams.join('&')}`;
+    }
+
     const opinionsData = await get<any[]>(url, config);
 
     const opinions: Opinion[] = opinionsData.map((opinionData) => {
