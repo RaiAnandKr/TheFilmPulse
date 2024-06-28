@@ -293,8 +293,8 @@ export const postUserOpinion = async (
 };
 
 interface GetPredictionsOptions {
-  filmId?: number;
-  limit?: number;
+  filmId?: string | number;
+  limit?: string | number;
   isActive?: boolean;
   config?: FetchConfig;
 }
@@ -348,6 +348,10 @@ export const getPredictions = async ({
   } catch (error) {
     throw new Error(`Error fetching predictions: ${(error as Error).message}`);
   }
+};
+
+export const getPredictionsFromFilmId = async (filmId: string | number): Promise<Prediction[]> => {
+  return getPredictions({ filmId: filmId });
 };
 
 export const getUserPredictions = async (config?: FetchConfig): Promise<Prediction[]> => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { PredictionCard } from "~/components/prediction-card";
-import { getPredictionsFromFilmId } from "~/constants/mocks";
+import { getPredictionsFromFilmId } from "~/service/apiUtils";
 import { useMainStore } from "~/data/contexts/store-context";
 import { useLoadData } from "~/data/hooks/useLoadData";
 import { useScrollToTop } from "~/hooks/useScrollToTop";
