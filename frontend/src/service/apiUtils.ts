@@ -143,6 +143,12 @@ export const getFilms = async (
   }
 };
 
+export const getFilmInfoFromFilmId = async (filmId: string | number): Promise<Film> => {
+  console.log("testing all")
+  const films = await getFilms(filmId);
+  return films[0];
+};
+
 interface GetOpinionsOptions {
   filmId?: string | number;
   limit?: string | number;
