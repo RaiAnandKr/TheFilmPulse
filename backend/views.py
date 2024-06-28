@@ -348,7 +348,7 @@ class BaseUserAPIView(MethodView):
     model = None
     columns = []
     sort_by = 'id'
-    sort_order = 'asc'
+    sort_order = 'desc'
     methods = ['GET', 'POST']
     serializer_class = BaseSerializer
 
