@@ -419,12 +419,12 @@ export const postUserPrediction = async (
   }
 };
 
-export const getVouchers = async (config?: FetchConfig): Promise<CouponDetail[]> => {
+export const getCoupons = async (config?: FetchConfig): Promise<CouponDetail[]> => {
   try {
     const url = "/vouchers";
-    const vouchersData = await get<any[]>(url, config);
+    const couponsData = await get<any[]>(url, config);
 
-    const vouchers: CouponDetail[] = vouchersData.map((voucher) => ({
+    const coupons: CouponDetail[] = couponsData.map((voucher) => ({
       couponId: voucher.id.toString(),
       worthCoins: voucher.coins,
       couponLogoSrc: voucher.icon_url,
@@ -434,9 +434,9 @@ export const getVouchers = async (config?: FetchConfig): Promise<CouponDetail[]>
       couponTnCs: voucher.terms ? [voucher.terms] : undefined,
     }));
 
-    return vouchers;
+    return coupons;
   } catch (error) {
-    throw new Error(`Error fetching vouchers: ${(error as Error).message}`);
+    throw new Error(`Error fetching coupons: ${(error as Error).message}`);
   }
 };
 
