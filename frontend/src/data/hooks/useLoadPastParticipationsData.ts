@@ -3,7 +3,7 @@ import { useMainStore } from "../contexts/store-context";
 import type { Prediction } from "~/schema/Prediction";
 import type { Opinion } from "~/schema/Opinion";
 import { PulseType } from "~/schema/PulseType";
-import { getPastParticipations } from "~/constants/mocks";
+import { getPastParticipations } from "~/service/apiUtils";
 import { useLoadData } from "./useLoadData";
 
 export const useLoadPastParticipationsData = () => {

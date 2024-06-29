@@ -420,6 +420,54 @@ export const postUserPrediction = async (
   }
 };
 
+export const getPastParticipations = async (): Promise<(Opinion | Prediction)[]> => {
+  try {
+    const [opinions, predictions] = await Promise.all([getUserOpinions(), getUserPredictions()]);
+
+    let i = 0, j = 0;
+
+    // Maybe I will understand this later but at least now, npm build was complaining that
+    // opinions[i] or predictions[i] can be undefined and hence all this tackling of undefined
+    // which we later filter out.
+    const result: (Opinion | Prediction | undefined)[] = [];
+
+    // The opinions and predictions in themselves are sorted such that the latest ones show up
+    // first. While merging the two of them, we are using two pointers algorithm and endDate as
+    // the deciding factor. We don't record the time at which a response (in either opinion or
+    // prediction) was recorded but that's not a big deal and we are fine with this.
+    while (i < opinions.length && j < predictions.length) {
+      const opinionEndDate = opinions[i]?.endDate ?? new Date(0);
+      const predictionEndDate = predictions[j]?.endDate ?? new Date(0);
+
+      if (opinionEndDate > predictionEndDate) {
+        result.push(opinions[i]);
+        i++;
+      } else {
+        result.push(predictions[j]);
+        j++;
+      }
+    }
+
+    // Add any remaining items from both arrays
+    while (i < opinions.length) {
+      result.push(opinions[i]);
+      i++;
+    }
+    while (j < predictions.length) {
+      result.push(predictions[j]);
+      j++;
+    }
+
+    // Filter out undefined elements from result
+    const filteredResult: (Opinion | Prediction)[] = result.filter(item => item !== undefined) as (Opinion | Prediction)[];
+
+    return filteredResult;
+
+  } catch (error) {
+    throw new Error(`Error fetching past participations: ${(error as Error).message}`);
+  }
+};
+
 export const getCoupons = async (config?: FetchConfig): Promise<CouponDetail[]> => {
   try {
     const url = "/vouchers";
