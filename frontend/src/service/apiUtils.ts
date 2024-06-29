@@ -12,6 +12,7 @@ import type { Opinion, Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { PulseType } from "~/schema/PulseType";
 import { CouponDetail, CouponCode } from "~/schema/CouponDetail";
+import { Reward } from "~/schema/Reward";
 import { PulseResult, PulseResultType } from "~/schema/PulseResult";
 
 const BASE_URL =
@@ -437,6 +438,32 @@ export const getCoupons = async (config?: FetchConfig): Promise<CouponDetail[]> 
     return coupons;
   } catch (error) {
     throw new Error(`Error fetching coupons: ${(error as Error).message}`);
+  }
+};
+
+export const getRewards = async (config?: FetchConfig): Promise<Reward[]> => {
+  try {
+    const coupons: CouponDetail[] = await getCoupons(config);
+
+    // Group coupons by their worthCoins value (checkpoint)
+    const groupedCoupons: Record<number, CouponDetail[]> = coupons.reduce((acc, coupon) => {
+      const checkpoint = coupon.worthCoins;
+      if (!acc[checkpoint]) {
+        acc[checkpoint] = [];
+      }
+      acc[checkpoint]!.push(coupon); // Use non-null assertion operator here
+      return acc;
+    }, {} as Record<number, CouponDetail[]>);
+
+    // Create Reward objects from the grouped coupons
+    const rewards: Reward[] = Object.keys(groupedCoupons).map(checkpoint => ({
+      checkpoint: Number(checkpoint),
+      coupons: groupedCoupons[Number(checkpoint)] ?? [], // Use nullish coalescing operator here
+    }));
+
+    return rewards;
+  } catch (error) {
+    throw new Error(`Error fetching rewards: ${(error as Error).message}`);
   }
 };
 

@@ -1,5 +1,5 @@
 import { Coupon } from "./coupon";
-import { getRewards } from "~/constants/mocks";
+import { getRewards } from "~/service/apiUtils";
 import { RewardsMeter } from "./rewards-meter";
 import { RewardContext, RewardProvider } from "~/data/contexts/reward-context";
 import { useContext } from "react";
