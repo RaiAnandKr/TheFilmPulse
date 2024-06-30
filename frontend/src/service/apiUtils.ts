@@ -11,9 +11,11 @@ import type { Prediction } from "~/schema/Prediction";
 import type { Opinion, Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { PulseType } from "~/schema/PulseType";
-import { CouponDetail, CouponCode } from "~/schema/CouponDetail";
-import { Reward } from "~/schema/Reward";
-import { PulseResult, PulseResultType } from "~/schema/PulseResult";
+import type { CouponDetail, CouponCode } from "~/schema/CouponDetail";
+import type { Reward } from "~/schema/Reward";
+import type { PulseResult} from "~/schema/PulseResult";
+import { PulseResultType } from "~/schema/PulseResult";
+import type { User } from "~/schema/User";
 
 const BASE_URL =
   "https://backend.thefilmpulse.com";
@@ -572,5 +574,27 @@ export const getClaimedCoupons = async (config?: FetchConfig): Promise<CouponCod
 
   } catch (error) {
     throw new Error(`Error fetching claimed coupons for users: ${(error as Error).message}`);
+  }
+};
+
+export const getUser = async (config?: FetchConfig): Promise<User> => {
+  try {
+    const url = "/user";
+    const userData = await get<any>(url, config);
+
+    // Map the API response to the User interface
+    const user: User = {
+      username: userData.username,
+      email: userData.email ?? undefined,
+      state: userData.state ?? undefined,
+      bonusCoins: userData.bonus_coins,
+      earnedCoins: userData.earned_coins,
+      maxOpinionCoins: userData.max_opinion_coins,
+    };
+
+    console.log(user);
+    return user;
+  } catch (error) {
+    throw new Error(`Error fetching user data: ${(error as Error).message}`);
   }
 };
