@@ -130,31 +130,37 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
               </h4>
             </ModalHeader>
             <ModalBody className="p-4">
-              <Slider
-                label={"Select Coins"}
-                showTooltip
-                step={1}
-                formatOptions={{
-                  style: "decimal",
-                }}
-                maxValue={userEarnedCoins}
-                marks={[
-                  {
-                    value: 0,
-                    label: "0",
-                  },
-                  {
-                    value: userEarnedCoins,
-                    label: userEarnedCoins.toString(),
-                  },
-                ]}
-                value={coinstToBet}
-                onChange={onSliderChange}
-                className="max-w-md flex-auto pb-2 text-tiny"
-                classNames={{
-                  value: "text-teal-500 font-bold",
-                }}
-              />
+              {userEarnedCoins ? (
+                <Slider
+                  label={"Select Coins"}
+                  showTooltip
+                  step={1}
+                  formatOptions={{
+                    style: "decimal",
+                  }}
+                  maxValue={userEarnedCoins}
+                  marks={[
+                    {
+                      value: 0,
+                      label: "0",
+                    },
+                    {
+                      value: userEarnedCoins,
+                      label: userEarnedCoins.toString(),
+                    },
+                  ]}
+                  value={coinstToBet}
+                  onChange={onSliderChange}
+                  className="max-w-md flex-auto pb-2 text-tiny"
+                  classNames={{
+                    value: "text-teal-500 font-bold",
+                  }}
+                />
+              ) : (
+                <p className="self-center font-bold text-danger">
+                  You have zero balance!
+                </p>
+              )}
               <p className="flex justify-between gap-2 text-default-500">
                 <span className="flex-auto">You selected:</span>
                 <span className="font-bold text-primary">{coinstToBet}</span>
@@ -190,6 +196,7 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
                   </Button>
                   <Button
                     fullWidth
+                    isDisabled={!userEarnedCoins}
                     color="primary"
                     onPress={() => onConfirmButtonPress(onClose)}
                     className="font-bold text-white"

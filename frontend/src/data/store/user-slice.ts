@@ -1,5 +1,5 @@
 import type { StateCreator } from "zustand";
-import type { CoinType } from "~/schema/CoinType";
+import { CoinType } from "~/schema/CoinType";
 
 type UserState = {
   userId: string;
@@ -24,7 +24,18 @@ export const createUserSlice: StateCreator<
   userId: "",
   phone: "",
   handle: "",
-  userCoins: [],
+  userCoins: [
+    {
+      type: CoinType.Earned,
+      coins: 0,
+      isRedeemable: true,
+    },
+    {
+      type: CoinType.Bonus,
+      coins: 0,
+      isRedeemable: false,
+    },
+  ],
   setUserCoins: (userCoins) =>
     set(
       {
