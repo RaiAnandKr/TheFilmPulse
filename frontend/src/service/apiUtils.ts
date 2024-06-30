@@ -606,7 +606,6 @@ export const getUser = async (config?: FetchConfig): Promise<User> => {
       maxOpinionCoins: userData.max_opinion_coins,
     };
 
-    console.log(user);
     return user;
   } catch (error) {
     throw new Error(`Error fetching user data: ${(error as Error).message}`);
