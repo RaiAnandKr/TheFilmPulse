@@ -612,6 +612,8 @@ export const getUser = async (config?: FetchConfig): Promise<User> => {
   }
 };
 
+// TODO: This separate function to get only coins might not be needed later and just
+// the getUser function might be good enough.
 export const getUserCoins = async (config?: FetchConfig): Promise<Coin[]> => {
   try {
     const user = await getUser(config);
