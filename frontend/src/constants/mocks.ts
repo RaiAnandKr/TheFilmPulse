@@ -13,6 +13,7 @@ import PrimeVideo from "~/res/images/PrimeVideo.webp";
 import Hotstar from "~/res/images/Hotstar.png";
 import Imax from "~/res/images/Imax.png";
 import { CoinType } from "~/schema/CoinType";
+import type { Coin } from "~/schema/Coin";
 import type { Reward } from "~/schema/Reward";
 
 import type { CouponCode } from "~/schema/CouponDetail";
@@ -469,8 +470,12 @@ const REWARDS: Reward[] = [
 
 const getRewards = async () => REWARDS;
 
-const USER_COINS = [
-  { type: CoinType.Earned, coins: 475, isRedeemable: true },
+const USER_COINS: Coin[] = [
+  {
+    type: CoinType.Earned,
+    coins: 475,
+    isRedeemable: true
+  },
   {
     type: CoinType.Bonus,
     coins: 50,
@@ -478,7 +483,7 @@ const USER_COINS = [
   },
 ];
 
-const getUserCoins = async () => USER_COINS;
+const getUserCoins = async (): Promise<Coin[]> => USER_COINS;
 
 const getCouponCode = async (couponId: string): Promise<CouponCode> => {
   return {

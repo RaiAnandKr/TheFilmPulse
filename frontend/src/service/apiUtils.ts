@@ -16,6 +16,8 @@ import type { Reward } from "~/schema/Reward";
 import type { PulseResult} from "~/schema/PulseResult";
 import { PulseResultType } from "~/schema/PulseResult";
 import type { User } from "~/schema/User";
+import { CoinType } from '~/schema/CoinType';
+import type { Coin } from '~/schema/Coin';
 
 const BASE_URL =
   "https://backend.thefilmpulse.com";
@@ -582,13 +584,25 @@ export const getUser = async (config?: FetchConfig): Promise<User> => {
     const url = "/user";
     const userData = await get<any>(url, config);
 
+    const coins: Coin[] = [
+      {
+        type: CoinType.Bonus,
+        coins: userData.bonus_coins,
+        isRedeemable: false,
+      },
+      {
+        type: CoinType.Earned,
+        coins: userData.earned_coins,
+        isRedeemable: true,
+      },
+    ];
+
     // Map the API response to the User interface
     const user: User = {
       username: userData.username,
       email: userData.email ?? undefined,
       state: userData.state ?? undefined,
-      bonusCoins: userData.bonus_coins,
-      earnedCoins: userData.earned_coins,
+      coins: coins,
       maxOpinionCoins: userData.max_opinion_coins,
     };
 
@@ -596,5 +610,14 @@ export const getUser = async (config?: FetchConfig): Promise<User> => {
     return user;
   } catch (error) {
     throw new Error(`Error fetching user data: ${(error as Error).message}`);
+  }
+};
+
+export const getUserCoins = async (config?: FetchConfig): Promise<Coin[]> => {
+  try {
+    const user = await getUser(config);
+    return user.coins;
+  } catch (error) {
+    throw new Error(`Error fetching user coins: ${(error as Error).message}`);
   }
 };
