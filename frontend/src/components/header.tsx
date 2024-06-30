@@ -100,9 +100,12 @@ const SpokePageHeader: React.FC = () => {
 };
 
 const LoginCumCoinsNavbarContent = () => {
+  const router = useRouter();
   const userTotalCoins = useLoadUserData((state) =>
     state.userCoins.reduce((acc, userCoin) => acc + userCoin.coins, 0),
   );
+
+  const onCoinsClick = () => router.push("rewards");
 
   return (
     <NavbarContent className={styles.noflex} justify="end">
@@ -115,6 +118,7 @@ const LoginCumCoinsNavbarContent = () => {
           startContent={<CoinsImage />}
           className="font-bold"
           color="warning"
+          onPress={onCoinsClick}
         >
           {userTotalCoins}
         </Button>

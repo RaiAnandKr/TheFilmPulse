@@ -30,6 +30,7 @@ export const Coupon: React.FC<CouponProps> = (props) => {
           height={32}
           width={32}
           src={coupon.couponLogoSrc}
+          radius="none"
         />
       </Button>
       <p
