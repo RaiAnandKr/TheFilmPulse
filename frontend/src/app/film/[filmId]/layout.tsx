@@ -1,10 +1,9 @@
 import { Chip, Image } from "@nextui-org/react";
 import { PulseTabs } from "~/components/pulse-tabs";
-import { getFilmInfoFromFilmId } from "~/constants/mocks";
-import { getFilms } from "~/service/apiUtils";
+import { getFilms, getFilmInfoFromFilmId } from "~/service/apiUtils";
 import type { Film } from "~/schema/Film";
 
-export default function FilmLayout({
+export default async function FilmLayout({
   children,
   params,
 }: {
@@ -13,7 +12,7 @@ export default function FilmLayout({
 }) {
   const filmId = params.filmId;
   // TODO: api call to get filmInfo. This is Server Component.
-  const filmInfo = getFilmInfoFromFilmId(filmId);
+  const filmInfo = await getFilmInfoFromFilmId(filmId);
 
   if (!filmInfo) {
     return null;
