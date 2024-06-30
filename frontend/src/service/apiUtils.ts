@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import fernet from 'fernet';
+import fernet from "fernet";
 
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
@@ -13,14 +13,13 @@ import { OpinionOption } from "~/schema/OpinionOption";
 import { PulseType } from "~/schema/PulseType";
 import type { CouponDetail, CouponCode } from "~/schema/CouponDetail";
 import type { Reward } from "~/schema/Reward";
-import type { PulseResult} from "~/schema/PulseResult";
+import type { PulseResult } from "~/schema/PulseResult";
 import { PulseResultType } from "~/schema/PulseResult";
 import type { User } from "~/schema/User";
-import { CoinType } from '~/schema/CoinType';
-import type { Coin } from '~/schema/Coin';
+import { CoinType } from "~/schema/CoinType";
+import type { Coin } from "~/schema/Coin";
 
-const BASE_URL =
-  "https://backend.thefilmpulse.com";
+const BASE_URL = "https://backend.thefilmpulse.com";
 
 interface FetchConfig extends RequestInit {
   headers?: HeadersInit;
@@ -31,10 +30,12 @@ interface ErrorResponse {
 }
 
 export const toNumber = (value: string | number): number => {
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     const numberValue = parseInt(value, 10);
     if (isNaN(numberValue)) {
-      throw new Error(`Invalid value: ${value}. Cannot be converted to a number.`);
+      throw new Error(
+        `Invalid value: ${value}. Cannot be converted to a number.`,
+      );
     }
     return numberValue;
   }
@@ -138,7 +139,7 @@ export const getFilms = async (
         filmDirector: filmData.cast_metadata?.directors.join(", ") || "",
         // Fetching a film isn't going to return all the prediction IDs (that's too much to ask from the backend).
         // We should separately query the predictions for a film or film_id.
-        predictionIds: [topPrediction.predictionId]
+        predictionIds: [topPrediction.predictionId],
       };
     });
 
@@ -148,7 +149,9 @@ export const getFilms = async (
   }
 };
 
-export const getFilmInfoFromFilmId = async (filmId: string | number): Promise<Film | null> => {
+export const getFilmInfoFromFilmId = async (
+  filmId: string | number,
+): Promise<Film | null> => {
   const films = await getFilms(filmId);
   // Explicitly handle the case where films[0] is undefined
   const film = films[0] ?? null; // Use nullish coalescing to handle undefined
@@ -186,7 +189,7 @@ export const getOpinions = async ({
     }
 
     if (queryParams.length > 0) {
-      url += `?${queryParams.join('&')}`;
+      url += `?${queryParams.join("&")}`;
     }
 
     const opinionsData = await get<any[]>(url, config);
@@ -206,10 +209,14 @@ export const getOpinions = async ({
 
       const userVote: UserVote | undefined = opinionData.user_vote
         ? {
-          selectedOption: opinionData.user_vote.answer === 'yes' ? OpinionOption.Yes
-            : (opinionData.user_vote.answer === 'no' ? OpinionOption.No: undefined),
-          coinsUsed: opinionData.user_vote.coins,
-        }
+            selectedOption:
+              opinionData.user_vote.answer === "yes"
+                ? OpinionOption.Yes
+                : opinionData.user_vote.answer === "no"
+                  ? OpinionOption.No
+                  : undefined,
+            coinsUsed: opinionData.user_vote.coins,
+          }
         : undefined;
 
       return {
@@ -230,11 +237,15 @@ export const getOpinions = async ({
   }
 };
 
-export const getOpinionsFromFilmId = async (filmId: string | number): Promise<Opinion[]> => {
+export const getOpinionsFromFilmId = async (
+  filmId: string | number,
+): Promise<Opinion[]> => {
   return getOpinions({ filmId: filmId });
 };
 
-export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> => {
+export const getUserOpinions = async (
+  config?: FetchConfig,
+): Promise<Opinion[]> => {
   try {
     const url = "/user_opinions";
     const userOpinionsData = await get<any[]>(url, config);
@@ -253,18 +264,31 @@ export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> 
       };
 
       const userVote: UserVote = {
-          selectedOption: userOpinionData.answer === 'yes' ? OpinionOption.Yes : OpinionOption.No,
-          coinsUsed: userOpinionData.coins,
-      }
+        selectedOption:
+          userOpinionData.answer === "yes"
+            ? OpinionOption.Yes
+            : OpinionOption.No,
+        coinsUsed: userOpinionData.coins,
+      };
 
       // Set the result only if the result computation is finished. Check that from the correct_answer field and if it's
       // set or not.
-      const result: PulseResult<OpinionOption> | undefined = userOpinionData.opinion.correct_answer !== null ? {
-        type: userOpinionData.answer === userOpinionData.opinion.correct_answer ? PulseResultType.Won : PulseResultType.Lost,
-        coinsUsed: userOpinionData.coins,
-        coinsResult: userOpinionData.coins_won,
-        finalValue: userOpinionData.opinion.correct_answer === 'yes' ? OpinionOption.Yes : OpinionOption.No,
-      } : undefined;
+      const result: PulseResult<OpinionOption> | undefined =
+        userOpinionData.opinion.correct_answer !== null
+          ? {
+              type:
+                userOpinionData.answer ===
+                userOpinionData.opinion.correct_answer
+                  ? PulseResultType.Won
+                  : PulseResultType.Lost,
+              coinsUsed: userOpinionData.coins,
+              coinsResult: userOpinionData.coins_won,
+              finalValue:
+                userOpinionData.opinion.correct_answer === "yes"
+                  ? OpinionOption.Yes
+                  : OpinionOption.No,
+            }
+          : undefined;
 
       return {
         type: PulseType.Opinion,
@@ -281,7 +305,9 @@ export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> 
 
     return userOpinions;
   } catch (error) {
-    throw new Error(`Error fetching user opinions: ${(error as Error).message}`);
+    throw new Error(
+      `Error fetching user opinions: ${(error as Error).message}`,
+    );
   }
 };
 
@@ -296,7 +322,7 @@ export const postUserOpinion = async (
     const body = {
       opinion_id: toNumber(opinionId),
       coins: toNumber(coins),
-      answer: option === OpinionOption.Yes ? 'yes' : 'no',
+      answer: option === OpinionOption.Yes ? "yes" : "no",
     };
     await post<void>(url, body, config);
   } catch (error) {
@@ -335,7 +361,7 @@ export const getPredictions = async ({
     }
 
     if (queryParams.length > 0) {
-      url += `?${queryParams.join('&')}`;
+      url += `?${queryParams.join("&")}`;
     }
 
     const predictionsData = await get<any[]>(url, config);
@@ -362,46 +388,61 @@ export const getPredictions = async ({
   }
 };
 
-export const getPredictionsFromFilmId = async (filmId: string | number): Promise<Prediction[]> => {
+export const getPredictionsFromFilmId = async (
+  filmId: string | number,
+): Promise<Prediction[]> => {
   return getPredictions({ filmId: filmId });
 };
 
-export const getUserPredictions = async (config?: FetchConfig): Promise<Prediction[]> => {
+export const getUserPredictions = async (
+  config?: FetchConfig,
+): Promise<Prediction[]> => {
   try {
     const url = "/user_predictions";
     const userPredictionsData = await get<any[]>(url, config);
 
-    const userPredictions: Prediction[] = userPredictionsData.map((userPredictionData) => {
+    const userPredictions: Prediction[] = userPredictionsData.map(
+      (userPredictionData) => {
+        // Populate result only if there is a rank in userPredictionData implying that the result
+        // computation has finished.
+        const result: PulseResult<number> | undefined =
+          userPredictionData.rank !== null
+            ? {
+                type:
+                  userPredictionData.coins_won > 0
+                    ? PulseResultType.Won
+                    : PulseResultType.None,
+                coinsResult: userPredictionData.coins_won,
+                ranking: userPredictionData.rank,
+                finalValue: userPredictionData.prediction.correct_answer,
+              }
+            : undefined;
 
-      // Populate result only if there is a rank in userPredictionData implying that the result
-      // computation has finished.
-      const result: PulseResult<number> | undefined = userPredictionData.rank !== null ? {
-        type: userPredictionData.coins_won > 0 ? PulseResultType.Won : PulseResultType.None,
-        coinsResult: userPredictionData.coins_won,
-        ranking: userPredictionData.rank,
-        finalValue: userPredictionData.prediction.correct_answer,
-      } : undefined;
-
-      return {
-        type: PulseType.Prediction,
-        predictionId: userPredictionData.prediction_id.toString(),
-        title: userPredictionData.prediction.text,
-        filmId: userPredictionData.prediction.film_id.toString(),
-        participationCount: userPredictionData.prediction.user_count,
-        meanPrediction: userPredictionData.prediction.mean_value || 0,
-        endDate: userPredictionData.prediction.end_date,
-        predictionRange: [userPredictionData.prediction.min_value,
-          userPredictionData.prediction.max_value],
-        userPrediction: userPredictionData.answer,
-        predictionStepValue: userPredictionData.prediction.step_value || 25,
-        predictionScaleUnit: userPredictionData.prediction.scale_unit || "",
-        result: result,
-      };
-    });
+        return {
+          type: PulseType.Prediction,
+          predictionId: userPredictionData.prediction_id.toString(),
+          title: userPredictionData.prediction.text,
+          filmId: userPredictionData.prediction.film_id.toString(),
+          participationCount: userPredictionData.prediction.user_count,
+          meanPrediction: userPredictionData.prediction.mean_value || 0,
+          endDate: userPredictionData.prediction.end_date,
+          predictionRange: [
+            userPredictionData.prediction.min_value,
+            userPredictionData.prediction.max_value,
+          ],
+          userPrediction: userPredictionData.answer,
+          predictionStepValue: userPredictionData.prediction.step_value || 25,
+          predictionScaleUnit: userPredictionData.prediction.scale_unit || "",
+          result: result,
+        };
+      },
+    );
 
     return userPredictions;
   } catch (error) {
-    throw new Error(`Error fetching user predictions: ${(error as Error).message}`);
+    throw new Error(
+      `Error fetching user predictions: ${(error as Error).message}`,
+    );
   }
 };
 
@@ -424,11 +465,17 @@ export const postUserPrediction = async (
   }
 };
 
-export const getPastParticipations = async (): Promise<(Opinion | Prediction)[]> => {
+export const getPastParticipations = async (): Promise<
+  (Opinion | Prediction)[]
+> => {
   try {
-    const [opinions, predictions] = await Promise.all([getUserOpinions(), getUserPredictions()]);
+    const [opinions, predictions] = await Promise.all([
+      getUserOpinions(),
+      getUserPredictions(),
+    ]);
 
-    let i = 0, j = 0;
+    let i = 0,
+      j = 0;
 
     // Maybe I will understand this later but at least now, npm build was complaining that
     // opinions[i] or predictions[i] can be undefined and hence all this tackling of undefined
@@ -463,16 +510,21 @@ export const getPastParticipations = async (): Promise<(Opinion | Prediction)[]>
     }
 
     // Filter out undefined elements from result
-    const filteredResult: (Opinion | Prediction)[] = result.filter(item => item !== undefined) as (Opinion | Prediction)[];
+    const filteredResult: (Opinion | Prediction)[] = result.filter(
+      (item) => item !== undefined,
+    ) as (Opinion | Prediction)[];
 
     return filteredResult;
-
   } catch (error) {
-    throw new Error(`Error fetching past participations: ${(error as Error).message}`);
+    throw new Error(
+      `Error fetching past participations: ${(error as Error).message}`,
+    );
   }
 };
 
-export const getCoupons = async (config?: FetchConfig): Promise<CouponDetail[]> => {
+export const getCoupons = async (
+  config?: FetchConfig,
+): Promise<CouponDetail[]> => {
   try {
     const url = "/vouchers";
     const couponsData = await get<any[]>(url, config);
@@ -498,17 +550,20 @@ export const getRewards = async (config?: FetchConfig): Promise<Reward[]> => {
     const coupons: CouponDetail[] = await getCoupons(config);
 
     // Group coupons by their worthCoins value (checkpoint)
-    const groupedCoupons: Record<number, CouponDetail[]> = coupons.reduce((acc, coupon) => {
-      const checkpoint = coupon.worthCoins;
-      if (!acc[checkpoint]) {
-        acc[checkpoint] = [];
-      }
-      acc[checkpoint]!.push(coupon); // Use non-null assertion operator here
-      return acc;
-    }, {} as Record<number, CouponDetail[]>);
+    const groupedCoupons: Record<number, CouponDetail[]> = coupons.reduce(
+      (acc, coupon) => {
+        const checkpoint = coupon.worthCoins;
+        if (!acc[checkpoint]) {
+          acc[checkpoint] = [];
+        }
+        acc[checkpoint]!.push(coupon); // Use non-null assertion operator here
+        return acc;
+      },
+      {} as Record<number, CouponDetail[]>,
+    );
 
     // Create Reward objects from the grouped coupons
-    const rewards: Reward[] = Object.keys(groupedCoupons).map(checkpoint => ({
+    const rewards: Reward[] = Object.keys(groupedCoupons).map((checkpoint) => ({
       checkpoint: Number(checkpoint),
       coupons: groupedCoupons[Number(checkpoint)] ?? [], // Use nullish coalescing operator here
     }));
@@ -519,15 +574,15 @@ export const getRewards = async (config?: FetchConfig): Promise<Reward[]> => {
   }
 };
 
-const secretKey = 'Ggm1M5JGlB6wDmfhVMIzMdmRqctsJKXWzOemNDixIBI='
-const secret = new fernet.Secret(secretKey)
+const secretKey = "Ggm1M5JGlB6wDmfhVMIzMdmRqctsJKXWzOemNDixIBI=";
+const secret = new fernet.Secret(secretKey);
 
 export const decrypt = (encryptedText: string): string => {
   try {
     const token = new fernet.Token({
       secret: secret,
       token: encryptedText,
-      ttl: 0,  // Time-to-live (ttl) set to 0 means the token will never expire
+      ttl: 0, // Time-to-live (ttl) set to 0 means the token will never expire
     });
     return token.decode();
   } catch (error) {
@@ -536,9 +591,10 @@ export const decrypt = (encryptedText: string): string => {
 };
 
 // This will fetch just 1 coupon code corresponding to a coupon id (brand).
-export const getCouponCode = async (couponId: string | number,
-  config?: FetchConfig): Promise<CouponCode | null> => {
-
+export const getCouponCode = async (
+  couponId: string | number,
+  config?: FetchConfig,
+): Promise<CouponCode | null> => {
   try {
     const numericCouponId = toNumber(couponId);
     const url = `/voucher_codes?voucher_id=${numericCouponId}&limit=1`;
@@ -556,26 +612,28 @@ export const getCouponCode = async (couponId: string | number,
     };
 
     return couponCode;
-
   } catch (error) {
     throw new Error(`Error fetching coupon code: ${(error as Error).message}`);
   }
 };
 
-export const getClaimedCoupons = async (config?: FetchConfig): Promise<CouponCode[]> => {
+export const getClaimedCoupons = async (
+  config?: FetchConfig,
+): Promise<CouponCode[]> => {
   try {
     const url = `/voucher_codes?claimed=true`;
     const couponCodesData = await get<any[]>(url, config);
 
-    const couponCodes: CouponCode[] = couponCodesData.map(couponCodeData => ({
+    const couponCodes: CouponCode[] = couponCodesData.map((couponCodeData) => ({
       code: decrypt(couponCodeData.code),
       expiryDate: couponCodeData.expiry_date,
     }));
 
     return couponCodes;
-
   } catch (error) {
-    throw new Error(`Error fetching claimed coupons for users: ${(error as Error).message}`);
+    throw new Error(
+      `Error fetching claimed coupons for users: ${(error as Error).message}`,
+    );
   }
 };
 
