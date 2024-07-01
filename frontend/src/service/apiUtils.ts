@@ -262,7 +262,9 @@ export const getUserOpinions = async (config?: FetchConfig): Promise<Opinion[]> 
       const result: PulseResult<OpinionOption> | undefined = userOpinionData.opinion.correct_answer !== null ? {
         type: userOpinionData.answer === userOpinionData.opinion.correct_answer ? PulseResultType.Won : PulseResultType.Lost,
         coinsUsed: userOpinionData.coins,
-        coinsResult: userOpinionData.coins_won,
+        // If the coins_won is 0, that means user lost and hence set coinsResult to the lost coins (wagered coins) value.
+        // Otherwise, set it to the won coins value.
+        coinsResult: userOpinionData.coins_won === 0 ? userOpinionData.coins : userOpinionData.coins_won,
         finalValue: userOpinionData.opinion.correct_answer === 'yes' ? OpinionOption.Yes : OpinionOption.No,
       } : undefined;
 
