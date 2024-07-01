@@ -20,6 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { HOME_PATH } from "~/constants/paths";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { useLoadUserData } from "~/data/hooks/useLoadUserData";
+import { numberInShorthand } from "~/utilities/numberInShorthand";
 
 const menuItems: MenuItem[] = [
   {
@@ -100,9 +101,12 @@ const SpokePageHeader: React.FC = () => {
 };
 
 const LoginCumCoinsNavbarContent = () => {
+  const router = useRouter();
   const userTotalCoins = useLoadUserData((state) =>
     state.userCoins.reduce((acc, userCoin) => acc + userCoin.coins, 0),
   );
+
+  const onCoinsClick = () => router.push("rewards");
 
   return (
     <NavbarContent className={styles.noflex} justify="end">
@@ -115,8 +119,9 @@ const LoginCumCoinsNavbarContent = () => {
           startContent={<CoinsImage />}
           className="font-bold"
           color="warning"
+          onPress={onCoinsClick}
         >
-          {userTotalCoins}
+          {numberInShorthand(userTotalCoins)}
         </Button>
       </NavbarItem>
     </NavbarContent>
