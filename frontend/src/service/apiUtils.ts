@@ -282,7 +282,12 @@ export const getUserOpinions = async (
                   ? PulseResultType.Won
                   : PulseResultType.Lost,
               coinsUsed: userOpinionData.coins,
-              coinsResult: userOpinionData.coins_won,
+              // If the coins_won is 0, that means user lost and hence set coinsResult to the lost coins (wagered coins) value.
+              // Otherwise, set it to the won coins value.
+              coinsResult:
+                userOpinionData.coins_won === 0
+                  ? userOpinionData.coins
+                  : userOpinionData.coins_won,
               finalValue:
                 userOpinionData.opinion.correct_answer === "yes"
                   ? OpinionOption.Yes
@@ -672,6 +677,8 @@ export const getUser = async (config?: FetchConfig): Promise<User> => {
   }
 };
 
+// TODO: This separate function to get only coins might not be needed later and just
+// the getUser function might be good enough.
 export const getUserCoins = async (config?: FetchConfig): Promise<Coin[]> => {
   try {
     const user = await getUser(config);

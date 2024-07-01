@@ -1,34 +1,73 @@
 films:
   - title: "Indian 2"
     release_date: "2024-07-12"
-    poster_url: "http://test_poster"
-    trailer_url: "http://test_trailer"
+    poster_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
+    trailer_url: "https://www.youtube.com/embed/3bvBUT5pQYY"
     popularity_score: 50
+    cast_metadata:
+      actors:
+        - "Kamal Haasan"
+        - "Kajal Aggarwal"
+      directors:
+        - "Shankar"
+    summary: "In this sequel to the 1996 film Indian, Kamal Hassan reprises his role as Senapathy, an ex-freedom fighter turned vigilante who fights against corruption. Senapathy returns to the country to aid a young man who has been exposing corrupt politicians in the country through videos on the internet."
 
   - title: "Bad Newzz"
     release_date: "2024-07-19"
-    poster_url: "http://test_poster"
-    trailer_url: "http://test_trailer"
+    poster_url: "https://thefilmpulse.blob.core.windows.net/images/bad_newzz.jpg"
+    trailer_url: "https://www.youtube.com/embed/uV50UfcIT68"
     popularity_score: 75
+    cast_metadata:
+      actors:
+        - "Vicky Kaushal"
+        - "Tripti Dimri"
+        - "Ammy Virk"
+      directors:
+        - "Anand Tiwari"
+    summary: "Bad Newz is a bizarre, rare comedy about heteropaternal superfecundation! A twist of fate leads to Saloni Bagga`s twin pregnancy being fathered by both Akhil Chadha and Gurbir Pannu, setting off a chaotic rivalry for her love and their children. As Akhil and Gurbir vie for Saloni`s affections, chaos ensues."
 
 opinions:
-  - film_id: 4
-    text: "What will happen"
-    icon_url: "http://test_poster"
+  - film_title: "Indian 2"
+    text: "Will Indian 2 be a bigger hit than Indian 1?"
+    icon_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
+    end_date: "2024-07-12"
 
-  - film_id: 5
-    text: "Good news or bad news"
-    icon_url: "http://test_poster"
+  - film_title: "Indian 2"
+    text: "Will Kamal Haasan die in Indian 2?"
+    icon_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
+    end_date: "2024-07-12"
+
+  - film_title: "Bad Newzz"
+    text: "Will Tripti have 2 babies in Bad Newzz?"
+    icon_url: "https://thefilmpulse.blob.core.windows.net/images/bad_newzz.jpg"
+    end_date: "2024-07-19"
 
 predictions:
-  - film_id: 4
+  - film_title: "Indian 2"
     text: "Weekend collection"
-    icon_url: "http://test_poster"
+    icon_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
     min_value: 50
-    max_value: 200
+    max_value: 100
+    mean_value: 100
+    step_value: 1
+    unit: "crores"
+    end_date: "2024-07-12"
 
-  - film_id: 5
+  - film_title: "Indian 2"
+    text: "IMDB rating after 4 days"
+    icon_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
+    min_value: 1
+    max_value: 10
+    mean_value: 1
+    step_value: 0.1
+    end_date: "2024-07-12"
+
+  - film_title: "Bad Newzz"
     text: "Lifetime collection"
-    icon_url: "http://test_poster"
+    icon_url: "https://thefilmpulse.blob.core.windows.net/images/bad_newzz.jpg"
     min_value: 150
-    max_value: 500
+    max_value: 300
+    mean_value: 200
+    step_value: 2
+    unit: "crores"
+    end_date: "2024-07-19"
