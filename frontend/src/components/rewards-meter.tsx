@@ -38,8 +38,8 @@ export const RewardsMeter = () => {
 
   const step = useMemo(() => gcdOfNumbers(checkpoints), [checkpoints]);
   const marks = useMemo(
-    () => getMarks(userEarnedCoins, checkpoints),
-    [userEarnedCoins, checkpoints],
+    () => getMarks(userEarnedCoins, checkpoints, maxValue),
+    [userEarnedCoins, checkpoints, maxValue],
   );
 
   useStyleUserMark([marks]);
@@ -90,7 +90,11 @@ export const RewardsMeter = () => {
   );
 };
 
-const getMarks = (userCoins: number, checkpoints: number[]) => {
+const getMarks = (
+  userCoins: number,
+  checkpoints: number[],
+  maxRewardCheckpoint: number,
+) => {
   const marks: SliderStepMark[] = checkpoints.map((checkpoint) => ({
     value: checkpoint,
     label: checkpoint.toString(),
@@ -98,7 +102,7 @@ const getMarks = (userCoins: number, checkpoints: number[]) => {
 
   // add user coins in marks
   marks.push({
-    value: userCoins,
+    value: Math.min(userCoins, maxRewardCheckpoint),
     label: "You",
   });
 

@@ -607,6 +607,7 @@ export const getCouponCode = async (
 
     const couponCodeData = couponCodesData[0];
     const couponCode: CouponCode = {
+      codeId: couponCodeData.code_id,
       code: decrypt(couponCodeData.code),
       expiryDate: couponCodeData.expiry_date,
     };
@@ -625,6 +626,7 @@ export const getClaimedCoupons = async (
     const couponCodesData = await get<any[]>(url, config);
 
     const couponCodes: CouponCode[] = couponCodesData.map((couponCodeData) => ({
+      codeId: couponCodeData.code_id,
       code: decrypt(couponCodeData.code),
       expiryDate: couponCodeData.expiry_date,
     }));

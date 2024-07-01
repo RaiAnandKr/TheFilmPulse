@@ -14,6 +14,7 @@ import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
 import { differenceInDays } from "~/utilities/differenceInDays";
 import type { MainStore } from "~/data/store/main-store";
 import { useLoadPastParticipationsData } from "~/data/hooks/useLoadPastParticipationsData";
+import { ClaimedCoupons } from "~/components/claimed-coupons";
 
 const RewardsPage = () => {
   const userTotalCoins = useMainStore((state) =>
@@ -26,12 +27,14 @@ const RewardsPage = () => {
         title={
           <div className="flex justify-between">
             <span>Total Coins : </span>
-            <span>{userTotalCoins} </span>
+            <span>{numberInShorthand(userTotalCoins)} </span>
           </div>
         }
       />
       <CoinsInfo />
-      <SectionHeader title="Rewards" />
+      <SectionHeader title="Claimed Coupons" />
+      <ClaimedCoupons />
+      <SectionHeader title="Reveal Rewards" />
       <Rewards />
       <SectionHeader title="Past Participations" />
       <PastParticipations />

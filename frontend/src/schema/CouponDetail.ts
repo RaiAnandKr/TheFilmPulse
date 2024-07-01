@@ -9,6 +9,7 @@ export interface CouponDetail {
 }
 
 export interface CouponCode {
+  codeId: string;
   code: string;
   expiryDate: string;
 }

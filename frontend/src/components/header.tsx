@@ -20,6 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { HOME_PATH } from "~/constants/paths";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { useLoadUserData } from "~/data/hooks/useLoadUserData";
+import { numberInShorthand } from "~/utilities/numberInShorthand";
 
 const menuItems: MenuItem[] = [
   {
@@ -120,7 +121,7 @@ const LoginCumCoinsNavbarContent = () => {
           color="warning"
           onPress={onCoinsClick}
         >
-          {userTotalCoins}
+          {numberInShorthand(userTotalCoins)}
         </Button>
       </NavbarItem>
     </NavbarContent>

@@ -16,7 +16,7 @@ import { CoinType } from "~/schema/CoinType";
 import type { Coin } from "~/schema/Coin";
 import type { Reward } from "~/schema/Reward";
 
-import type { CouponCode } from "~/schema/CouponDetail";
+import type { CouponCode, CouponDetail } from "~/schema/CouponDetail";
 
 const OPINIONS: Opinion[] = [
   {
@@ -196,11 +196,7 @@ const FILMS: Film[] = [
     topPrediction: PREDICTIONS.find(
       (prediction) => prediction.predictionId === "1",
     )!,
-    predictionIds: [
-      "1",
-      "2",
-      "3",
-    ],
+    predictionIds: ["1", "2", "3"],
   },
   {
     filmId: "2",
@@ -215,11 +211,7 @@ const FILMS: Film[] = [
     topPrediction: PREDICTIONS.find(
       (prediction) => prediction.predictionId === "6",
     )!,
-    predictionIds: [
-      "4",
-      "5",
-      "6",
-    ],
+    predictionIds: ["4", "5", "6"],
   },
 ];
 
@@ -473,8 +465,8 @@ const getRewards = async () => REWARDS;
 const USER_COINS: Coin[] = [
   {
     type: CoinType.Earned,
-    coins: 475,
-    isRedeemable: true
+    coins: 4075,
+    isRedeemable: true,
   },
   {
     type: CoinType.Bonus,
@@ -487,6 +479,7 @@ const getUserCoins = async (): Promise<Coin[]> => USER_COINS;
 
 const getCouponCode = async (couponId: string): Promise<CouponCode> => {
   return {
+    codeId: "xyz",
     code: "STEALDEAL50",
     expiryDate: "July 25, 2024",
   };
@@ -509,6 +502,44 @@ const postUserPrediction = async (
   console.log(predictionId, predictionVal);
 };
 
+const getClaimedCoupons = async (): Promise<
+  {
+    couponId: CouponDetail["couponId"];
+    couponCodes: CouponCode[];
+  }[]
+> => {
+  return [
+    {
+      couponId: "1",
+      couponCodes: [getRandomCouponCode(20), getRandomCouponCode(30)],
+    },
+    {
+      couponId: "3",
+      couponCodes: [getRandomCouponCode(50), getRandomCouponCode(50)],
+    },
+    {
+      couponId: "6",
+      couponCodes: [getRandomCouponCode(10)],
+    },
+    {
+      couponId: "7",
+      couponCodes: [getRandomCouponCode(20), getRandomCouponCode(80)],
+    },
+    {
+      couponId: "12",
+      couponCodes: [getRandomCouponCode(50)],
+    },
+  ];
+};
+
+const getRandomCouponCode = (seed: number) => {
+  return {
+    codeId: seed.toString(),
+    code: "STEALDEAL" + seed.toString(),
+    expiryDate: "July 25, 2024",
+  };
+};
+
 export {
   getOpinions,
   getFilms,
@@ -520,6 +551,7 @@ export {
   getUserCoins,
   getPastParticipations,
   getCouponCode,
+  getClaimedCoupons,
   postUserOpinion,
   postUserPrediction,
 };
