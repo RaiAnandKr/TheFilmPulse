@@ -4,7 +4,7 @@ import { CouponDetail } from "~/schema/CouponDetail";
 import { CouponMode } from "~/schema/CouponMode";
 import { claimedCouponDetailsSelector } from "~/data/store/selectors/claimedCouponDetailsSelector";
 import { useLoadData } from "~/data/hooks/useLoadData";
-import { getClaimedCoupons } from "~/constants/mocks";
+import { getClaimedCoupons } from "~/service/apiUtils";
 
 export const ClaimedCoupons = () => {
   const { couponDetails, updateClaimedCoupon } = useMainStore((state) => ({

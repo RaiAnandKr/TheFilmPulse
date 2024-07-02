@@ -612,7 +612,7 @@ export const getCouponCode = async (
 
     const couponCodeData = couponCodesData[0];
     const couponCode: CouponCode = {
-      codeId: couponCodeData.id,
+      codeId: couponCodeData.id.toString(),
       code: decrypt(couponCodeData.code),
       expiryDate: couponCodeData.expiry_date,
     };
@@ -625,18 +625,36 @@ export const getCouponCode = async (
 
 export const getClaimedCoupons = async (
   config?: FetchConfig,
-): Promise<CouponCode[]> => {
+): Promise<{ couponId: string; couponCodes: CouponCode[] }[]> => {
   try {
     const url = `/voucher_codes?claimed=true`;
     const couponCodesData = await get<any[]>(url, config);
 
-    const couponCodes: CouponCode[] = couponCodesData.map((couponCodeData) => ({
-      codeId: couponCodeData.id,
-      code: decrypt(couponCodeData.code),
-      expiryDate: couponCodeData.expiry_date,
-    }));
+    // Create a map to group coupons by voucher_id
+    const groupedCoupons: Record<string, { couponId: string; couponCodes: CouponCode[] }> = {};
 
-    return couponCodes;
+    couponCodesData.forEach((couponCodeData) => {
+      const couponId = couponCodeData.voucher_id.toString();
+      const couponCode: CouponCode = {
+        codeId: couponCodeData.id.toString(),
+        code: decrypt(couponCodeData.code),
+        expiryDate: couponCodeData.expiry_date,
+      };
+
+      if (!groupedCoupons[couponId]) {
+         groupedCoupons[couponId] = {
+           couponId,
+           couponCodes: [],
+         };
+      }
+
+      groupedCoupons[couponId]!.couponCodes.push(couponCode);
+    });
+
+    // Convert the map to an array
+    const groupedCouponsArray = Object.values(groupedCoupons);
+
+    return groupedCouponsArray;
   } catch (error) {
     throw new Error(
       `Error fetching claimed coupons for users: ${(error as Error).message}`,
