@@ -38,9 +38,14 @@ def compute_prediction_results():
         top_2point5_percent_index = math.floor(total_users * 0.025)
         top_10_percent_index = math.floor(total_users * 0.1)
 
-        # When total_users < 100, winner gets 100 coins. There is no top 3.
+        # When total_users >= 100, winner gets 200 coins, otherwise less. There is no top 3.
         # This is to control expenses in initial days when there aren't a lot of users.
-        winners_coin = 200 if total_users >= 100 else 100
+        if total_users >= 100:
+            winners_coin = 200
+        elif total_users >= 50:
+            winners_coin = 100
+        else:
+            winners_coin = 50
 
         for i, user_prediction in enumerate(user_predictions):
             user_prediction.rank = i + 1
