@@ -5,6 +5,7 @@ import { PulseIcon } from "~/res/icons/pulse";
 import { usePathname, useRouter } from "next/navigation";
 import { findMaxMatchingRoute } from "~/utilities/findMaxMatchingRoute";
 import { RedeemIcon } from "~/res/icons/redeem";
+import { LOGIN_PATH } from "~/constants/paths";
 
 const menuItems: MenuItem[] = [
   {
@@ -30,6 +31,10 @@ const menuItems: MenuItem[] = [
 export const Footer = () => {
   const pathname = usePathname();
   const router = useRouter();
+
+  if (pathname === LOGIN_PATH) {
+    return null;
+  }
 
   const pathList = menuItems.map((item) => item.pathName ?? "");
 
