@@ -693,9 +693,3 @@ export const getUserCoins = async (config?: FetchConfig): Promise<Coin[]> => {
     throw new Error(`Error fetching user coins: ${(error as Error).message}`);
   }
 };
-
-export const isLoggedIn = (): boolean => {
-  const token = Cookies.get("access_token_cookie");
-  console.log(token);
-  return !!token;
-}

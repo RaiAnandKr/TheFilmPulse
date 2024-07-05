@@ -1,5 +1,5 @@
 import { Coupon } from "./coupon";
-import { getRewards, isLoggedIn } from "~/service/apiUtils";
+import { getRewards } from "~/service/apiUtils";
 import { RewardsMeter } from "./rewards-meter";
 import { RewardContext, RewardProvider } from "~/data/contexts/reward-context";
 import { useContext } from "react";
@@ -11,7 +11,6 @@ export const Rewards = () => {
   const setRewards = useMainStore((state) => state.setRewards);
   useLoadData("getRewards", getRewards, setRewards);
 
-  console.log(isLoggedIn());
   return (
     <RewardProvider>
       <div className="flex h-full w-full flex-col bg-default-100 p-3">
