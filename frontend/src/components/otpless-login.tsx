@@ -1,4 +1,3 @@
-import Script from "next/script";
 import { useEffect } from "react";
 
 type RedactedWindow = Window &
@@ -23,15 +22,20 @@ interface OtplessLoginProps {
   onUserInfoLoad: (userInfo: OtplessUser) => void;
 }
 
+const OTLESS_SCRIPT_ID = "otpless-sdk";
 const OTPLESS_APP_ID = "DVBH5ZQ4HREV54PIBTM9";
-const OTPLESS_SDK_SRC = "https://otpless.com/v2/auth.js";
+const OTPLESS_PREBUILT_UI_SDK_SRC = "https://otpless.com/v2/auth.js";
 const OTPLESS_LOGIN_UI_ID = "otpless-login-page";
 
-const OtplessLogin: React.FC<OtplessLoginProps> = (props) => {
+const OtplessLoginPrebuilt: React.FC<OtplessLoginProps> = (props) => {
   const { onUserInfoLoad } = props;
 
   useEffect(() => {
     (window as RedactedWindow).otpless = onUserInfoLoad;
+
+    loadOtplessScript();
+
+    return unloadOtplessScript;
   }, []);
 
   return (
@@ -41,25 +45,42 @@ const OtplessLogin: React.FC<OtplessLoginProps> = (props) => {
      */
     <>
       <div id={OTPLESS_LOGIN_UI_ID}></div>
-      <Script
-        id="otpless-sdk"
-        type="text/javascript"
-        src={OTPLESS_SDK_SRC}
-        data-appid={OTPLESS_APP_ID}
-        onLoad={updateLoginUIStyles}
-      />
     </>
   );
 };
 
-const updateLoginUIStyles = () => {
-  const loginUI = document.getElementById(OTPLESS_LOGIN_UI_ID);
-  if (loginUI) {
-    loginUI.setAttribute(
-      "style",
-      loginUI.getAttribute("style") + "; height: 75%;",
-    );
+const loadOtplessScript = () => {
+  if (document.getElementById(OTLESS_SCRIPT_ID)) {
+    return;
+  }
+
+  var script = document.createElement("script");
+  script.setAttribute("id", OTLESS_SCRIPT_ID);
+  script.setAttribute("type", "text/javascript");
+  script.setAttribute("src", OTPLESS_PREBUILT_UI_SDK_SRC);
+  script.setAttribute("data-appid", OTPLESS_APP_ID);
+  script.onload = updateLoginUIStyles;
+
+  document.body.appendChild(script);
+};
+
+const unloadOtplessScript = () => {
+  const otplessScriptNode = document.getElementById(OTLESS_SCRIPT_ID);
+  if (otplessScriptNode) {
+    document.body.removeChild(otplessScriptNode);
   }
 };
 
-export { OtplessLogin, type OtplessUser };
+const updateLoginUIStyles = () => {
+  const loginUIWrapperElement = document.getElementById(OTPLESS_LOGIN_UI_ID);
+  if (!loginUIWrapperElement) {
+    return;
+  }
+
+  loginUIWrapperElement.setAttribute(
+    "style",
+    loginUIWrapperElement.getAttribute("style") + "; height: 75%;",
+  );
+};
+
+export { OtplessLoginPrebuilt as OtplessLogin, type OtplessUser };
