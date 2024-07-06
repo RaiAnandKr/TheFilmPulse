@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { OtplessSDK } from "~/constants/sdks";
 
 type RedactedWindow = Window &
   typeof globalThis & { otpless: (otplessUser: OtplessUser) => void };
@@ -22,11 +23,6 @@ interface OtplessLoginProps {
   onUserInfoLoad: (userInfo: OtplessUser) => void;
 }
 
-const OTLESS_SCRIPT_ID = "otpless-sdk";
-const OTPLESS_APP_ID = "DVBH5ZQ4HREV54PIBTM9";
-const OTPLESS_PREBUILT_UI_SDK_SRC = "https://otpless.com/v2/auth.js";
-const OTPLESS_LOGIN_UI_ID = "otpless-login-page";
-
 const OtplessLoginPrebuilt: React.FC<OtplessLoginProps> = (props) => {
   const { onUserInfoLoad } = props;
 
@@ -44,35 +40,35 @@ const OtplessLoginPrebuilt: React.FC<OtplessLoginProps> = (props) => {
      *  Taken from : https://otpless.com/docs/frontend-sdks/web-sdks/react/pre-built-ui.
      */
     <>
-      <div id={OTPLESS_LOGIN_UI_ID}></div>
+      <div id={OtplessSDK.loginUIId}></div>
     </>
   );
 };
 
 const loadOtplessScript = () => {
-  if (document.getElementById(OTLESS_SCRIPT_ID)) {
+  if (document.getElementById(OtplessSDK.scriptId)) {
     return;
   }
 
   const script = document.createElement("script");
-  script.setAttribute("id", OTLESS_SCRIPT_ID);
+  script.setAttribute("id", OtplessSDK.scriptId);
   script.setAttribute("type", "text/javascript");
-  script.setAttribute("src", OTPLESS_PREBUILT_UI_SDK_SRC);
-  script.setAttribute("data-appid", OTPLESS_APP_ID);
+  script.setAttribute("src", OtplessSDK.prebuiltUISrc);
+  script.setAttribute("data-appid", OtplessSDK.appId);
   script.onload = updateLoginUIStyles;
 
   document.body.appendChild(script);
 };
 
 const unloadOtplessScript = () => {
-  const otplessScriptNode = document.getElementById(OTLESS_SCRIPT_ID);
+  const otplessScriptNode = document.getElementById(OtplessSDK.scriptId);
   if (otplessScriptNode) {
     document.body.removeChild(otplessScriptNode);
   }
 };
 
 const updateLoginUIStyles = () => {
-  const loginUIWrapperElement = document.getElementById(OTPLESS_LOGIN_UI_ID);
+  const loginUIWrapperElement = document.getElementById(OtplessSDK.loginUIId);
   if (!loginUIWrapperElement) {
     return;
   }
