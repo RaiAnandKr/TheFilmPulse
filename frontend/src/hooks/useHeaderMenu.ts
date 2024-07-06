@@ -15,9 +15,7 @@ const STATIC_MENU_ITEMS = [
 ];
 
 export const useHeaderMenu = () => {
-  const { handle: username, removeUserState } = useMainStore((state) =>
-    pick(state, ["handle", "removeUserState"]),
-  );
+  const { handle: username } = useMainStore((state) => pick(state, ["handle"]));
 
   const [menuItems, setMenuItems] = useState<MenuItem[]>(STATIC_MENU_ITEMS);
 
@@ -30,15 +28,6 @@ export const useHeaderMenu = () => {
           btnColor: "primary",
         },
         ...STATIC_MENU_ITEMS,
-        {
-          key: "logout",
-          label: "Logout",
-          btnColor: "danger",
-          onClick: () => {
-            // TODO: remove user cookie
-            removeUserState();
-          },
-        },
       ]);
     } else {
       setMenuItems(STATIC_MENU_ITEMS);
