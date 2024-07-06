@@ -6,7 +6,7 @@ type UserState = {
   phone: string | null;
   handle: string | null;
   userCoins: { type: CoinType; coins: number; isRedeemable?: boolean }[];
-  isLoggedIn: boolean;
+  isUserLoggedIn: boolean;
 };
 
 type UserAction = {
@@ -86,7 +86,7 @@ const initUserState = () => ({
   userId: null,
   phone: null,
   handle: null,
-  isLoggedIn: false,
+  isUserLoggedIn: false,
   userCoins: [
     {
       type: CoinType.Earned,

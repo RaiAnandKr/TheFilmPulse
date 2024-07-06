@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { OtplessLogin, type OtplessUser } from "~/components/otpless-login";
 import { useMainStore } from "~/data/contexts/store-context";
@@ -13,6 +13,36 @@ import { post } from "~/service/apiUtils";
 
 // TODO: don't let user route to login page if user is already logged in.
 const LoginPage = () => {
+  const { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad } =
+    useLoginHandler();
+
+  const isUserLoggedIn = useMainStore((state) => state.isUserLoggedIn);
+
+  if (isUserLoggedIn) {
+    redirect("/");
+  }
+
+  return (
+    <div className="bg-success-to-danger flex h-full flex-col justify-center gap-4 p-6">
+      {loginFailureMessage && (
+        <div className="flex rounded-lg border-2 border-danger bg-danger-100 font-semibold text-danger">
+          <p className="p-2">{loginFailureMessage}</p>
+          <Button
+            isIconOnly
+            variant="light"
+            color="danger"
+            onClick={() => setLoginFailureMessage(null)}
+          >
+            <CloseIcon />
+          </Button>
+        </div>
+      )}
+      <OtplessLogin onUserInfoLoad={onUserInfoLoad} />
+    </div>
+  );
+};
+
+const useLoginHandler = () => {
   const router = useRouter();
 
   const setUserState = useMainStore((state) => state.setUser);
@@ -47,7 +77,7 @@ const LoginPage = () => {
             userId: response.id.toString(),
             phone: response.phone_number,
             handle: response.username,
-            isLoggedIn: true,
+            isUserLoggedIn: true,
             userCoins: [
               {
                 type: CoinType.Earned,
@@ -74,24 +104,7 @@ const LoginPage = () => {
     [router],
   );
 
-  return (
-    <div className="bg-success-to-danger flex h-full flex-col justify-center gap-4 p-6">
-      {loginFailureMessage && (
-        <div className="flex rounded-lg border-2 border-danger bg-danger-100 font-semibold text-danger">
-          <p className="p-2">{loginFailureMessage}</p>
-          <Button
-            isIconOnly
-            variant="light"
-            color="danger"
-            onClick={() => setLoginFailureMessage(null)}
-          >
-            <CloseIcon />
-          </Button>
-        </div>
-      )}
-      <OtplessLogin onUserInfoLoad={onUserInfoLoad} />
-    </div>
-  );
+  return { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad };
 };
 
 export default LoginPage;

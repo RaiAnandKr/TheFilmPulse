@@ -91,7 +91,7 @@ const LoginOrCoinsNavbarContent = () => {
 
   const { userTotalCoins, isLoggedIn } = useLoadUserData((state) => ({
     userTotalCoins: userTotalCoinsSelector(state),
-    isLoggedIn: state.isLoggedIn,
+    isLoggedIn: state.isUserLoggedIn,
   }));
 
   const pathname = usePathname();
