@@ -21,6 +21,7 @@ import { CoinsImage } from "~/res/images/CoinsImage";
 import { useLoadUserData } from "~/data/hooks/useLoadUserData";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 import { useHeaderMenu } from "~/hooks/useHeaderMenu";
+import { userTotalCoinsSelector } from "~/data/store/selectors/userTotalCoinsSelector";
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -89,10 +90,7 @@ const LoginOrCoinsNavbarContent = () => {
   const router = useRouter();
 
   const { userTotalCoins, isLoggedIn } = useLoadUserData((state) => ({
-    userTotalCoins: state.userCoins.reduce(
-      (acc, userCoin) => acc + userCoin.coins,
-      0,
-    ),
+    userTotalCoins: userTotalCoinsSelector(state),
     isLoggedIn: state.isLoggedIn,
   }));
 

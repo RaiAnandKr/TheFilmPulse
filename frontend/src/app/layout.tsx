@@ -20,7 +20,7 @@ export default function RootLayout({
     <>
       <html lang="en" className={quicksand.className}>
         <head>
-          <link rel="preload" href={OtplessSDK.prebuiltUISrc} as="script" />
+          <link rel="prefetch" href={OtplessSDK.prebuiltUISrc} as="script" />
         </head>
         <body>
           <Providers>
