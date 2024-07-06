@@ -45,30 +45,30 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
     setPredictionPointer(getSliderValueInNumber(value));
   };
 
-  const onPrediction = () => {
-    addUserPrediction(predictionId, predictionPointer);
-    postUserPrediction(predictionId, predictionPointer).catch(console.log);
-  };
+  const endContentElement = useMemo(() => {
+    const onPrediction = () => {
+      addUserPrediction(predictionId, predictionPointer);
+      postUserPrediction(predictionId, predictionPointer).catch(console.log);
+    };
 
-  const endContentElement = useMemo(
-    () =>
-      noButton ? null : (
-        <PredictButton
-          onPrediction={onPrediction}
-          meanPredictionValue={meanPrediction}
-          predictionScaleUnitLabel={predictionScaleUnitLabel}
-          userPredictionValue={predictionPointer}
-          inDarkTheme={inDarkTheme}
-        />
-      ),
-    [
-      noButton,
-      onPrediction,
-      meanPrediction,
-      predictionScaleUnitLabel,
-      predictionPointer,
-    ],
-  );
+    return noButton ? null : (
+      <PredictButton
+        onPrediction={onPrediction}
+        meanPredictionValue={meanPrediction}
+        predictionScaleUnitLabel={predictionScaleUnitLabel}
+        userPredictionValue={predictionPointer}
+        inDarkTheme={inDarkTheme}
+      />
+    );
+  }, [
+    addUserPrediction,
+    predictionId,
+    noButton,
+    meanPrediction,
+    predictionScaleUnitLabel,
+    predictionPointer,
+    inDarkTheme,
+  ]);
 
   return (
     <Slider

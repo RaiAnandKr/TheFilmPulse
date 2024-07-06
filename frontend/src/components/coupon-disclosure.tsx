@@ -15,7 +15,6 @@ import { useState } from "react";
 import { getCouponCode } from "~/service/apiUtils";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { useMainStore } from "~/data/contexts/store-context";
-import { CoinType } from "~/schema/CoinType";
 import { pick } from "~/utilities/pick";
 import { CouponMode } from "~/schema/CouponMode";
 import { UI_TIMEOUT_IN_MILLIS } from "~/constants/ui-configs";

@@ -101,7 +101,7 @@ const useLoginHandler = () => {
           setLoginFailureMessage("Login failed, please try again later!");
         });
     },
-    [router],
+    [router, getDataKeys, mutateCache, setUserState],
   );
 
   return { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad };

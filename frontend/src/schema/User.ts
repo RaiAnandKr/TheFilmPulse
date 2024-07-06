@@ -1,5 +1,3 @@
-import type { Coin } from "./Coin";
-
 export interface User {
   id: number;
   userhandle: string;
