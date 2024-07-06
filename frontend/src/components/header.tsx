@@ -17,7 +17,7 @@ import type { MenuItem } from "../schema/MenuItem";
 import styles from "./header.module.css";
 import { BackIcon } from "~/res/icons/back";
 import { usePathname, useRouter } from "next/navigation";
-import { HOME_PATH } from "~/constants/paths";
+import { HOME_PATH, LOGIN_PATH } from "~/constants/paths";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { useLoadUserData } from "~/data/hooks/useLoadUserData";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
@@ -102,27 +102,46 @@ const SpokePageHeader: React.FC = () => {
 
 const LoginCumCoinsNavbarContent = () => {
   const router = useRouter();
-  const userTotalCoins = useLoadUserData((state) =>
-    state.userCoins.reduce((acc, userCoin) => acc + userCoin.coins, 0),
-  );
+
+  const { userTotalCoins, isLoggedIn } = useLoadUserData((state) => ({
+    userTotalCoins: state.userCoins.reduce(
+      (acc, userCoin) => acc + userCoin.coins,
+      0,
+    ),
+    isLoggedIn: state.isLoggedIn,
+  }));
+
+  const pathname = usePathname();
+  if (pathname === LOGIN_PATH) {
+    return null;
+  }
 
   const onCoinsClick = () => router.push("rewards");
 
   return (
     <NavbarContent className={styles.noflex} justify="end">
-      <NavbarItem className="hidden lg:flex">
-        <Link href="#">Login</Link>
-      </NavbarItem>
       <NavbarItem>
-        <Button
-          variant="flat"
-          startContent={<CoinsImage />}
-          className="font-bold"
-          color="warning"
-          onPress={onCoinsClick}
-        >
-          {numberInShorthand(userTotalCoins)}
-        </Button>
+        {isLoggedIn ? (
+          <Button
+            variant="flat"
+            startContent={<CoinsImage />}
+            className="font-bold"
+            color="warning"
+            onPress={onCoinsClick}
+          >
+            {numberInShorthand(userTotalCoins)}
+          </Button>
+        ) : (
+          <Button
+            as={Link}
+            variant="flat"
+            className="font-bold"
+            color="warning"
+            href={LOGIN_PATH}
+          >
+            Login
+          </Button>
+        )}
       </NavbarItem>
     </NavbarContent>
   );

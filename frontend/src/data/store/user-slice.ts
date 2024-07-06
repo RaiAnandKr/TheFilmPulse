@@ -6,6 +6,7 @@ type UserState = {
   phone: string;
   handle: string;
   userCoins: { type: CoinType; coins: number; isRedeemable?: boolean }[];
+  isLoggedIn: boolean;
 };
 
 type UserAction = {
@@ -24,6 +25,7 @@ export const createUserSlice: StateCreator<
   userId: "",
   phone: "",
   handle: "",
+  isLoggedIn: false,
   userCoins: [
     {
       type: CoinType.Earned,
