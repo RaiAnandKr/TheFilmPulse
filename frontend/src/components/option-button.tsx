@@ -2,7 +2,6 @@ import {
   Button,
   Slider,
   cn,
-  useDisclosure,
   Modal,
   ModalContent,
   ModalHeader,
@@ -19,6 +18,7 @@ import type { ClassValue } from "tailwind-variants";
 import { TickIcon } from "~/res/icons/tick";
 import { useMainStore } from "~/data/contexts/store-context";
 import { userTotalCoinsSelector } from "~/data/store/selectors/userTotalCoinsSelector";
+import { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
 
 interface OptionButtonProps {
   option: OpinionOption;
@@ -35,7 +35,7 @@ interface OptionButtonProps {
 
 export const OptionButton: React.FC<OptionButtonProps> = (props) => {
   const { userVote, option, classNames } = props;
-  const disclosure = useDisclosure();
+  const disclosure = useDisclosureWithLogin();
 
   const label = option;
   const shouldDisable = !!userVote;
@@ -77,7 +77,8 @@ const getOptionTerminalContentProps = (
   return {};
 };
 
-type ConfirmOptionProps = ReturnType<typeof useDisclosure> & OptionButtonProps;
+type ConfirmOptionProps = ReturnType<typeof useDisclosureWithLogin> &
+  OptionButtonProps;
 
 const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
   const {
@@ -230,7 +231,8 @@ const getExpectedRewardCoins = (
   }
 
   const expectedRewardCoins = Math.floor(
-    coinsToBet + ((coinsToBet / totalCoinsOnUserOption) * totalCoinsOnOtherOption),
+    coinsToBet +
+      (coinsToBet / totalCoinsOnUserOption) * totalCoinsOnOtherOption,
   );
 
   return expectedRewardCoins;

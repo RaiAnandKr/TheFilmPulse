@@ -18,7 +18,10 @@ import { ClaimedCoupons } from "~/components/claimed-coupons";
 import { userTotalCoinsSelector } from "~/data/store/selectors/userTotalCoinsSelector";
 
 const RewardsPage = () => {
-  const userTotalCoins = useMainStore(userTotalCoinsSelector);
+  const { userTotalCoins, isUserLoggedIn } = useMainStore((state) => ({
+    userTotalCoins: userTotalCoinsSelector(state),
+    isUserLoggedIn: state.isUserLoggedIn,
+  }));
 
   return (
     <>
@@ -31,12 +34,20 @@ const RewardsPage = () => {
         }
       />
       <CoinsInfo />
-      <SectionHeader title="Claimed Coupons" />
-      <ClaimedCoupons />
+      {isUserLoggedIn && (
+        <>
+          <SectionHeader title="Claimed Coupons" />
+          <ClaimedCoupons />
+        </>
+      )}
       <SectionHeader title="Reveal Rewards" />
       <Rewards />
-      <SectionHeader title="Past Participations" />
-      <PastParticipations />
+      {isUserLoggedIn && (
+        <>
+          <SectionHeader title="Past Participations" />
+          <PastParticipations />
+        </>
+      )}
     </>
   );
 };

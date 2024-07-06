@@ -58,6 +58,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
           meanPredictionValue={meanPrediction}
           predictionScaleUnitLabel={predictionScaleUnitLabel}
           userPredictionValue={predictionPointer}
+          inDarkTheme={inDarkTheme}
         />
       ),
     [

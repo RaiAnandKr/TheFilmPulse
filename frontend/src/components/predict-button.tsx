@@ -1,13 +1,14 @@
 import {
   Button,
+  cn,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  useDisclosure,
 } from "@nextui-org/react";
 import { useState } from "react";
+import { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
 import { TickIcon } from "~/res/icons/tick";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { GiftBoxImage } from "~/res/images/GiftBoxImage";
@@ -17,17 +18,18 @@ interface PredictButtonProps {
   predictionScaleUnitLabel: string;
   meanPredictionValue: number;
   userPredictionValue: number;
+  inDarkTheme?: boolean;
 }
 
 export const PredictButton: React.FC<PredictButtonProps> = (props) => {
-  const disclosure = useDisclosure();
+  const disclosure = useDisclosureWithLogin();
 
   return (
     <>
       <Button
-        variant="solid"
+        variant={props.inDarkTheme ? "solid" : "bordered"}
         color="warning"
-        className="flex-none font-bold text-white"
+        className={cn("flex-none font-bold", props.inDarkTheme && "text-white")}
         onPress={disclosure.onOpen}
       >
         Predict
@@ -37,7 +39,7 @@ export const PredictButton: React.FC<PredictButtonProps> = (props) => {
   );
 };
 
-type ConfirmPredictionProps = ReturnType<typeof useDisclosure> &
+type ConfirmPredictionProps = ReturnType<typeof useDisclosureWithLogin> &
   PredictButtonProps;
 
 const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
