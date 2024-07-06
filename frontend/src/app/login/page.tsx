@@ -2,7 +2,7 @@
 
 import { Button } from "@nextui-org/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { Suspense, useCallback, useState } from "react";
 import { OtplessLogin, type OtplessUser } from "~/components/otpless-login";
 import { HOME_PATH, REFERRER_PARAM } from "~/constants/paths";
 import { useMainStore } from "~/data/contexts/store-context";
@@ -13,7 +13,7 @@ import type { UserResponse } from "~/schema/User";
 import { post } from "~/service/apiUtils";
 
 // TODO: don't let user route to login page if user is already logged in.
-const LoginPage = () => {
+const LoginPageBase = () => {
   const { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad } =
     useLoginHandler();
 
@@ -48,8 +48,6 @@ const useLoginHandler = () => {
   );
 
   const { getDataKeys, mutateCache } = useLoadDataConfig();
-
-  const referrerPath = searchParams?.get(REFERRER_PARAM) ?? HOME_PATH;
 
   const onUserInfoLoad = useCallback(
     (otplessUser: OtplessUser) => {
@@ -91,6 +89,8 @@ const useLoginHandler = () => {
           });
 
           mutateCache(getDataKeys(), { revalidate: true });
+
+          const referrerPath = searchParams?.get(REFERRER_PARAM) ?? HOME_PATH;
           router.push(referrerPath);
         })
         .catch((error) => {
@@ -98,10 +98,16 @@ const useLoginHandler = () => {
           setLoginFailureMessage("Login failed, please try again later!");
         });
     },
-    [router, getDataKeys, mutateCache, setUserState, referrerPath],
+    [router, getDataKeys, mutateCache, setUserState],
   );
 
   return { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad };
 };
+
+const LoginPage = () => (
+  <Suspense>
+    <LoginPageBase />
+  </Suspense>
+);
 
 export default LoginPage;
