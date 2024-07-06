@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { OtplessLogin, type OtplessUser } from "~/components/otpless-login";
 import { useMainStore } from "~/data/contexts/store-context";
+import { useLoadDataConfig } from "~/data/hooks/useLoadData";
 import { CloseIcon } from "~/res/icons/close";
 import { CoinType } from "~/schema/CoinType";
 import type { UserResponse } from "~/schema/User";
@@ -19,6 +20,8 @@ const LoginPage = () => {
   const [loginFailureMessage, setLoginFailureMessage] = useState<string | null>(
     null,
   );
+
+  const { getDataKeys, mutateCache } = useLoadDataConfig();
 
   const onUserInfoLoad = useCallback(
     (otplessUser: OtplessUser) => {
@@ -58,6 +61,9 @@ const LoginPage = () => {
               },
             ],
           });
+
+          mutateCache(getDataKeys(), { revalidate: true });
+
           router.push("/");
         })
         .catch((error) => {
