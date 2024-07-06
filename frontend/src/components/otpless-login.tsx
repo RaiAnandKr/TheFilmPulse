@@ -54,7 +54,7 @@ const loadOtplessScript = () => {
     return;
   }
 
-  var script = document.createElement("script");
+  const script = document.createElement("script");
   script.setAttribute("id", OTLESS_SCRIPT_ID);
   script.setAttribute("type", "text/javascript");
   script.setAttribute("src", OTPLESS_PREBUILT_UI_SDK_SRC);
