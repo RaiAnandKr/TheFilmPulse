@@ -2,16 +2,17 @@ import type { StateCreator } from "zustand";
 import { CoinType } from "~/schema/CoinType";
 
 type UserState = {
-  userId: string;
-  phone: string;
-  handle: string;
+  userId: string | null;
+  phone: string | null;
+  handle: string | null;
   userCoins: { type: CoinType; coins: number; isRedeemable?: boolean }[];
   isLoggedIn: boolean;
 };
 
 type UserAction = {
-  setUserCoins: (userCoins: UserState["userCoins"]) => void;
+  setUser: (userState: UserState) => void;
   updateUserCoins: (type: CoinType, deductBy: number) => void;
+  removeUserState: () => void;
 };
 
 export type UserSlice = UserState & UserAction;
@@ -22,29 +23,14 @@ export const createUserSlice: StateCreator<
   [],
   UserSlice
 > = (set) => ({
-  userId: "",
-  phone: "",
-  handle: "",
-  isLoggedIn: false,
-  userCoins: [
-    {
-      type: CoinType.Earned,
-      coins: 0,
-      isRedeemable: true,
-    },
-    {
-      type: CoinType.Bonus,
-      coins: 0,
-      isRedeemable: false,
-    },
-  ],
-  setUserCoins: (userCoins) =>
+  ...initUserState(),
+  setUser: (userState) =>
     set(
       {
-        userCoins,
+        ...userState,
       },
       false,
-      "UserAction/setUserCoins",
+      "UserAction/setUserState",
     ),
   updateUserCoins: (type, deductBy) =>
     set(
@@ -64,4 +50,25 @@ export const createUserSlice: StateCreator<
       false,
       "UserAction/updateUserCoins",
     ),
+  removeUserState: () =>
+    set({ ...initUserState() }, false, "UserAction/removeUser"),
+});
+
+const initUserState = () => ({
+  userId: null,
+  phone: null,
+  handle: null,
+  isLoggedIn: false,
+  userCoins: [
+    {
+      type: CoinType.Earned,
+      coins: 0,
+      isRedeemable: true,
+    },
+    {
+      type: CoinType.Bonus,
+      coins: 0,
+      isRedeemable: false,
+    },
+  ],
 });

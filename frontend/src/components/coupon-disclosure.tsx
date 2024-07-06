@@ -18,6 +18,7 @@ import { useMainStore } from "~/data/contexts/store-context";
 import { CoinType } from "~/schema/CoinType";
 import { pick } from "~/utilities/pick";
 import { CouponMode } from "~/schema/CouponMode";
+import { UI_TIMEOUT_IN_MILLIS } from "~/constants/ui-configs";
 
 type CouponDisclosureProps = ReturnType<typeof useDisclosure> &
   CouponDetail & { mode: CouponMode };
@@ -181,7 +182,7 @@ const CouponCode: React.FC<{
     }
     await navigator.clipboard.writeText(couponCode);
     setCouponActionLabel("Copied");
-    setTimeout(() => setCouponActionLabel("Copy"), 2000);
+    setTimeout(() => setCouponActionLabel("Copy"), UI_TIMEOUT_IN_MILLIS);
   };
 
   return (

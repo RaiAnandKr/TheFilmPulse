@@ -7,4 +7,5 @@ export type MenuItem = {
   startIcon?: JSX.Element;
   endIcon?: JSX.Element;
   pathName?: string;
+  onClick?: () => void;
 };

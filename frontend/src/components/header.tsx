@@ -13,7 +13,6 @@ import {
   AvatarIcon,
 } from "@nextui-org/react";
 import { useState } from "react";
-import type { MenuItem } from "../schema/MenuItem";
 import styles from "./header.module.css";
 import { BackIcon } from "~/res/icons/back";
 import { usePathname, useRouter } from "next/navigation";
@@ -21,21 +20,7 @@ import { HOME_PATH, LOGIN_PATH } from "~/constants/paths";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { useLoadUserData } from "~/data/hooks/useLoadUserData";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
-
-const menuItems: MenuItem[] = [
-  {
-    key: "username",
-    label: "Your profile (xyz_name)",
-  },
-  {
-    key: "help",
-    label: "Help",
-  },
-  {
-    key: "contact",
-    label: "Contact Us",
-  },
-];
+import { useHeaderMenu } from "~/hooks/useHeaderMenu";
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -68,7 +53,7 @@ const HomepageHeader: React.FC = () => {
           </NavbarBrand>
         </NavbarContent>
 
-        <LoginCumCoinsNavbarContent />
+        <LoginOrCoinsNavbarContent />
       </Navbar>
     </>
   );
@@ -94,13 +79,13 @@ const SpokePageHeader: React.FC = () => {
           <BackIcon />
         </NavbarContent>
 
-        <LoginCumCoinsNavbarContent />
+        <LoginOrCoinsNavbarContent />
       </Navbar>
     </>
   );
 };
 
-const LoginCumCoinsNavbarContent = () => {
+const LoginOrCoinsNavbarContent = () => {
   const router = useRouter();
 
   const { userTotalCoins, isLoggedIn } = useLoadUserData((state) => ({
@@ -136,7 +121,7 @@ const LoginCumCoinsNavbarContent = () => {
             as={Link}
             variant="flat"
             className="font-bold"
-            color="warning"
+            color="primary"
             href={LOGIN_PATH}
           >
             Login
@@ -147,34 +132,43 @@ const LoginCumCoinsNavbarContent = () => {
   );
 };
 
-const AvatarDropdown = () => (
-  <Dropdown placement="bottom-end">
-    <DropdownTrigger>
-      <Avatar
-        icon={<AvatarIcon />}
-        isBordered
-        as="button"
-        size="sm"
-        color="primary"
-        classNames={{
-          base: "bg-gradient-to-br from-success-300 to-danger-300",
-          icon: "text-black/75",
-        }}
-      />
-    </DropdownTrigger>
-    <DropdownMenu aria-label="Profile Actions" variant="flat" items={menuItems}>
-      {(item) => (
-        <DropdownItem key={item.key}>
-          <Button
-            color={item.btnColor}
-            variant="light"
-            size="lg"
-            className="h-6 w-full justify-start px-0"
-          >
-            {item.label}
-          </Button>
-        </DropdownItem>
-      )}
-    </DropdownMenu>
-  </Dropdown>
-);
+const AvatarDropdown = () => {
+  const menuItems = useHeaderMenu();
+
+  return (
+    <Dropdown placement="bottom-end">
+      <DropdownTrigger>
+        <Avatar
+          icon={<AvatarIcon />}
+          isBordered
+          as="button"
+          size="sm"
+          color="primary"
+          classNames={{
+            base: "bg-gradient-to-br from-success-300 to-danger-300",
+            icon: "text-black/75",
+          }}
+        />
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="Profile Actions"
+        variant="flat"
+        items={menuItems}
+      >
+        {(item) => (
+          <DropdownItem key={item.key}>
+            <Button
+              color={item.btnColor}
+              variant="light"
+              size="lg"
+              className="h-6 w-full justify-start px-0"
+              onClick={item.onClick}
+            >
+              {item.label}
+            </Button>
+          </DropdownItem>
+        )}
+      </DropdownMenu>
+    </Dropdown>
+  );
+};

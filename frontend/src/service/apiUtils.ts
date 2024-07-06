@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import fernet from "fernet";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
@@ -16,9 +16,7 @@ import type { CouponDetail, CouponCode } from "~/schema/CouponDetail";
 import type { Reward } from "~/schema/Reward";
 import type { PulseResult } from "~/schema/PulseResult";
 import { PulseResultType } from "~/schema/PulseResult";
-import type { User } from "~/schema/User";
-import { CoinType } from "~/schema/CoinType";
-import type { Coin } from "~/schema/Coin";
+import type { User, UserResponse } from "~/schema/User";
 
 const BASE_URL = "https://backend.thefilmpulse.com";
 
@@ -619,7 +617,10 @@ export const getClaimedCoupons = async (
     const couponCodesData = await get<any[]>(url, config);
 
     // Create a map to group coupons by voucher_id
-    const groupedCoupons: Record<string, { couponId: string; couponCodes: CouponCode[] }> = {};
+    const groupedCoupons: Record<
+      string,
+      { couponId: string; couponCodes: CouponCode[] }
+    > = {};
 
     couponCodesData.forEach((couponCodeData) => {
       const couponId = couponCodeData.voucher_id.toString();
@@ -630,10 +631,10 @@ export const getClaimedCoupons = async (
       };
 
       if (!groupedCoupons[couponId]) {
-         groupedCoupons[couponId] = {
-           couponId,
-           couponCodes: [],
-         };
+        groupedCoupons[couponId] = {
+          couponId,
+          couponCodes: [],
+        };
       }
 
       groupedCoupons[couponId]!.couponCodes.push(couponCode);
@@ -650,46 +651,29 @@ export const getClaimedCoupons = async (
   }
 };
 
-export const getUser = async (config?: FetchConfig): Promise<User> => {
+export const getUser = async (config?: FetchConfig): Promise<User | null> => {
   try {
     const url = "/user";
-    const userData = await get<any>(url, config);
-
-    const coins: Coin[] = [
-      {
-        type: CoinType.Bonus,
-        coins: userData.bonus_coins,
-        isRedeemable: false,
-      },
-      {
-        type: CoinType.Earned,
-        coins: userData.earned_coins,
-        isRedeemable: true,
-      },
-    ];
+    const userData = await get<UserResponse>(url, config);
+    if (!userData) {
+      return null;
+    }
 
     // Map the API response to the User interface
     const user: User = {
-      username: userData.username,
-      email: userData.email ?? undefined,
-      state: userData.state ?? undefined,
-      coins: coins,
+      id: userData.id,
+      userhandle: userData.username,
+      phoneNumber: userData.phone_number,
+      bonusCoins: userData.bonus_coins,
+      earnedCoins: userData.earned_coins,
+      isBanned: userData.is_banned,
+      email: userData.email,
+      state: userData.state,
       maxOpinionCoins: userData.max_opinion_coins,
     };
 
     return user;
   } catch (error) {
     throw new Error(`Error fetching user data: ${(error as Error).message}`);
-  }
-};
-
-// TODO: This separate function to get only coins might not be needed later and just
-// the getUser function might be good enough.
-export const getUserCoins = async (config?: FetchConfig): Promise<Coin[]> => {
-  try {
-    const user = await getUser(config);
-    return user.coins;
-  } catch (error) {
-    throw new Error(`Error fetching user coins: ${(error as Error).message}`);
   }
 };
