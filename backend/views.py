@@ -1,3 +1,4 @@
+import math
 import os
 from flask import request, jsonify, has_request_context, g
 from flask.views import MethodView
@@ -183,8 +184,8 @@ class UserView(BaseAPIView):
             return jsonify({'error': 'User not found'}), 404
 
         serialized_user = self.serializer.serialize(user)
-        serialized_user['max_opinion_coins'] = max(
-            40, 0.4 * (user.bonus_coins + user.earned_coins)
+        serialized_user['max_opinion_coins'] = math.ceil(
+            0.4 * (user.bonus_coins + user.earned_coins)
         )
         return jsonify(serialized_user)
 

@@ -91,7 +91,7 @@ def login():
             newUser = True
         resp = jsonify(user)
         if newUser:
-            resp["newUser"] = 1
+            resp["new_user"] = 1
         access_token = create_access_token(identity=user.id)
         set_access_cookies(resp, access_token)
         return resp, 200
