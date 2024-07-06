@@ -1,9 +1,10 @@
 "use client";
 
 import { Button } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import { OtplessLogin, type OtplessUser } from "~/components/otpless-login";
+import { HOME_PATH, REFERRER_PARAM } from "~/constants/paths";
 import { useMainStore } from "~/data/contexts/store-context";
 import { useLoadDataConfig } from "~/data/hooks/useLoadData";
 import { CloseIcon } from "~/res/icons/close";
@@ -38,6 +39,7 @@ const LoginPage = () => {
 
 const useLoginHandler = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const setUserState = useMainStore((state) => state.setUser);
 
@@ -46,6 +48,8 @@ const useLoginHandler = () => {
   );
 
   const { getDataKeys, mutateCache } = useLoadDataConfig();
+
+  const referrerPath = searchParams?.get(REFERRER_PARAM) ?? HOME_PATH;
 
   const onUserInfoLoad = useCallback(
     (otplessUser: OtplessUser) => {
@@ -87,15 +91,14 @@ const useLoginHandler = () => {
           });
 
           mutateCache(getDataKeys(), { revalidate: true });
-
-          router.push("/");
+          router.push(referrerPath);
         })
         .catch((error) => {
           console.log("Login Error: ", error);
           setLoginFailureMessage("Login failed, please try again later!");
         });
     },
-    [router, getDataKeys, mutateCache, setUserState],
+    [router, getDataKeys, mutateCache, setUserState, referrerPath],
   );
 
   return { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad };
