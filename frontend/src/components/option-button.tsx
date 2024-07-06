@@ -230,7 +230,7 @@ const getExpectedRewardCoins = (
   }
 
   const expectedRewardCoins = Math.floor(
-    (coinsToBet / totalCoinsOnUserOption) * totalCoinsOnOtherOption,
+    coinsToBet + ((coinsToBet / totalCoinsOnUserOption) * totalCoinsOnOtherOption),
   );
 
   return expectedRewardCoins;
