@@ -27,9 +27,16 @@ export const RewardsMeter = () => {
   const [rewardPointer, setRewardPointer] = useContext(RewardContext);
 
   useEffect(
-    () => setRewardPointer(userMaxRedeemableCoins),
+    () => {
+      const defaultValue = Math.max(
+        userMaxRedeemableCoins,
+        checkpoints[0] ?? 0,
+      );
+      setRewardPointer(defaultValue);
+    },
+    // "maxValue" is initialized with 0 and changes when we have rewards data,
+    // hence is used to initialise reward pointer then.
     [setRewardPointer, maxValue],
-    // "maxValue" is initialized with 0 and changes when we have rewards data, hence is used to initialise reward pointer then.
   );
 
   const onChange = (value: SliderValue) => {
