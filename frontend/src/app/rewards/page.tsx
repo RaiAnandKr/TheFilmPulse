@@ -15,11 +15,10 @@ import { differenceInDays } from "~/utilities/differenceInDays";
 import type { MainStore } from "~/data/store/main-store";
 import { useLoadPastParticipationsData } from "~/data/hooks/useLoadPastParticipationsData";
 import { ClaimedCoupons } from "~/components/claimed-coupons";
+import { userTotalCoinsSelector } from "~/data/store/selectors/userTotalCoinsSelector";
 
 const RewardsPage = () => {
-  const userTotalCoins = useMainStore((state) =>
-    state.userCoins.reduce((acc, userCoin) => acc + userCoin.coins, 0),
-  );
+  const userTotalCoins = useMainStore(userTotalCoinsSelector);
 
   return (
     <>
