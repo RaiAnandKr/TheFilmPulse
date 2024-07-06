@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@nextui-org/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { OtplessLogin, type OtplessUser } from "~/components/otpless-login";
 import { useMainStore } from "~/data/contexts/store-context";
@@ -15,12 +15,6 @@ import { post } from "~/service/apiUtils";
 const LoginPage = () => {
   const { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad } =
     useLoginHandler();
-
-  const isUserLoggedIn = useMainStore((state) => state.isUserLoggedIn);
-
-  if (isUserLoggedIn) {
-    redirect("/");
-  }
 
   return (
     <div className="bg-success-to-danger flex h-full flex-col justify-center gap-4 p-6">
