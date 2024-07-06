@@ -76,6 +76,7 @@ def login():
         'otp': data.get('otp')
     }
 
+    newUser = False
     try:
         verified = auth_provider.verify_token(**kwargs)
         if not verified:
@@ -87,7 +88,10 @@ def login():
             user = User(phone_number=phone_number, username=str(uuid.uuid4())[:10])
             session.add(user)
             session.commit()
+            newUser = True
         resp = jsonify(user)
+        if newUser:
+            resp["newUser"] = 1
         access_token = create_access_token(identity=user.id)
         set_access_cookies(resp, access_token)
         return resp, 200
