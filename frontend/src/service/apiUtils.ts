@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import fernet from "fernet";
+import Cookies from 'js-cookie';
 
 import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
@@ -56,19 +57,6 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
   return data;
 };
 
-// Probably there's a better way to do this
-export const getCookie = (name: string): string => {
-  const cookieString = document.cookie;
-  const cookies = cookieString ? cookieString.split("; ") : [];
-  for (const cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.split("=");
-    if (cookieName === name) {
-      return cookieValue ?? "";
-    }
-  }
-  return "";
-};
-
 export const get = async <T>(url: string, config?: FetchConfig): Promise<T> => {
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "GET",
@@ -87,7 +75,7 @@ export const post = async <T>(
   body: unknown,
   config?: FetchConfig,
 ): Promise<T> => {
-  const CSRFToken = getCookie("csrf_access_token");
+  const CSRFToken = Cookies.get("csrf_access_token") ?? "";
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "POST",
     credentials: "include", // Ensure cookies are included

@@ -34,4 +34,4 @@ class BaseSerializer:
 class UserSerializer(BaseSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__()
-        self.columns = ['username', 'email', 'state', 'bonus_coins', 'earned_coins']
+        self.columns = ['id', 'username', 'phone_number', 'email', 'state', 'bonus_coins', 'earned_coins']
