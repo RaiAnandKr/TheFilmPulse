@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 type CacheKey = string;
 interface CacheValue<T> {
   fetcher: () => Promise<T>;
@@ -37,7 +40,7 @@ export const useLoadData = <T>(
 };
 
 export const useLoadDataConfig = (): LoadDataConfig => {
-  const getDataKeys = () => Array.from(FETCH_CACHE.keys()) as CacheKey[];
+  const getDataKeys = () => Array.from(FETCH_CACHE.keys());
 
   const mutateCache = (keys: CacheKey[], options: CacheMutationOptions) => {
     for (const dataKey of keys) {
