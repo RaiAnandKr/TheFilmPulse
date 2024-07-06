@@ -134,7 +134,7 @@ const ClaimNewCode: React.FC<
     const couponCode = await getCouponCode(couponId).catch(console.log);
     if (couponCode) {
       setCouponCode(couponCode.code);
-      updateUserCoins(CoinType.Earned, worthCoins /* deductBy */);
+      updateUserCoins(worthCoins /* deductBy */, true);
       updateClaimedCoupon(couponId, couponCode);
     } else {
       // TODO: Handle this in a much better way for users sake.

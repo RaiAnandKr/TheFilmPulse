@@ -44,7 +44,7 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
     addUserOpinion(opinionId, userVote);
     postUserOpinion(opinionId, userVote.coinsUsed, userVote.selectedOption).catch(console.log);
 
-    updateUserCoins(CoinType.Earned, userVote.coinsUsed /* deductBy */);
+    updateUserCoins(userVote.coinsUsed /* deductBy */);
   };
 
   const router = useRouter();

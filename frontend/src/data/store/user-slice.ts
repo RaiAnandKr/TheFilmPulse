@@ -11,7 +11,7 @@ type UserState = {
 
 type UserAction = {
   setUser: (userState: UserState) => void;
-  updateUserCoins: (type: CoinType, deductBy: number) => void;
+  updateUserCoins: (deductBy: number, onlyEarned?: boolean) => void;
   removeUserState: () => void;
 };
 
@@ -32,15 +32,43 @@ export const createUserSlice: StateCreator<
       false,
       "UserAction/setUserState",
     ),
-  updateUserCoins: (type, deductBy) =>
+  // By default, we will always deduct from user's bonus coins and then deduct from
+  // user's earned coins. This will be the case with user participating in any contest
+  // which requires coins.
+  // However, for certain cases (like claiming a coupon), we would want to always deduct
+  // from the earned coins and hence for that case "onlyEarned" will be set to true.
+  updateUserCoins: (deductBy, onlyEarned = false) =>
     set(
       (state) => {
         const updatedCoins = [...state.userCoins];
-        const targetCoinCategory = updatedCoins.find(
-          (userCoin) => userCoin.type === type,
+        const bonusCoinCategory = updatedCoins.find(
+          (userCoin) => userCoin.type === CoinType.Bonus,
         );
-        if (targetCoinCategory) {
-          targetCoinCategory.coins -= deductBy;
+        const earnedCoinCategory = updatedCoins.find(
+          (userCoin) => userCoin.type === CoinType.Earned,
+        );
+
+        if (bonusCoinCategory && earnedCoinCategory) {
+          let remainingToDeduct = deductBy;
+
+          if (onlyEarned) {
+            // Deduct only from Earned coins
+            earnedCoinCategory.coins -= remainingToDeduct;
+          } else {
+            // Deduct from Bonus coins first
+            if (bonusCoinCategory.coins >= remainingToDeduct) {
+              bonusCoinCategory.coins -= remainingToDeduct;
+              remainingToDeduct = 0;
+            } else {
+              remainingToDeduct -= bonusCoinCategory.coins;
+              bonusCoinCategory.coins = 0;
+            }
+
+            // Deduct remaining from Earned coins
+            if (remainingToDeduct > 0) {
+              earnedCoinCategory.coins -= remainingToDeduct;
+            }
+          }
         }
 
         return {
