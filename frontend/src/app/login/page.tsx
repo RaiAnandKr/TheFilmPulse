@@ -1,9 +1,10 @@
 "use client";
 
 import { Button } from "@nextui-org/react";
-import { redirect, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useState } from "react";
 import { OtplessLogin, type OtplessUser } from "~/components/otpless-login";
+import { HOME_PATH, REFERRER_PARAM } from "~/constants/paths";
 import { useMainStore } from "~/data/contexts/store-context";
 import { useLoadDataConfig } from "~/data/hooks/useLoadData";
 import { CloseIcon } from "~/res/icons/close";
@@ -12,15 +13,9 @@ import type { UserResponse } from "~/schema/User";
 import { post } from "~/service/apiUtils";
 
 // TODO: don't let user route to login page if user is already logged in.
-const LoginPage = () => {
+const LoginPageBase = () => {
   const { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad } =
     useLoginHandler();
-
-  const isUserLoggedIn = useMainStore((state) => state.isUserLoggedIn);
-
-  if (isUserLoggedIn) {
-    redirect("/");
-  }
 
   return (
     <div className="bg-success-to-danger flex h-full flex-col justify-center gap-4 p-6">
@@ -44,6 +39,7 @@ const LoginPage = () => {
 
 const useLoginHandler = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const setUserState = useMainStore((state) => state.setUser);
 
@@ -94,7 +90,8 @@ const useLoginHandler = () => {
 
           mutateCache(getDataKeys(), { revalidate: true });
 
-          router.push("/");
+          const referrerPath = searchParams?.get(REFERRER_PARAM) ?? HOME_PATH;
+          router.push(referrerPath);
         })
         .catch((error) => {
           console.log("Login Error: ", error);
@@ -106,5 +103,11 @@ const useLoginHandler = () => {
 
   return { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad };
 };
+
+const LoginPage = () => (
+  <Suspense>
+    <LoginPageBase />
+  </Suspense>
+);
 
 export default LoginPage;

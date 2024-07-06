@@ -22,6 +22,7 @@ import { useLoadUserData } from "~/data/hooks/useLoadUserData";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 import { useHeaderMenu } from "~/hooks/useHeaderMenu";
 import { userTotalCoinsSelector } from "~/data/store/selectors/userTotalCoinsSelector";
+import { useMainStore } from "~/data/contexts/store-context";
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -88,11 +89,12 @@ const SpokePageHeader: React.FC = () => {
 
 const LoginOrCoinsNavbarContent = () => {
   const router = useRouter();
-
-  const { userTotalCoins, isLoggedIn } = useLoadUserData((state) => ({
+  const { userTotalCoins, isLoggedIn } = useMainStore((state) => ({
     userTotalCoins: userTotalCoinsSelector(state),
     isLoggedIn: state.isUserLoggedIn,
   }));
+
+  useLoadUserData();
 
   const pathname = usePathname();
   if (pathname === LOGIN_PATH) {

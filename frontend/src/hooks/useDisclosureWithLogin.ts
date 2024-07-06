@@ -1,10 +1,13 @@
 import { useDisclosure } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
-import { LOGIN_PATH } from "~/constants/paths";
+import { usePathname, useRouter } from "next/navigation";
+import { HOME_PATH, LOGIN_PATH, REFERRER_PARAM } from "~/constants/paths";
 import { useMainStore } from "~/data/contexts/store-context";
+import { useCreateQueryString } from "./useCreateQueryString";
 
 export const useDisclosureWithLogin = () => {
   const disclosure = useDisclosure();
+  const createQueryString = useCreateQueryString();
+  const pathname = usePathname();
 
   const isUserLoggedIn = useMainStore((state) => state.isUserLoggedIn);
   const router = useRouter();
@@ -13,7 +16,8 @@ export const useDisclosureWithLogin = () => {
     if (isUserLoggedIn) {
       disclosure.onOpen();
     } else {
-      router.push(LOGIN_PATH);
+      const pathWithQueryParams = `${LOGIN_PATH}?${createQueryString(REFERRER_PARAM, pathname ?? HOME_PATH)}`;
+      router.push(pathWithQueryParams);
     }
   };
 

@@ -2,7 +2,6 @@
 
 import { OpinionCard } from "../components/opinion-card";
 import { FilmPredictionCard } from "../components/film-prediction-card";
-import { getFilms } from "../service/apiUtils";
 import { getOpinions } from "../service/apiUtils";
 import { colors } from "../styles/colors";
 import {
@@ -17,7 +16,7 @@ import { ForwardIcon } from "~/res/icons/forward";
 import { useLoadData } from "~/data/hooks/useLoadData";
 import { useMainStore } from "~/data/contexts/store-context";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
-import { pick } from "~/utilities/pick";
+import { useLoadFilmData } from "~/data/hooks/useLoadFilmData";
 
 export default function Page() {
   return (
@@ -72,15 +71,11 @@ const TrendingOpinions = () => {
 };
 
 const TrendingFilms = () => {
-  const { films, setFilms, setFilmPredictions } = useMainStore((state) => ({
-    films: filterMapValuesInArray(state.films, Boolean),
-    ...pick(state, ["setFilms", "setFilmPredictions"]),
-  }));
+  const films = useMainStore((state) =>
+    filterMapValuesInArray(state.films, Boolean),
+  );
 
-  useLoadData("films", getFilms, (films) => {
-    setFilms(films);
-    films.map((film) => setFilmPredictions(film.filmId, [film.topPrediction]));
-  });
+  useLoadFilmData();
 
   return (
     <>

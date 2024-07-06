@@ -1,11 +1,9 @@
 import { useMainStore } from "../contexts/store-context";
 import { useLoadData } from "./useLoadData";
 import { getUser } from "~/service/apiUtils";
-import type { UserSlice } from "../store/user-slice";
 import { CoinType } from "~/schema/CoinType";
 
-export const useLoadUserData = <T>(selector: (state: UserSlice) => T): T => {
-  const userInfo = useMainStore(selector);
+export const useLoadUserData = () => {
   const setUserState = useMainStore((state) => state.setUser);
 
   useLoadData("getUser", getUser, (user) => {
@@ -32,6 +30,4 @@ export const useLoadUserData = <T>(selector: (state: UserSlice) => T): T => {
       ],
     });
   });
-
-  return userInfo;
 };
