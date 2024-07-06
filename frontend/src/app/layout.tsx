@@ -6,6 +6,7 @@ import { Header } from "../components/header";
 import { Footer } from "../components/footer";
 import { useSyncDocHeight } from "../hooks/useSyncDocHeight";
 import { OtplessSDK } from "~/constants/sdks";
+import { usePreloadData } from "~/data/hooks/usePreloadData";
 
 import "../styles/globals.css";
 
@@ -24,17 +25,22 @@ export default function RootLayout({
         </head>
         <body>
           <Providers>
-            <div
-              className="flex h-screen flex-col justify-between"
-              id="appContainer"
-            >
-              <Header />
-              <div className="flex flex-auto flex-col">{children}</div>
-              <Footer />
-            </div>
+            <App>{children}</App>
           </Providers>
         </body>
       </html>
     </>
   );
 }
+
+const App = ({ children }: { children: React.ReactNode }) => {
+  usePreloadData();
+
+  return (
+    <div className="flex h-screen flex-col justify-between" id="appContainer">
+      <Header />
+      <div className="flex flex-auto flex-col">{children}</div>
+      <Footer />
+    </div>
+  );
+};
