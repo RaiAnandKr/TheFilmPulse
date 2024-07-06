@@ -17,7 +17,7 @@ export const useLoadUserData = <T>(selector: (state: UserSlice) => T): T => {
       userId: user.id?.toString(),
       phone: user.phoneNumber,
       handle: user.userhandle,
-      isLoggedIn: true,
+      isUserLoggedIn: true,
       userCoins: [
         {
           type: CoinType.Earned,

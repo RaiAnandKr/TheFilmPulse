@@ -1,6 +1,6 @@
 import { useMainStore } from "~/data/contexts/store-context";
 import { Coupon } from "./coupon";
-import { CouponDetail } from "~/schema/CouponDetail";
+import type { CouponDetail } from "~/schema/CouponDetail";
 import { CouponMode } from "~/schema/CouponMode";
 import { claimedCouponDetailsSelector } from "~/data/store/selectors/claimedCouponDetailsSelector";
 import { useLoadData } from "~/data/hooks/useLoadData";

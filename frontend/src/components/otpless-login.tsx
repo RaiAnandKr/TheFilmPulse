@@ -75,7 +75,7 @@ const updateLoginUIStyles = () => {
 
   loginUIWrapperElement.setAttribute(
     "style",
-    loginUIWrapperElement.getAttribute("style") + "; height: 75%;",
+    loginUIWrapperElement.getAttribute("style") + "; height: 50%;",
   );
 };
 

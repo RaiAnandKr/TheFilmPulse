@@ -21,7 +21,6 @@ import { OptionButton } from "./option-button";
 import type { MainStore } from "~/data/store/main-store";
 import { useMainStore } from "~/data/contexts/store-context";
 import { pick } from "~/utilities/pick";
-import { CoinType } from "~/schema/CoinType";
 import { postUserOpinion } from "~/service/apiUtils";
 
 interface OpinionProps {
@@ -42,7 +41,11 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 
   const onOpinionConfirmed = (userVote: UserVote) => {
     addUserOpinion(opinionId, userVote);
-    postUserOpinion(opinionId, userVote.coinsUsed, userVote.selectedOption).catch(console.log);
+    postUserOpinion(
+      opinionId,
+      userVote.coinsUsed,
+      userVote.selectedOption,
+    ).catch(console.log);
 
     updateUserCoins(userVote.coinsUsed /* deductBy */);
   };

@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
+import { useCallback } from "react";
+
 type CacheKey = string;
 interface CacheValue<T> {
   fetcher: () => Promise<T>;
@@ -40,19 +42,25 @@ export const useLoadData = <T>(
 };
 
 export const useLoadDataConfig = (): LoadDataConfig => {
-  const getDataKeys = () => Array.from(FETCH_CACHE.keys());
+  const getDataKeys = useCallback(() => Array.from(FETCH_CACHE.keys()), []);
 
-  const mutateCache = (keys: CacheKey[], options: CacheMutationOptions) => {
-    for (const dataKey of keys) {
-      if (FETCH_CACHE.has(dataKey)) {
-        if (options.revalidate) {
-          loadDataAsync(dataKey).catch((err) =>
-            console.log(`[Error] Revalidating Data with key: ${dataKey}.`, err),
-          );
+  const mutateCache = useCallback(
+    (keys: CacheKey[], options: CacheMutationOptions) => {
+      for (const dataKey of keys) {
+        if (FETCH_CACHE.has(dataKey)) {
+          if (options.revalidate) {
+            loadDataAsync(dataKey).catch((err) =>
+              console.log(
+                `[Error] Revalidating Data with key: ${dataKey}.`,
+                err,
+              ),
+            );
+          }
         }
       }
-    }
-  };
+    },
+    [],
+  );
 
   return { getDataKeys, mutateCache };
 };
