@@ -80,6 +80,11 @@ const getOptionTerminalContentProps = (
 type ConfirmOptionProps = ReturnType<typeof useDisclosureWithLogin> &
   OptionButtonProps;
 
+interface ExpectedRewardCoins {
+  additionalCoins: number;
+  totalCoins: number;
+}
+
 const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
   const {
     isOpen,
@@ -169,7 +174,7 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
               </p>
               <p className="flex justify-between gap-2 font-bold text-success">
                 <span className="flex-auto">Expected win:</span>
-                <span>+ {expectedRewardCoins}</span>
+                <span>{expectedRewardCoins.totalCoins} (+{expectedRewardCoins.additionalCoins})</span>
                 <CoinsImage />
               </p>
             </ModalBody>
@@ -218,7 +223,7 @@ const getExpectedRewardCoins = (
   votes: Vote[],
   chosenOption: OpinionOption,
   coinsToBet: number,
-) => {
+): ExpectedRewardCoins => {
   const totalCoinsOnOtherOption =
     votes.find((vote) => vote.option !== chosenOption)?.coins ?? 0;
 
@@ -227,13 +232,20 @@ const getExpectedRewardCoins = (
     coinsToBet;
 
   if (!coinsToBet) {
-    return 0;
+    return {
+      additionalCoins: 0,
+      totalCoins: 0,
+    };
   }
 
-  const expectedRewardCoins = Math.floor(
-    coinsToBet +
-      (coinsToBet / totalCoinsOnUserOption) * totalCoinsOnOtherOption,
+  const additionalCoins = Math.floor(
+    (coinsToBet / totalCoinsOnUserOption) * totalCoinsOnOtherOption,
   );
 
-  return expectedRewardCoins;
+  const totalCoins = additionalCoins + coinsToBet;
+
+  return {
+    additionalCoins,
+    totalCoins,
+  };
 };
