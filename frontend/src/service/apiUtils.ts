@@ -589,14 +589,13 @@ export const getCouponCode = async (
   try {
     const numericCouponId = toNumber(couponId);
     const url = `/voucher_codes?voucher_id=${numericCouponId}&limit=1`;
-    const couponCodesData = await get<any[]>(url, config);
+    const couponCodeData = await get<any>(url, config);
 
-    // Ensure there's at least one coupon code returned
-    if (couponCodesData.length === 0) {
+    // Ensure the coupon code object is not null or undefined
+    if (!couponCodeData) {
       return null;
     }
 
-    const couponCodeData = couponCodesData[0];
     const couponCode: CouponCode = {
       codeId: couponCodeData.id.toString(),
       code: decrypt(couponCodeData.code),
