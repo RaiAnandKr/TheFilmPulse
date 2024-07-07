@@ -13,7 +13,7 @@ from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, set_a
 from flask_migrate import Migrate
 
 from views import PredictionView, FilmView, OpinionView, UserPredictionView, UserOpinionView, VoucherView, \
-    VoucherCodeView, UserView
+    VoucherCodeView, UserView, calc_max_opinion_coins
 from extensions import db
 from models import User, Film, Opinion
 from view_decorators import load_user_strict
@@ -90,6 +90,8 @@ def login():
             session.commit()
             newUser = True
         resp = jsonify(user)
+
+        resp['max_opinion_coins'] = calc_max_opinion_coins(user.bonus_coins + user.earned_coins)
         if newUser:
             resp["new_user"] = 1
         access_token = create_access_token(identity=user.id)
