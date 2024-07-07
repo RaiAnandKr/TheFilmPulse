@@ -34,9 +34,9 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
   const { title, endDate, votes, filmId, result, opinionId, userVote } =
     opinion;
 
-  const { film, addUserOpinion, updateUserCoins } = useMainStore((state) => ({
+  const { film, addUserOpinion, deductUserCoins } = useMainStore((state) => ({
     film: opinionFilmSelector(state, opinionId),
-    ...pick(state, ["addUserOpinion", "updateUserCoins"]),
+    ...pick(state, ["addUserOpinion", "deductUserCoins"]),
   }));
 
   const onOpinionConfirmed = (userVote: UserVote) => {
@@ -47,7 +47,7 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
       userVote.selectedOption,
     ).catch(console.log);
 
-    updateUserCoins(userVote.coinsUsed /* deductBy */);
+    deductUserCoins(userVote.coinsUsed /* deductBy */);
   };
 
   const router = useRouter();

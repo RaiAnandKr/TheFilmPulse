@@ -11,8 +11,8 @@ type UserState = {
 };
 
 type UserAction = {
-  setUser: (userState: Partial<UserState>) => void;
-  updateUserCoins: (deductBy: number, onlyEarned?: boolean) => void;
+  setUser: (userState: UserState) => void;
+  deductUserCoins: (deductBy: number, onlyEarned?: boolean) => void;
   removeUserState: () => void;
 };
 
@@ -38,7 +38,7 @@ export const createUserSlice: StateCreator<
   // which requires coins.
   // However, for certain cases (like claiming a coupon), we would want to always deduct
   // from the earned coins and hence for that case "onlyEarned" will be set to true.
-  updateUserCoins: (deductBy, onlyEarned = false) =>
+  deductUserCoins: (deductBy, onlyEarned = false) =>
     set(
       (state) => {
         const updatedCoins = [...state.userCoins];
@@ -77,7 +77,7 @@ export const createUserSlice: StateCreator<
         };
       },
       false,
-      "UserAction/updateUserCoins",
+      "UserAction/deductUserCoins",
     ),
   removeUserState: () =>
     set({ ...initUserState() }, false, "UserAction/removeUser"),

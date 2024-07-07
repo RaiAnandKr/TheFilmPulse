@@ -125,15 +125,15 @@ const ClaimNewCode: React.FC<
   const { couponId, worthCoins, onClose } = props;
   const [couponCode, setCouponCode] = useState<string | undefined>(undefined);
 
-  const { updateUserCoins, updateClaimedCoupon } = useMainStore((state) =>
-    pick(state, ["updateUserCoins", "updateClaimedCoupon"]),
+  const { deductUserCoins, updateClaimedCoupon } = useMainStore((state) =>
+    pick(state, ["deductUserCoins", "updateClaimedCoupon"]),
   );
 
   const onClaim = async () => {
     const couponCode = await getCouponCode(couponId).catch(console.log);
     if (couponCode) {
       setCouponCode(couponCode.code);
-      updateUserCoins(worthCoins /* deductBy */, true);
+      deductUserCoins(worthCoins /* deductBy */, true);
       updateClaimedCoupon(couponId, couponCode);
     } else {
       // TODO: Handle this in a much better way for users sake.
