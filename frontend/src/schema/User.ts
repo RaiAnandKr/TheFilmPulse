@@ -23,4 +23,5 @@ export interface UserResponse {
   email?: string;
   state?: string;
   max_opinion_coins?: number;
+  new_user?: number;
 }
