@@ -7,10 +7,11 @@ type UserState = {
   handle: string | null;
   userCoins: { type: CoinType; coins: number; isRedeemable?: boolean }[];
   isUserLoggedIn: boolean;
+  isNewUser?: boolean;
 };
 
 type UserAction = {
-  setUser: (userState: UserState) => void;
+  setUser: (userState: Partial<UserState>) => void;
   updateUserCoins: (deductBy: number, onlyEarned?: boolean) => void;
   removeUserState: () => void;
 };

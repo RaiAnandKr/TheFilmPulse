@@ -86,6 +86,7 @@ const useLoginHandler = () => {
                 isRedeemable: false,
               },
             ],
+            isNewUser: !!response.new_user,
           });
 
           mutateCache(getDataKeys(), { revalidate: true });

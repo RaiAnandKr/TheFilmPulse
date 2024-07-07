@@ -7,6 +7,7 @@ import { Footer } from "../components/footer";
 import { useSyncDocHeight } from "../hooks/useSyncDocHeight";
 import { OtplessSDK } from "~/constants/sdks";
 import { usePreloadData } from "~/data/hooks/usePreloadData";
+import { Banner } from "~/components/banner";
 
 import "../styles/globals.css";
 
@@ -37,10 +38,13 @@ const App = ({ children }: { children: React.ReactNode }) => {
   usePreloadData();
 
   return (
-    <div className="flex h-screen flex-col justify-between" id="appContainer">
-      <Header />
-      <div className="flex flex-auto flex-col">{children}</div>
-      <Footer />
-    </div>
+    <>
+      <div className="flex h-screen flex-col justify-between" id="appContainer">
+        <Header />
+        <div className="flex flex-auto flex-col">{children}</div>
+        <Footer />
+      </div>
+      <Banner />
+    </>
   );
 };

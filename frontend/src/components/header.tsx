@@ -133,7 +133,7 @@ const LoginOrCoinsNavbarContent = () => {
 };
 
 const AvatarDropdown = () => {
-  const menuItems = useHeaderMenu();
+  const { menuItems, onMenuItemClick } = useHeaderMenu();
 
   return (
     <Dropdown placement="bottom-end">
@@ -162,7 +162,7 @@ const AvatarDropdown = () => {
               variant="light"
               size="lg"
               className="h-6 w-full justify-start px-0"
-              onClick={item.onClick}
+              onClick={() => onMenuItemClick(item)}
             >
               {item.label}
             </Button>
