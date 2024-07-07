@@ -46,9 +46,11 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
     const errorData: ErrorResponse = await response.json();
     // If a custom error message is returned by the backend, use that otherwise use
     // a generic HTTP error message.
-    throw new Error(
+    const error = new Error(
       errorData.error ?? `HTTP error! status: ${response.status}`,
-    );
+    ) as any;
+    error.status = response.status;
+    throw error;
   }
 
   const data = (await response.json()) as T; // Explicitly assert the type here
@@ -589,14 +591,13 @@ export const getCouponCode = async (
   try {
     const numericCouponId = toNumber(couponId);
     const url = `/voucher_codes?voucher_id=${numericCouponId}&limit=1`;
-    const couponCodesData = await get<any[]>(url, config);
+    const couponCodeData = await get<any>(url, config);
 
-    // Ensure there's at least one coupon code returned
-    if (couponCodesData.length === 0) {
+    // Ensure the coupon code object is not null or undefined
+    if (!couponCodeData) {
       return null;
     }
 
-    const couponCodeData = couponCodesData[0];
     const couponCode: CouponCode = {
       codeId: couponCodeData.id.toString(),
       code: decrypt(couponCodeData.code),
@@ -673,7 +674,13 @@ export const getUser = async (config?: FetchConfig): Promise<User | null> => {
     };
 
     return user;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.status === 401) {
+      // Handle 401 Unauthorized error
+      console.log("User is not logged in.");
+      return null;
+    } else {
     throw new Error(`Error fetching user data: ${(error as Error).message}`);
+    }
   }
 };
