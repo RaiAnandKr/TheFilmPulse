@@ -1,5 +1,4 @@
 import os
-import uuid
 from typing import Type
 from datetime import datetime
 from datetime import timedelta
@@ -85,7 +84,7 @@ def login():
         if not user:
             # TODO: hackx for now. Make the user signup instead of doing this
             session = db.session()
-            user = User(phone_number=phone_number, username=str(uuid.uuid4())[:10])
+            user = User(phone_number=phone_number, username=str(phone_number))
             session.add(user)
             session.commit()
             newUser = True
