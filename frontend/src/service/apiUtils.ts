@@ -46,9 +46,11 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
     const errorData: ErrorResponse = await response.json();
     // If a custom error message is returned by the backend, use that otherwise use
     // a generic HTTP error message.
-    throw new Error(
+    const error = new Error(
       errorData.error ?? `HTTP error! status: ${response.status}`,
-    );
+    ) as any;
+    error.status = response.status;
+    throw error;
   }
 
   const data = (await response.json()) as T; // Explicitly assert the type here
@@ -672,7 +674,13 @@ export const getUser = async (config?: FetchConfig): Promise<User | null> => {
     };
 
     return user;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.status === 401) {
+      // Handle 401 Unauthorized error
+      console.log("User is not logged in.");
+      return null;
+    } else {
     throw new Error(`Error fetching user data: ${(error as Error).message}`);
+    }
   }
 };
