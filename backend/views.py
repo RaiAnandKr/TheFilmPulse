@@ -108,7 +108,7 @@ class BaseAPIView(MethodView):
         items = query.all()
 
         if self.model not in [Prediction, Opinion]:
-            return jsonify([self.serializer.serialize(item) for item in items])
+            return jsonify([self.serializer.serialize(item) for item in items]), 200
 
         # For Predictions and Opinions, we also need to return the votes of the logged in user (if there is
         # one) for each of the predictions/opinions.
@@ -118,7 +118,7 @@ class BaseAPIView(MethodView):
         # If there is no logged in user, there is no user_vote to be returned and hence return the queried
         # items.
         if not user:
-            return jsonify([self.serializer.serialize(item) for item in items])
+            return jsonify([self.serializer.serialize(item) for item in items]), 200
 
         user_id = user.id
         # For each prediction (or opinion), find if the logged in user has a vote and add it in the result.
@@ -133,7 +133,7 @@ class BaseAPIView(MethodView):
                 serialized_item['user_vote'] = self.serializer.serialize(user_vote)
             results.append(serialized_item)
 
-        return jsonify(results)
+        return jsonify(results), 200
 
     def post(self):
         if 'POST' not in self.methods:
@@ -170,6 +170,8 @@ class PredictionView(BaseAPIView):
     model = Prediction
     sort_by = 'user_count'
 
+def calc_max_opinion_coins(total_coins):
+    return math.ceil(0.4 * total_coins)
 
 class UserView(BaseAPIView):
     model = User
@@ -184,10 +186,10 @@ class UserView(BaseAPIView):
             return jsonify({'error': 'User not found'}), 404
 
         serialized_user = self.serializer.serialize(user)
-        serialized_user['max_opinion_coins'] = math.ceil(
-            0.4 * (user.bonus_coins + user.earned_coins)
+        serialized_user['max_opinion_coins'] = calc_max_opinion_coins(
+            user.bonus_coins + user.earned_coins
         )
-        return jsonify(serialized_user)
+        return jsonify(serialized_user), 200
 
     def put(self, *args, **kwargs):
         # TODO: proper serializer 🥲
@@ -254,7 +256,7 @@ class FilmView(BaseAPIView):
             serialized_item['top_prediction'] = serialized_top_prediction
             results.append(serialized_item)
 
-        return jsonify(results)
+        return jsonify(results), 200
 
 
 class OpinionView(BaseAPIView):
@@ -314,7 +316,7 @@ class VoucherCodeView(BaseAPIView):
 
                 results.append(serialized_vc)
 
-            return jsonify(results)
+            return jsonify(results), 200
 
         if not voucher_id:
             return jsonify({'error': 'One of claimed or voucher_id args should be set'}), 400
@@ -341,7 +343,16 @@ class VoucherCodeView(BaseAPIView):
         db.session.commit()
 
         voucher_code.code = encrypt(voucher_code.code)
-        return jsonify([self.serializer.serialize(voucher_code)])
+        serialized_vc = self.serializer.serialize(voucher_code)
+
+        # Return the updated coin info for user so that we don't have to do any calculation
+        # in frontend code.
+        serialized_vc['user_earned_coins'] = user.earned_coins
+        serialized_vc['user_bonus_coins'] = user.bonus_coins
+        serialized_vc['user_max_opinion_coins'] = calc_max_opinion_coins(
+            user.earned_coins + user.bonus_coins
+        )
+        return jsonify(serialized_vc), 201
 
 # This class is to deal with user's participations in different contests we have on the
 # platform.
@@ -373,10 +384,6 @@ class BaseUserAPIView(MethodView):
         return jsonify({'message': 'Method Not Allowed'}), 405
 
     def get(self):
-        """ This get method here doesn't return a json response. It simply returns the items
-        queried from DB and a get would have to be implemented further in the derived class
-        to act upon the items.
-        """
         if 'GET' not in self.methods:
             return self.method_not_allowed()
 
@@ -422,7 +429,16 @@ class BaseUserAPIView(MethodView):
             query = query.order_by(getattr(self.model, sort_by))
 
         items = query.all()
-        return items
+        results = []
+        for item in items:
+            serialized_item = self.serializer.serialize(item)
+            if self.model == UserOpinion:
+                serialized_item['opinion'] = self.serializer.serialize(item.opinion)
+            elif self.model == UserPrediction:
+                serialized_item['prediction'] = self.serializer.serialize(item.prediction)
+            results.append(serialized_item)
+
+        return jsonify(results), 200
 
     def post(self):
         if 'POST' not in self.methods:
@@ -437,16 +453,6 @@ class BaseUserAPIView(MethodView):
 
 class UserPredictionView(BaseUserAPIView):
     model = UserPrediction
-
-    def get(self):
-        items = super().get()
-        results=[]
-        for item in items:
-            serialized_item = self.serializer.serialize(item)
-            serialized_item['prediction'] = self.serializer.serialize(item.prediction)
-            results.append(serialized_item)
-
-        return jsonify(results)
 
     def post(self):
         if 'POST' not in self.methods:
@@ -495,16 +501,6 @@ class UserPredictionView(BaseUserAPIView):
 
 class UserOpinionView(BaseUserAPIView):
     model = UserOpinion
-
-    def get(self):
-        items = super().get()
-        results = []
-        for item in items:
-            serialized_item = self.serializer.serialize(item)
-            serialized_item['opinion'] = self.serializer.serialize(item.opinion)
-            results.append(serialized_item)
-
-        return jsonify(results)
 
     def post(self):
         if 'POST' not in self.methods:
@@ -564,7 +560,16 @@ class UserOpinionView(BaseUserAPIView):
             db.session.add(new_item)
             db.session.commit()  # Commit both the user and the new opinion
 
-            return jsonify(self.serializer.serialize(new_item)), 201
+            serialized_res = self.serializer.serialize(new_item)
+
+            # Return the updated coin info for user so that we don't have to do any calculation
+            # in frontend code.
+            serialized_res['user_earned_coins'] = user.earned_coins
+            serialized_res['user_bonus_coins'] = user.bonus_coins
+            serialized_res['user_max_opinion_coins'] = calc_max_opinion_coins(
+                user.earned_coins + user.bonus_coins
+            )
+            return jsonify(serialized_res), 201
         except IntegrityError:
             db.session.rollback()
             return jsonify({'error': 'Integrity error, possibly due to foreign key constraints'}), 400
