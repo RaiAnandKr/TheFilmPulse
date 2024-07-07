@@ -11,7 +11,6 @@ export default async function FilmLayout({
   params: { filmId: string };
 }) {
   const filmId = params.filmId;
-  // TODO: api call to get filmInfo. This is Server Component.
   const filmInfo = await getFilmInfoFromFilmId(filmId);
 
   if (!filmInfo) {
