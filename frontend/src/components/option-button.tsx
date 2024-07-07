@@ -17,7 +17,7 @@ import { CoinsImage } from "~/res/images/CoinsImage";
 import type { ClassValue } from "tailwind-variants";
 import { TickIcon } from "~/res/icons/tick";
 import { useMainStore } from "~/data/contexts/store-context";
-import { userTotalCoinsSelector } from "~/data/store/selectors/userTotalCoinsSelector";
+import { userMaxOpinionCoinsSelector } from "~/data/store/selectors/userMaxOpinionCoinsSelector";
 import { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
 
 interface OptionButtonProps {
@@ -97,8 +97,9 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
 
   const label = option;
 
-  const userCoins = useMainStore(userTotalCoinsSelector);
-  const defaultCoinsToBet = Math.floor(userCoins * 0.3);
+  const userMaxOpinionCoins = useMainStore<number>(userMaxOpinionCoinsSelector);
+  const userMinOpinionCoins = 1;
+  const defaultCoinsToBet = Math.floor(userMaxOpinionCoins * 0.5);
 
   const [hasConfirmedOption, setHasConfirmedOption] = useState(false);
   const [coinstToBet, setCoinsToBet] = useState(defaultCoinsToBet);
@@ -136,7 +137,7 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
               </h4>
             </ModalHeader>
             <ModalBody className="p-4">
-              {userCoins ? (
+              {userMaxOpinionCoins ? (
                 <Slider
                   label={"Select Coins"}
                   showTooltip
@@ -144,15 +145,16 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
                   formatOptions={{
                     style: "decimal",
                   }}
-                  maxValue={userCoins}
+                  maxValue={userMaxOpinionCoins}
+                  minValue={userMinOpinionCoins}
                   marks={[
                     {
-                      value: 0,
-                      label: "0",
+                      value: userMinOpinionCoins,
+                      label: userMinOpinionCoins.toString(),
                     },
                     {
-                      value: userCoins,
-                      label: userCoins.toString(),
+                      value: userMaxOpinionCoins,
+                      label: userMaxOpinionCoins.toString(),
                     },
                   ]}
                   value={coinstToBet}
@@ -202,7 +204,7 @@ const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
                   </Button>
                   <Button
                     fullWidth
-                    isDisabled={!userCoins}
+                    isDisabled={!userMaxOpinionCoins}
                     color="primary"
                     onPress={() => onConfirmButtonPress(onClose)}
                     className="font-bold text-white"

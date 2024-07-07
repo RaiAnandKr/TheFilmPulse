@@ -8,10 +8,11 @@ type UserState = {
   userCoins: { type: CoinType; coins: number; isRedeemable?: boolean }[];
   isUserLoggedIn: boolean;
   isNewUser?: boolean;
+  maxOpinionCoins: number;
 };
 
 type UserAction = {
-  setUser: (userState: UserState) => void;
+  setUser: (userState: Partial<UserState>) => void;
   deductUserCoins: (deductBy: number, onlyEarned?: boolean) => void;
   removeUserState: () => void;
 };
@@ -72,8 +73,20 @@ export const createUserSlice: StateCreator<
           }
         }
 
+        // TODO: We shouldn't really be doing this calculation in the frontend code.
+        // We already have the backend APIs which requires coins to be deducted, returning
+        // the updated coins value for a user and hence we can simply rely on them
+        // for our state management.
+        // Update max_opinion_coins
+        const newBonusCoins = bonusCoinCategory?.coins ?? 0;
+        const newEarnedCoins = earnedCoinCategory?.coins ?? 0;
+        const newMaxOpinionCoins = Math.ceil(
+          0.4 * (newBonusCoins + newEarnedCoins),
+        );
+
         return {
           userCoins: updatedCoins,
+          maxOpinionCoins: newMaxOpinionCoins,
         };
       },
       false,
@@ -100,4 +113,5 @@ const initUserState = () => ({
       isRedeemable: false,
     },
   ],
+  maxOpinionCoins: 0,
 });

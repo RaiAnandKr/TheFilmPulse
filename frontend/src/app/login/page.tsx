@@ -86,6 +86,7 @@ const useLoginHandler = () => {
                 isRedeemable: false,
               },
             ],
+            maxOpinionCoins: response.max_opinion_coins,
             isNewUser: !!response.new_user,
           });
 

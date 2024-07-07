@@ -10,7 +10,7 @@ export interface User {
 
   // This is not some coin which is owned by the user but more
   // of a custom field and hence keeping it separate.
-  maxOpinionCoins?: number;
+  maxOpinionCoins: number;
 }
 
 export interface UserResponse {
@@ -22,6 +22,6 @@ export interface UserResponse {
   username: string;
   email?: string;
   state?: string;
-  max_opinion_coins?: number;
+  max_opinion_coins: number;
   new_user?: number;
 }

@@ -28,6 +28,7 @@ export const useLoadUserData = () => {
           isRedeemable: false,
         },
       ],
+      maxOpinionCoins: user.maxOpinionCoins,
     });
   });
 };
