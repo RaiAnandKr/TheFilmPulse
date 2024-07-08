@@ -1,4 +1,5 @@
 import os
+import traceback
 from typing import Type
 from datetime import datetime
 from datetime import timedelta
@@ -98,6 +99,7 @@ def login():
         return resp, 200
     except Exception as e:
         # TODO: Gotta get that logging thing soon
+        traceback.print_exc()
         return jsonify({"message": "Something went wrong"}), 500
         pass
     pass
