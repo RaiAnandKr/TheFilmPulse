@@ -371,7 +371,7 @@ export const getPredictions = async ({
         predictionRange: [predictionData.min_value, predictionData.max_value],
         userPrediction: predictionData.user_vote?.answer || null,
         predictionStepValue: predictionData.step_value || 25,
-        predictionScaleUnit: predictionData.scale_unit || "",
+        predictionScaleUnit: predictionData.unit || "",
       };
     });
 
@@ -425,7 +425,7 @@ export const getUserPredictions = async (
           ],
           userPrediction: userPredictionData.answer,
           predictionStepValue: userPredictionData.prediction.step_value || 25,
-          predictionScaleUnit: userPredictionData.prediction.scale_unit || "",
+          predictionScaleUnit: userPredictionData.prediction.unit || "",
           result: result,
         };
       },
