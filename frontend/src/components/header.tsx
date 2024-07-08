@@ -11,6 +11,7 @@ import {
   Dropdown,
   Avatar,
   AvatarIcon,
+  NavbarProps,
 } from "@nextui-org/react";
 import { useState } from "react";
 import styles from "./header.module.css";
@@ -26,60 +27,61 @@ import { useMainStore } from "~/data/contexts/store-context";
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
-  return pathname === HOME_PATH ? <HomepageHeader /> : <SpokePageHeader />;
-};
-
-const HomepageHeader: React.FC = () => {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const isHomePageHeader = pathname === HOME_PATH;
+  const headerProps: HeaderBaseProps = isHomePageHeader
+    ? {
+        isMenuOpen: isMenuOpen,
+        onMenuOpenChange: setIsMenuOpen,
+        navbarContents: (
+          <>
+            <NavbarContent as="div" className={styles.noflex} justify="start">
+              <AvatarDropdown />
+            </NavbarContent>
+            <NavbarContent className="flex-auto" justify="center">
+              <NavbarBrand className="h-full font-bold text-inherit">
+                The Film Pulse
+              </NavbarBrand>
+            </NavbarContent>
+          </>
+        ),
+      }
+    : {
+        navbarContents: (
+          <NavbarContent
+            as="button"
+            className={styles.noflex}
+            justify="start"
+            onClick={() => router.back()}
+          >
+            <BackIcon />
+          </NavbarContent>
+        ),
+      };
+
+  return <HeaderBase {...headerProps} />;
+};
+
+type HeaderBaseProps = NavbarProps & { navbarContents: JSX.Element };
+
+const HeaderBase: React.FC<HeaderBaseProps> = (props) => {
+  const { isMenuOpen, onMenuOpenChange, navbarContents } = props;
   return (
     <>
       <div className="flex p-7"></div>
       <Navbar
         isBordered
-        isMenuOpen={isMenuOpen}
-        onMenuOpenChange={setIsMenuOpen}
         isBlurred={false}
         classNames={{
           wrapper: "justify-between px-3 h-14",
-          base: "fixed",
+          base: "fixed restrict-screen-width inset-x-auto",
         }}
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={onMenuOpenChange}
       >
-        <NavbarContent as="div" className={styles.noflex} justify="start">
-          <AvatarDropdown />
-        </NavbarContent>
-
-        <NavbarContent className="flex-auto" justify="center">
-          <NavbarBrand className="h-full font-bold text-inherit">
-            The Film Pulse
-          </NavbarBrand>
-        </NavbarContent>
-
-        <LoginOrCoinsNavbarContent />
-      </Navbar>
-    </>
-  );
-};
-
-const SpokePageHeader: React.FC = () => {
-  const router = useRouter();
-
-  return (
-    <>
-      <div className="flex p-7"></div>
-      <Navbar
-        isBordered
-        isBlurred={false}
-        classNames={{ wrapper: "justify-between px-3 h-14", base: "fixed" }}
-      >
-        <NavbarContent
-          as="button"
-          className={styles.noflex}
-          justify="start"
-          onClick={() => router.back()}
-        >
-          <BackIcon />
-        </NavbarContent>
+        {navbarContents}
 
         <LoginOrCoinsNavbarContent />
       </Navbar>
