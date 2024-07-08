@@ -17,6 +17,7 @@ from views import PredictionView, FilmView, OpinionView, UserPredictionView, Use
 from extensions import db
 from models import User, Film, Opinion
 from view_decorators import load_user_strict
+from serializers import UserSerializer
 
 from auth_provider_config import AuthProviderFactory
 
@@ -89,14 +90,17 @@ def login():
             session.add(user)
             session.commit()
             newUser = True
-        resp = jsonify(user)
 
-        resp['max_opinion_coins'] = calc_max_opinion_coins(user.bonus_coins + user.earned_coins)
+        user_serializer = UserSerializer()
+        serialized_user = user_serializer.serialize(user)
+        serialized_user["max_opinion_coins"] = calc_max_opinion_coins(
+            user.bonus_coins + user.earned_coins
+        )
         if newUser:
-            resp["new_user"] = 1
+            serialized_user["new_user"] = 1
         access_token = create_access_token(identity=user.id)
         set_access_cookies(resp, access_token)
-        return resp, 200
+        return jsonify(serialized_user), 200
     except Exception as e:
         # TODO: Gotta get that logging thing soon
         traceback.print_exc()
