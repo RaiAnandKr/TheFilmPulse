@@ -98,9 +98,12 @@ def login():
         )
         if newUser:
             serialized_user["new_user"] = 1
+
+        resp = jsonify(serialized_user)
+
         access_token = create_access_token(identity=user.id)
         set_access_cookies(resp, access_token)
-        return jsonify(serialized_user), 200
+        return resp, 200
     except Exception as e:
         # TODO: Gotta get that logging thing soon
         traceback.print_exc()
