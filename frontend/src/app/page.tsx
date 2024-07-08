@@ -51,8 +51,13 @@ const TrendingOpinions = () => {
         onViewAllClick={() => router.push("/pulse")}
         info={
           <div className="px-1 py-2">
-            <div className="text-small font-bold">Popover Content</div>
-            <div className="text-tiny">This is the popover content</div>
+            <div className="text-small font-bold">Trade & Win</div>
+            <div className="text-tiny">
+              Trade with your opinion and instinct around films. <br />
+              Respond with 'Yes' or 'No' and put your coins at stake. <br />
+              Analyze if the odds favor 'Yes' or 'No' and choose coins. <br />
+              Win coins if your opinion is right.
+            </div>
           </div>
         }
       />
