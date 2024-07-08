@@ -109,16 +109,20 @@ const PastParticipations = () => {
 
   return (
     <div className="bg-success-to-danger flex w-full flex-col p-3">
-      {userPastParticipations.map((pulse) =>
-        pulse.type === PulseType.Opinion ? (
-          <OpinionCard opinion={pulse} key={pulse.opinionId} useFullWidth />
-        ) : (
-          <PredictionCard
-            key={pulse.predictionId}
-            prediction={pulse}
-            isResult
-          />
-        ),
+      {userPastParticipations.length ? (
+        userPastParticipations.map((pulse) =>
+          pulse.type === PulseType.Opinion ? (
+            <OpinionCard opinion={pulse} key={pulse.opinionId} useFullWidth />
+          ) : (
+            <PredictionCard
+              key={pulse.predictionId}
+              prediction={pulse}
+              isResult
+            />
+          ),
+        )
+      ) : (
+        <p className="text-tiny text-danger"> No participations!</p>
       )}
     </div>
   );
