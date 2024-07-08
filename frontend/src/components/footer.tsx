@@ -41,7 +41,7 @@ export const Footer = () => {
   return (
     <>
       <div className="flex p-7"></div>
-      <div className="fixed bottom-0 z-50 flex h-14 w-full flex-none flex-col bg-white px-1">
+      <div className="restrict-screen-width fixed bottom-0 z-50 flex h-14 w-full flex-none flex-col bg-white px-1 ">
         <Divider className="flex-none" />
         <div className="flex flex-auto items-center justify-between">
           {menuItems.map((item) => {

@@ -10,4 +10,8 @@
   .text-primary {
     @apply text-teal-500;
   }
+
+  .restrict-screen-width {
+    @apply max-w-[450px] bg-white;
+  }
 }

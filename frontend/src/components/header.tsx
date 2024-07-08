@@ -76,7 +76,7 @@ const HeaderBase: React.FC<HeaderBaseProps> = (props) => {
         isBlurred={false}
         classNames={{
           wrapper: "justify-between px-3 h-14",
-          base: "fixed",
+          base: "fixed restrict-screen-width inset-x-auto",
         }}
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={onMenuOpenChange}

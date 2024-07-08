@@ -39,12 +39,14 @@ const App = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <div className="flex h-screen flex-col justify-between" id="appContainer">
-        <Header />
-        <div className="flex flex-auto flex-col">{children}</div>
-        <Footer />
+      <div id="appContainer" className="flex justify-center bg-default">
+        <div className="restrict-screen-width flex h-screen w-full flex-col justify-between">
+          <Header />
+          <div className="flex flex-auto flex-col">{children}</div>
+          <Footer />
+          <Banner />
+        </div>
       </div>
-      <Banner />
     </>
   );
 };
