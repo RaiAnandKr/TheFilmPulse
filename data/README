@@ -1,0 +1,4 @@
+  # Just copy one of the film/opinion/prediction (whatever you want to add) and change the values
+  # to add a new one.
+  # Don't have 'done: 1' for your object. It's set automatically by the python script parsing the
+  # yaml file once it's done adding it to the DB.
