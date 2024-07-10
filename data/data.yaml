@@ -59,6 +59,21 @@ films:
     by Dhanush.
   title: Raayan
   trailer_url: https://www.youtube.com/embed/VcsntxPDPj0
+- cast_metadata:
+    actors:
+    - Akshay Kumar
+    - Paresh Rawal
+    directors:
+    - Suriya
+  done: 1
+  popularity_score: 72
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/sarfira.avif
+  release_date: '2024-07-12'
+  summary: An incredible story, set in the world of startups and aviation, Sarfira
+    will inspire the common man to dream big and to chase your dreams even if the
+    world calls you crazy.
+  title: Sarfira
+  trailer_url: https://www.youtube.com/embed/8Iy2geJD8HY
 opinions:
 - done: 1
   end_date: '2024-07-12'
@@ -138,4 +153,12 @@ predictions:
   mean_value: 25
   min_value: 20
   step_value: 0.1
+  text: Weekend collection in India
+- done: 1
+  end_date: '2024-07-12'
+  film_title: Sarfira
+  max_value: 30
+  mean_value: 25
+  min_value: 10
+  step_value: 0.5
   text: Weekend collection in India
