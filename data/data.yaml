@@ -24,7 +24,7 @@ films:
     - Anand Tiwari
   done: 1
   popularity_score: 75
-  poster_url: https://thefilmpulse.blob.core.windows.net/images/bad_newzz.jpg
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/bad_newzz.avif
   release_date: '2024-07-19'
   summary: Bad Newz is a bizarre, rare comedy about heteropaternal superfecundation!
     A twist of fate leads to Saloni Bagga`s twin pregnancy being fathered by both
@@ -40,7 +40,7 @@ films:
     - Shawn Levy
   done: 1
   popularity_score: 70
-  poster_url: https://thefilmpulse.blob.core.windows.net/images/deadpool.jpg
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/deadpool.avif
   release_date: '2024-07-26'
   summary: Deadpool & Wolverine delivers the ultimate, iconic, cinematic team-up throwdown
     on July 26.
