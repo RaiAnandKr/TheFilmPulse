@@ -11,18 +11,22 @@ export const useLoadPastParticipationsData = () => {
     ...pick(state, ["updateOpinions", "updatePredictions"]),
   }));
 
-  useLoadData("pastParticipations", getPastParticipations, (participations) => {
-    updateOpinions(
-      "userPastOpinions",
-      participations.filter(
-        (pulse) => pulse.type === PulseType.Opinion,
-      ) as Opinion[],
-    );
-    updatePredictions(
-      "userPastPredictions",
-      participations.filter(
-        (pulse) => pulse.type === PulseType.Prediction,
-      ) as Prediction[],
-    );
-  });
+  return useLoadData(
+    "pastParticipations",
+    getPastParticipations,
+    (participations) => {
+      updateOpinions(
+        "userPastOpinions",
+        participations.filter(
+          (pulse) => pulse.type === PulseType.Opinion,
+        ) as Opinion[],
+      );
+      updatePredictions(
+        "userPastPredictions",
+        participations.filter(
+          (pulse) => pulse.type === PulseType.Prediction,
+        ) as Prediction[],
+      );
+    },
+  );
 };

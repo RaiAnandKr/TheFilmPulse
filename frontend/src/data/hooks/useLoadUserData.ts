@@ -6,7 +6,7 @@ import { CoinType } from "~/schema/CoinType";
 export const useLoadUserData = () => {
   const setUserState = useMainStore((state) => state.setUser);
 
-  useLoadData("getUser", getUser, (user) => {
+  return useLoadData("getUser", getUser, (user) => {
     if (!user) {
       return;
     }
