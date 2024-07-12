@@ -1,7 +1,10 @@
 "use client";
 
 import { OpinionCard } from "../components/opinion-card";
-import { FilmPredictionCard } from "../components/film-prediction-card";
+import {
+  FilmPredictionCard,
+  FilmPredictionCardSkeleton,
+} from "../components/film-prediction-card";
 import { getOpinions } from "../service/apiUtils";
 import { colors } from "../styles/colors";
 import {
@@ -54,8 +57,10 @@ const TrendingOpinions = () => {
             <div className="text-small font-bold">Trade & Win</div>
             <div className="text-tiny">
               Trade with your opinion and instinct around films. <br />
-              Respond with &apos;Yes&apos; or &apos;No&apos; and put your coins at stake. <br />
-              Analyze if the odds favor &apos;Yes&apos; or &apos;No&apos; and choose coins. <br />
+              Respond with &apos;Yes&apos; or &apos;No&apos; and put your coins
+              at stake. <br />
+              Analyze if the odds favor &apos;Yes&apos; or &apos;No&apos; and
+              choose coins. <br />
               Win coins if your opinion is right.
             </div>
           </div>
@@ -80,14 +85,21 @@ const TrendingFilms = () => {
     filterMapValuesInArray(state.films, Boolean),
   );
 
-  useLoadFilmData();
+  const { isLoading } = useLoadFilmData();
 
   return (
     <>
       <SectionHeader title="Trending Films" />
-      {films.map((film) => (
-        <FilmPredictionCard key={film.filmId} film={film} />
-      ))}
+      {isLoading ? (
+        <>
+          <FilmPredictionCardSkeleton />
+          <FilmPredictionCardSkeleton />
+        </>
+      ) : (
+        films.map((film) => (
+          <FilmPredictionCard key={film.filmId} film={film} />
+        ))
+      )}
     </>
   );
 };
