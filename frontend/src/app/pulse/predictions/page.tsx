@@ -5,6 +5,7 @@ import { getPredictions } from "~/service/apiUtils";
 import { useMainStore } from "~/data/contexts/store-context";
 import { useLoadData } from "~/data/hooks/useLoadData";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
+import { PredictionCardSkeletons } from "~/components/prediction-card-skeleton";
 
 const PredictionPage = () => {
   const { predictions, setActivePredictions } = useMainStore((state) => ({
@@ -15,15 +16,19 @@ const PredictionPage = () => {
     setActivePredictions: state.setActivePredictions,
   }));
 
-  useLoadData(
+  const { isLoading } = useLoadData(
     "activePredictions",
     () => getPredictions({ isActive: true }),
     setActivePredictions,
   );
 
-  return predictions.map((prediction) => (
-    <PredictionCard key={prediction.predictionId} prediction={prediction} />
-  ));
+  return isLoading ? (
+    <PredictionCardSkeletons repeat={7} />
+  ) : (
+    predictions.map((prediction) => (
+      <PredictionCard key={prediction.predictionId} prediction={prediction} />
+    ))
+  );
 };
 
 export default PredictionPage;

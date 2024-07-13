@@ -5,7 +5,7 @@ export const TimerAndParticipationsSkeleton: React.FC<{
 }> = (props) => {
   const { showInRow } = props;
   const effectiveClassName = showInRow
-    ? "flex h-full w-full items-end justify-between px-2 gap-2"
+    ? "flex h-full w-full items-end justify-between p-2 gap-2"
     : "flex h-full flex-col items-end px-2 gap-2";
   return (
     <div className={effectiveClassName}>

@@ -96,7 +96,9 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
         additionalClassName,
       )}
       classNames={{
-        value: "text-warning flex-none",
+        value: "text-warning flex-none text-center px-2",
+        label: "flex-auto",
+        labelWrapper: "gap-2 items-end",
       }}
       endContent={endContentElement}
       getValue={(value) => `${value.toString()} ${predictionScaleUnitLabel}`}

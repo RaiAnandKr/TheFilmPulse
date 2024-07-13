@@ -98,6 +98,7 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
               endDate={prediction.endDate}
               totalParticipations={prediction.participationCount}
               showInRow
+              isDarkTheme
             />
           </CardFooter>
         )}
