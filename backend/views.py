@@ -555,6 +555,8 @@ class UserOpinionView(BaseUserAPIView):
         else:
             return jsonify({'error': 'Invalid answer value. Can be either yes or no.'}), 400
 
+        opinion.user_count += 1
+
         try:
             new_item = self.model(**data)
             db.session.add(new_item)
