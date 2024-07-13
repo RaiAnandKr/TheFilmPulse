@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 type EventListener<T> = (data: T) => void;
 
 class EventEmitter {
