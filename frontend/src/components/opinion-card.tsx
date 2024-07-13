@@ -94,7 +94,7 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
           </div>
         </CardHeader>
       )}
-      <CardBody className="p-0 py-2 text-sm">
+      <CardBody className="p-0 py-2 text-sm font-medium">
         <p>{title}</p>
       </CardBody>
       <CardFooter className="flex flex-none flex-col p-0 pt-2">

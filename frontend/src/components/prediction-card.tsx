@@ -60,10 +60,10 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
             </Button>
 
             <div className="flex flex-col px-2">
-              <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-bold ">
+              <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-semibold">
                 {title}
               </h3>
-              <p className="overflow-hidden text-ellipsis text-nowrap text-tiny font-medium ">
+              <p className="overflow-hidden text-ellipsis text-nowrap text-tiny font-medium text-default-500">
                 {filmCasts}
               </p>
             </div>
