@@ -121,6 +121,10 @@ class BaseAPIView(MethodView):
             return jsonify([self.serializer.serialize(item) for item in items]), 200
 
         user_id = user.id
+        # Separate items with and without user votes
+        items_with_user_vote = []
+        items_without_user_vote = []
+
         # For each prediction (or opinion), find if the logged in user has a vote and add it in the result.
         for item in items:
             serialized_item = self.serializer.serialize(item)
@@ -131,7 +135,12 @@ class BaseAPIView(MethodView):
 
             if user_vote:
                 serialized_item['user_vote'] = self.serializer.serialize(user_vote)
-            results.append(serialized_item)
+                items_with_user_vote.append(serialized_item)
+            else:
+                items_without_user_vote.append(serialized_item)
+
+        # Concatenate lists: items without user vote first, then items with user vote
+        results = items_without_user_vote + items_with_user_vote
 
         return jsonify(results), 200
 
