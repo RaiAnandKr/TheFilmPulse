@@ -42,7 +42,7 @@ const TrendingOpinions = () => {
 
   const { isLoading } = useLoadData(
     "trendingOptions",
-    () => getOpinions({ isActive: true, limit: 3 }),
+    () => getOpinions({ isActive: true, limit: 10 }),
     setTrendingOpinions,
   );
 

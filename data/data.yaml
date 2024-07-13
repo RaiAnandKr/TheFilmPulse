@@ -1,73 +1,255 @@
 films:
-  - title: "Indian 2"
-    release_date: "2024-07-12"
-    poster_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
-    trailer_url: "https://www.youtube.com/embed/3bvBUT5pQYY"
-    popularity_score: 50
-    cast_metadata:
-      actors:
-        - "Kamal Haasan"
-        - "Kajal Aggarwal"
-      directors:
-        - "Shankar"
-    summary: "In this sequel to the 1996 film Indian, Kamal Hassan reprises his role as Senapathy, an ex-freedom fighter turned vigilante who fights against corruption. Senapathy returns to the country to aid a young man who has been exposing corrupt politicians in the country through videos on the internet."
-
-  - title: "Bad Newzz"
-    release_date: "2024-07-19"
-    poster_url: "https://thefilmpulse.blob.core.windows.net/images/bad_newzz.jpg"
-    trailer_url: "https://www.youtube.com/embed/uV50UfcIT68"
-    popularity_score: 75
-    cast_metadata:
-      actors:
-        - "Vicky Kaushal"
-        - "Tripti Dimri"
-        - "Ammy Virk"
-      directors:
-        - "Anand Tiwari"
-    summary: "Bad Newz is a bizarre, rare comedy about heteropaternal superfecundation! A twist of fate leads to Saloni Bagga`s twin pregnancy being fathered by both Akhil Chadha and Gurbir Pannu, setting off a chaotic rivalry for her love and their children. As Akhil and Gurbir vie for Saloni`s affections, chaos ensues."
-
+- cast_metadata:
+    actors:
+    - Kamal Haasan
+    - Kajal Aggarwal
+    directors:
+    - Shankar
+  done: 1
+  popularity_score: 50
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/indian2.avif
+  release_date: '2024-07-12'
+  summary: In this sequel to the 1996 film Indian, Kamal Hassan reprises his role
+    as Senapathy, an ex-freedom fighter turned vigilante who fights against corruption.
+    Senapathy returns to the country to aid a young man who has been exposing corrupt
+    politicians in the country through videos on the internet.
+  title: Indian 2
+  trailer_url: https://www.youtube.com/embed/3bvBUT5pQYY
+- cast_metadata:
+    actors:
+    - Vicky Kaushal
+    - Tripti Dimri
+    - Ammy Virk
+    directors:
+    - Anand Tiwari
+  done: 1
+  popularity_score: 75
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/bad_newzz.avif
+  release_date: '2024-07-19'
+  summary: Bad Newz is a bizarre, rare comedy about heteropaternal superfecundation!
+    A twist of fate leads to Saloni Bagga`s twin pregnancy being fathered by both
+    Akhil Chadha and Gurbir Pannu, setting off a chaotic rivalry for her love and
+    their children. As Akhil and Gurbir vie for Saloni`s affections, chaos ensues.
+  title: Bad Newzz
+  trailer_url: https://www.youtube.com/embed/uV50UfcIT68
+- cast_metadata:
+    actors:
+    - Ryan Reynolds
+    - Hugh Jackman
+    directors:
+    - Shawn Levy
+  done: 1
+  popularity_score: 70
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/deadpool.avif
+  release_date: '2024-07-26'
+  summary: Deadpool & Wolverine delivers the ultimate, iconic, cinematic team-up throwdown
+    on July 26.
+  title: Deadpool & Wolverine
+  trailer_url: https://www.youtube.com/embed/r3LisZEIK34
+- cast_metadata:
+    actors:
+    - Dhanush
+    directors:
+    - Dhanush
+  done: 1
+  popularity_score: 45
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/raayan.avif
+  release_date: '2024-07-26'
+  summary: Raayan features Dhanush in the titular role. The movie is written and directed
+    by Dhanush.
+  title: Raayan
+  trailer_url: https://www.youtube.com/embed/VcsntxPDPj0
+- cast_metadata:
+    actors:
+    - Akshay Kumar
+    - Paresh Rawal
+    directors:
+    - Suriya
+  done: 1
+  popularity_score: 80
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/sarfira.avif
+  release_date: '2024-07-12'
+  summary: An incredible story, set in the world of startups and aviation, Sarfira
+    will inspire the common man to dream big and to chase your dreams even if the
+    world calls you crazy.
+  title: Sarfira
+  trailer_url: https://www.youtube.com/embed/8Iy2geJD8HY
 opinions:
-  - film_title: "Indian 2"
-    text: "Will Indian 2 be a bigger hit than Indian 1?"
-    icon_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
-    end_date: "2024-07-12"
-
-  - film_title: "Indian 2"
-    text: "Will Kamal Haasan die in Indian 2?"
-    icon_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
-    end_date: "2024-07-12"
-
-  - film_title: "Bad Newzz"
-    text: "Will Tripti have 2 babies in Bad Newzz?"
-    icon_url: "https://thefilmpulse.blob.core.windows.net/images/bad_newzz.jpg"
-    end_date: "2024-07-19"
-
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Indian 2
+  text: Will Indian 2 hindi version be a bigger hit than Sarfira?
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Indian 2
+  text: Will Indian 2 be a bigger hit than Jailer?
+- done: 1
+  end_date: '2024-07-19'
+  film_title: Bad Newzz
+  text: Will Tripti have 2 babies in Bad Newzz?
+- done: 1
+  end_date: '2024-07-19'
+  film_title: Bad Newzz
+  text: Will Bad Newzz be the biggest hit of Vicky Kaushal's career?
+- done: 1
+  end_date: '2024-07-19'
+  film_title: Bad Newzz
+  text: Will Bad Newzz be biggest Hindi movie of 2024 so far?
+- done: 1
+  end_date: '2024-07-19'
+  film_title: Bad Newzz
+  text: Is Vicky Kaushal the actual father at the end of Bad Newzz?
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Sarfira
+  text: Will Akshay Kumar finally get a hit with Sarfira after so many flops?
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Sarfira
+  text: Will Sarfira have higher IMDB rating than the original Soorarai Pottru?
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Sarfira
+  text: Will Akshay's father die in the Sarfira movie?
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Sarfira
+  text: Will Sarfira cross 50cr lifetime business?
+- done: 1
+  end_date: '2024-07-26'
+  film_title: Raayan
+  text: Will Dhanush die at the end of Raayan?
+- done: 1
+  end_date: '2024-07-26'
+  film_title: Raayan
+  text: Will Raayan be a bigger hit than Captain Miller?
+- done: 1
+  end_date: '2024-07-26'
+  film_title: Raayan
+  text: Will Raayan have more than 8 IMDB rating after opening weekend?
+- done: 1
+  end_date: '2024-07-26'
+  film_title: Deadpool & Wolverine
+  text: Will there be a Hulk appearance in the Deadpool & Wolverine?
+- done: 1
+  end_date: '2024-07-26'
+  film_title: Deadpool & Wolverine
+  text: Is Deadpool & Wolverine centered around the TVA?
 predictions:
-  - film_title: "Indian 2"
-    text: "Weekend collection"
-    icon_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
-    min_value: 50
-    max_value: 100
-    mean_value: 100
-    step_value: 1
-    unit: "crores"
-    end_date: "2024-07-12"
-
-  - film_title: "Indian 2"
-    text: "IMDB rating after 4 days"
-    icon_url: "https://thefilmpulse.blob.core.windows.net/images/indian2.avif"
-    min_value: 1
-    max_value: 10
-    mean_value: 1
-    step_value: 0.1
-    end_date: "2024-07-12"
-
-  - film_title: "Bad Newzz"
-    text: "Lifetime collection"
-    icon_url: "https://thefilmpulse.blob.core.windows.net/images/bad_newzz.jpg"
-    min_value: 150
-    max_value: 300
-    mean_value: 200
-    step_value: 2
-    unit: "crores"
-    end_date: "2024-07-19"
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Indian 2
+  max_value: 40
+  mean_value: 30
+  min_value: 10
+  step_value: 0.5
+  text: Opening Friday collection in India
+  unit: crores
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Indian 2
+  max_value: 80
+  mean_value: 50
+  min_value: 40
+  step_value: 0.4
+  text: Opening weekend (Fri-Sun) collection in India
+  unit: crores
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Indian 2
+  max_value: 10
+  mean_value: 1
+  min_value: 1
+  step_value: 0.1
+  text: IMDB rating after opening weekend
+- done: 1
+  end_date: '2024-07-19'
+  film_title: Bad Newzz
+  max_value: 200
+  mean_value: 120
+  min_value: 100
+  step_value: 2
+  text: Lifetime collection
+  unit: crores
+- done: 1
+  end_date: '2024-07-19'
+  film_title: Bad Newzz
+  max_value: 12
+  mean_value: 8
+  min_value: 5
+  step_value: 0.1
+  text: Opening Friday collection in India
+  unit: crores
+- done: 1
+  end_date: '2024-07-19'
+  film_title: Bad Newzz
+  max_value: 40
+  mean_value: 20
+  min_value: 20
+  step_value: 0.4
+  text: Opening weekend (Fri-Sun) collection in India
+  unit: crores
+- done: 1
+  end_date: '2024-07-19'
+  film_title: Bad Newzz
+  max_value: 10
+  mean_value: 5
+  min_value: 1
+  step_value: 0.1
+  text: IMDB rating after opening weekend
+- done: 1
+  end_date: '2024-07-26'
+  film_title: Deadpool & Wolverine
+  max_value: 15
+  mean_value: 9
+  min_value: 3
+  step_value: 0.1
+  text: Opening Friday collection in India
+- done: 1
+  end_date: '2024-07-26'
+  film_title: Deadpool & Wolverine
+  max_value: 40
+  mean_value: 20
+  min_value: 10
+  step_value: 0.4
+  text: Opening weekend (Fri-Sun) collection in India
+- done: 1
+  end_date: '2024-07-26'
+  film_title: Raayan
+  max_value: 10
+  mean_value: 6
+  min_value: 5
+  step_value: 0.1
+  text: Opening Friday collection in India
+- done: 1
+  end_date: '2024-07-26'
+  film_title: Raayan
+  max_value: 40
+  mean_value: 25
+  min_value: 20
+  step_value: 0.4
+  text: Opening weekend (Fri-Sun) collection in India
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Sarfira
+  max_value: 30
+  mean_value: 25
+  min_value: 10
+  step_value: 0.4
+  text: Opening weekend (Fri-Sun) collection in India
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Sarfira
+  max_value: 15
+  mean_value: 8
+  min_value: 3
+  step_value: 0.1
+  text: Opening Friday collection in India
+- done: 1
+  end_date: '2024-07-13'
+  film_title: Sarfira
+  max_value: 10
+  mean_value: 6
+  min_value: 1
+  step_value: 0.1
+  text: IMDB rating after the opening weekend
