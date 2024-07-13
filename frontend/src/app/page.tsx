@@ -1,10 +1,7 @@
 "use client";
 
 import { OpinionCard } from "../components/opinion-card";
-import {
-  FilmPredictionCard,
-  FilmPredictionCardSkeleton,
-} from "../components/film-prediction-card";
+import { FilmPredictionCard } from "../components/film-prediction-card";
 import { getOpinions } from "../service/apiUtils";
 import { colors } from "../styles/colors";
 import {
@@ -20,6 +17,8 @@ import { useLoadData } from "~/data/hooks/useLoadData";
 import { useMainStore } from "~/data/contexts/store-context";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
 import { useLoadFilmData } from "~/data/hooks/useLoadFilmData";
+import { FilmPredictionCardSkeletons } from "~/components/film-prediction-card-skeleton";
+import { OpinionCardSkeletons } from "~/components/opinion-card-skeleton";
 
 export default function Page() {
   return (
@@ -41,11 +40,13 @@ const TrendingOpinions = () => {
     setTrendingOpinions: state.setTrendingOpinions,
   }));
 
-  useLoadData(
+  const { isLoading } = useLoadData(
     "trendingOptions",
     () => getOpinions({ isActive: true, limit: 3 }),
     setTrendingOpinions,
   );
+
+  const numberOfOpinions = isLoading ? 3 : trendingOpinions.length || 1;
 
   return (
     <>
@@ -69,11 +70,15 @@ const TrendingOpinions = () => {
       <div className="w-full overflow-x-auto">
         <div
           className="bg-success-to-danger flex min-w-full"
-          style={{ width: `calc(18rem * ${trendingOpinions.length || 1})` }} // 18rem is for w-72, which is card width
+          style={{ width: `calc(18rem * ${numberOfOpinions})` }} // 18rem is for w-72, which is card width
         >
-          {trendingOpinions.map((opinion) => (
-            <OpinionCard opinion={opinion} key={opinion.opinionId} />
-          ))}
+          {isLoading ? (
+            <OpinionCardSkeletons repeat={numberOfOpinions} />
+          ) : (
+            trendingOpinions.map((opinion) => (
+              <OpinionCard opinion={opinion} key={opinion.opinionId} />
+            ))
+          )}
         </div>
       </div>
     </>
@@ -91,10 +96,7 @@ const TrendingFilms = () => {
     <>
       <SectionHeader title="Trending Films" />
       {isLoading ? (
-        <>
-          <FilmPredictionCardSkeleton />
-          <FilmPredictionCardSkeleton />
-        </>
+        <FilmPredictionCardSkeletons repeat={2} />
       ) : (
         films.map((film) => (
           <FilmPredictionCard key={film.filmId} film={film} />
