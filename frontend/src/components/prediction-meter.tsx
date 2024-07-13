@@ -96,7 +96,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
         additionalClassName,
       )}
       classNames={{
-        value: "text-warning flex-none text-center px-2",
+        value: "text-warning flex-none text-center px-2 font-bold",
         label: "flex-auto",
         labelWrapper: "gap-2 items-end",
       }}
