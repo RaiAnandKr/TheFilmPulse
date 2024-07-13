@@ -17,6 +17,8 @@ import { useLoadData } from "~/data/hooks/useLoadData";
 import { useMainStore } from "~/data/contexts/store-context";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
 import { useLoadFilmData } from "~/data/hooks/useLoadFilmData";
+import { FilmPredictionCardSkeletons } from "~/components/film-prediction-card-skeleton";
+import { OpinionCardSkeletons } from "~/components/opinion-card-skeleton";
 
 export default function Page() {
   return (
@@ -38,11 +40,13 @@ const TrendingOpinions = () => {
     setTrendingOpinions: state.setTrendingOpinions,
   }));
 
-  useLoadData(
+  const { isLoading } = useLoadData(
     "trendingOptions",
     () => getOpinions({ isActive: true, limit: 10 }),
     setTrendingOpinions,
   );
+
+  const numberOfOpinions = isLoading ? 3 : trendingOpinions.length || 1;
 
   return (
     <>
@@ -54,8 +58,10 @@ const TrendingOpinions = () => {
             <div className="text-small font-bold">Trade & Win</div>
             <div className="text-tiny">
               Trade with your opinion and instinct around films. <br />
-              Respond with &apos;Yes&apos; or &apos;No&apos; and put your coins at stake. <br />
-              Analyze if the odds favor &apos;Yes&apos; or &apos;No&apos; and choose coins. <br />
+              Respond with &apos;Yes&apos; or &apos;No&apos; and put your coins
+              at stake. <br />
+              Analyze if the odds favor &apos;Yes&apos; or &apos;No&apos; and
+              choose coins. <br />
               Win coins if your opinion is right.
             </div>
           </div>
@@ -64,11 +70,15 @@ const TrendingOpinions = () => {
       <div className="w-full overflow-x-auto">
         <div
           className="bg-success-to-danger flex min-w-full"
-          style={{ width: `calc(18rem * ${trendingOpinions.length || 1})` }} // 18rem is for w-72, which is card width
+          style={{ width: `calc(18rem * ${numberOfOpinions})` }} // 18rem is for w-72, which is card width
         >
-          {trendingOpinions.map((opinion) => (
-            <OpinionCard opinion={opinion} key={opinion.opinionId} />
-          ))}
+          {isLoading ? (
+            <OpinionCardSkeletons repeat={numberOfOpinions} />
+          ) : (
+            trendingOpinions.map((opinion) => (
+              <OpinionCard opinion={opinion} key={opinion.opinionId} />
+            ))
+          )}
         </div>
       </div>
     </>
@@ -80,14 +90,18 @@ const TrendingFilms = () => {
     filterMapValuesInArray(state.films, Boolean),
   );
 
-  useLoadFilmData();
+  const { isLoading } = useLoadFilmData();
 
   return (
     <>
       <SectionHeader title="Trending Films" />
-      {films.map((film) => (
-        <FilmPredictionCard key={film.filmId} film={film} />
-      ))}
+      {isLoading ? (
+        <FilmPredictionCardSkeletons repeat={2} />
+      ) : (
+        films.map((film) => (
+          <FilmPredictionCard key={film.filmId} film={film} />
+        ))
+      )}
     </>
   );
 };

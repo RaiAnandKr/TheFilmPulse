@@ -8,7 +8,7 @@ export const useLoadFilmData = () => {
     ...pick(state, ["setFilms", "setFilmPredictions"]),
   }));
 
-  useLoadData("getFilms", getFilms, (films) => {
+  return useLoadData("getFilms", getFilms, (films) => {
     setFilms(films);
     films.map((film) => setFilmPredictions(film.filmId, [film.topPrediction]));
   });

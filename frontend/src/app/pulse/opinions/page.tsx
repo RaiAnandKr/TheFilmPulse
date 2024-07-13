@@ -5,6 +5,7 @@ import { getOpinions } from "~/service/apiUtils";
 import { useMainStore } from "~/data/contexts/store-context";
 import { useLoadData } from "~/data/hooks/useLoadData";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
+import { OpinionCardSkeletons } from "~/components/opinion-card-skeleton";
 
 const OpinionPage = () => {
   const { opinions, setActiveOpinions } = useMainStore((state) => ({
@@ -15,15 +16,19 @@ const OpinionPage = () => {
     setActiveOpinions: state.setActiveOpinions,
   }));
 
-  useLoadData(
+  const { isLoading } = useLoadData(
     "activeOpinions",
     () => getOpinions({ isActive: true }),
     setActiveOpinions,
   );
 
-  return opinions.map((opinion) => (
-    <OpinionCard opinion={opinion} key={opinion.opinionId} useFullWidth />
-  ));
+  return isLoading ? (
+    <OpinionCardSkeletons repeat={5} useFullWidth />
+  ) : (
+    opinions.map((opinion) => (
+      <OpinionCard opinion={opinion} key={opinion.opinionId} useFullWidth />
+    ))
+  );
 };
 
 export default OpinionPage;
