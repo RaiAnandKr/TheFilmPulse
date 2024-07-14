@@ -506,7 +506,7 @@ class UserPredictionView(BaseUserAPIView):
         if answer < prediction.min_value or answer > prediction.max_value:
             return jsonify({'error': 'Prediction value not in range'}), 400
 
-        if prediction.end_date is not None and prediction.end_date < current_date():
+        if prediction.end_date is not None and prediction.end_date.date() < current_date():
             return jsonify({'error': 'The prediction has already ended'}), 400
 
         new_mean_value = ((prediction.mean_value * prediction.user_count) + answer) / (prediction.user_count + 1)
@@ -565,7 +565,7 @@ class UserOpinionView(BaseUserAPIView):
         if coins_to_deduct > user.bonus_coins + user.earned_coins:
             return jsonify({'error': 'Not enough coins'}), 400
 
-        if opinion.end_date is not None and opinion.end_date < current_date():
+        if opinion.end_date is not None and opinion.end_date.date() < current_date():
             return jsonify({'error': 'The opinion has already ended'}), 400
 
         # If bonus coins exist, reduce them first and then if more coins are needed, reduce
