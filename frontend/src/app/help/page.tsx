@@ -54,9 +54,9 @@ const HelpPage = () => (
           <a
             href="https://www.sacnilk.com/"
             target="_blank"
-            className="text-primary"
+            className="text-primary underline"
           >
-            www.sacnilk.com.
+            sacnilk.com.
           </a>
         </li>,
         <li>
@@ -64,14 +64,15 @@ const HelpPage = () => (
           <a
             href="https://www.imdb.com/"
             target="_blank"
-            className="text-primary"
+            className="text-primary underline"
           >
-            www.imdb.com.
+            imdb.com.
           </a>
         </li>,
         "Other games around the plot of the movie are decided after watching the movie.",
       ]}
     />
+
     <Section
       id="vouchers"
       title="Vouchers and gift cards"
@@ -85,7 +86,7 @@ const HelpPage = () => (
       <a
         href="mailto:thefilmpulse345@gmail.com"
         target="_blank"
-        className="text-primary"
+        className="text-primary underline"
       >
         thefilmpulse345@gmail.com
       </a>
@@ -96,7 +97,7 @@ const HelpPage = () => (
       <a
         href="https://t.me/thefilmpulse"
         target="_blank"
-        className="text-primary"
+        className="text-primary underline"
       >
         t.me/thefilmpulse
       </a>
