@@ -25,7 +25,7 @@ export const Coupon: React.FC<CouponProps> = (props) => {
       <Button
         className={cn(
           styles.coupon,
-          "flex flex-none items-center justify-center bg-white p-2",
+          "flex flex-none items-center justify-center bg-white p-1 px-2",
           "before:bg-default-100 after:bg-default-100", // coupon's parent element color to give round cut out effect
         )}
         isDisabled={isDisabled}

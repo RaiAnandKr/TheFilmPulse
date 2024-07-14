@@ -4,7 +4,13 @@ import {
   type SliderStepMark,
   type SliderValue,
 } from "@nextui-org/react";
-import { useContext, useEffect, useMemo, type DependencyList } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  type DependencyList,
+} from "react";
 import { RewardContext } from "~/data/contexts/reward-context";
 import { useMainStore } from "~/data/contexts/store-context";
 import type { MainStore } from "~/data/store/main-store";
@@ -39,9 +45,15 @@ export const RewardsMeter = () => {
     [setRewardPointer, maxValue],
   );
 
-  const onChange = (value: SliderValue) => {
+  const onChange = useCallback((value: SliderValue) => {
     setRewardPointer(getSliderValueInNumber(value));
-  };
+  }, []);
+
+  const getMoreCoinsNeededToClaim = useCallback(
+    (value: SliderValue) =>
+      Math.max(0, getSliderValueInNumber(value) - userEarnedCoins),
+    [userEarnedCoins],
+  );
 
   const step = useMemo(() => gcdOfNumbers(checkpoints), [checkpoints]);
   const marks = useMemo(
@@ -91,7 +103,7 @@ export const RewardsMeter = () => {
       value={[0, rewardPointer]}
       onChange={onChange}
       getValue={(value: SliderValue) =>
-        `Coins needed: ${Math.max(0, getSliderValueInNumber(value) - userEarnedCoins)}`
+        `Need +${getMoreCoinsNeededToClaim(value)} coins`
       }
     />
   );
