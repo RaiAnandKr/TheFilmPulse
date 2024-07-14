@@ -7,7 +7,7 @@ import { pick } from "~/utilities/pick";
 const STATIC_MENU_ITEMS: MenuItem[] = [
   {
     key: "help",
-    label: "Help",
+    label: "Help & FAQs",
     pathName: "help",
   },
   {
