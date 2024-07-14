@@ -39,13 +39,14 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-2 pb-0">
+            <ModalHeader className="flex flex-col gap-2 px-3 pb-0">
               <div className="flex items-center gap-4">
                 <Image
                   alt="Coupon Logo"
-                  height={32}
-                  width={32}
+                  height={25}
+                  width={50}
                   src={couponLogoSrc}
+                  radius="none"
                 />
                 <h3>{couponBrandName}</h3>
               </div>
@@ -63,7 +64,7 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
             <ModalBody className="min-h-[25%] overflow-y-auto">
               <CouponTnC {...props} />
             </ModalBody>
-            <ModalFooter className="flex flex-col items-center justify-center pt-0">
+            <ModalFooter className="flex flex-col items-center justify-center p-3 pt-0">
               <Divider />
               {mode === CouponMode.Claimed ? (
                 <ClaimedCodes couponId={couponId} />

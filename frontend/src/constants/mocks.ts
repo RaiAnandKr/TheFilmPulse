@@ -173,7 +173,7 @@ const PREDICTIONS: Prediction[] = [
     predictionId: "6",
     title: "Lifetime collection (including overseas, theaters, OTT)",
     filmId: "2",
-    endDate: "July 12, 2024",
+    endDate: "July 14, 2024",
     meanPrediction: 2100,
     participationCount: 8929,
     predictionRange: [0, 3000],
@@ -207,7 +207,7 @@ const FILMS: Film[] = [
     filmDirector: "Sukumar",
     filmDesc:
       "Pushpa 2: The Rule, is an upcoming Indian Telugu-language action drama film produced by Naveen Yerneni and Yalamanchili Ravi Shankar under their Mythri Movie Makers banner. It is the second installment in the Pushpa film series and the sequel to Pushpa: The Rise.",
-    releaseDate: "July 12",
+    releaseDate: "July 14",
     topPrediction: PREDICTIONS.find(
       (prediction) => prediction.predictionId === "6",
     )!,
@@ -511,11 +511,17 @@ const getClaimedCoupons = async (): Promise<
   return [
     {
       couponId: "1",
-      couponCodes: [getRandomCouponCode(20), getRandomCouponCode(30)],
+      couponCodes: [
+        getRandomCouponCode("20HEIDNI34G"),
+        getRandomCouponCode(30),
+      ],
     },
     {
       couponId: "3",
-      couponCodes: [getRandomCouponCode(50), getRandomCouponCode(50)],
+      couponCodes: [
+        getRandomCouponCode("20HEIDNI34G"),
+        getRandomCouponCode(50),
+      ],
     },
     {
       couponId: "6",
@@ -523,7 +529,10 @@ const getClaimedCoupons = async (): Promise<
     },
     {
       couponId: "7",
-      couponCodes: [getRandomCouponCode(20), getRandomCouponCode(80)],
+      couponCodes: [
+        getRandomCouponCode("20HEIDNI34G"),
+        getRandomCouponCode(80),
+      ],
     },
     {
       couponId: "12",
@@ -532,7 +541,7 @@ const getClaimedCoupons = async (): Promise<
   ];
 };
 
-const getRandomCouponCode = (seed: number) => {
+const getRandomCouponCode = (seed: number | string) => {
   return {
     codeId: seed.toString(),
     code: "STEALDEAL" + seed.toString(),
