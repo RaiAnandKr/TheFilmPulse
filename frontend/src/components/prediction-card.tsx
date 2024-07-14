@@ -15,15 +15,16 @@ import { TrophyIcon } from "~/res/icons/trophy";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 import { useMainStore } from "~/data/contexts/store-context";
 import type { MainStore } from "~/data/store/main-store";
+import { isValidPrediction } from "~/utilities/isValidPrediction";
 
 interface PredictionCardProps {
   prediction: Prediction;
   noHeader?: boolean;
-  isResult?: boolean;
+  showResult?: boolean;
 }
 
 export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
-  const { prediction, noHeader, isResult } = props;
+  const { prediction, noHeader, showResult } = props;
   const film = useMainStore((state) =>
     predictionFilmSelector(state, prediction.predictionId),
   );
@@ -44,7 +45,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
     <Card className="h-50 my-2 w-full p-3" isBlurred>
       {!noHeader && (
         <CardHeader className="flex flex-col items-start p-0">
-          {isResult && <PredictionResult {...prediction} />}
+          {showResult && <PredictionResult {...prediction} />}
           <div className="flex items-center">
             <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
               <Image
@@ -71,7 +72,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
         </CardHeader>
       )}
       <CardBody className="flex flex-col p-0 py-2">
-        {isResult ? (
+        {showResult ? (
           <PredictionDiff {...prediction} />
         ) : (
           <PredictionMeter prediction={prediction} />
@@ -92,16 +93,22 @@ const PredictionDiff: React.FC<
   Pick<Prediction, "userPrediction" | "result" | "predictionScaleUnit">
 > = (props) => {
   const { userPrediction, result, predictionScaleUnit } = props;
-  if (userPrediction === undefined || !result) {
-    return <p className="text-sm text-default-500">No result</p>;
+  const isValidUserPrediction = isValidPrediction(userPrediction);
+  if (!isValidUserPrediction) {
+    return <p className="text-sm text-default-500">No participation!</p>;
   }
+
   return (
     <div className="flex flex-col pt-2 text-sm">
       <div className="flex justify-between text-primary">
         <span>Actual result :</span>
-        <span>
-          {result?.finalValue ?? 0} {predictionScaleUnit ?? ""}
-        </span>
+        {result ? (
+          <span>
+            {result.finalValue ?? 0} {predictionScaleUnit ?? ""}
+          </span>
+        ) : (
+          <span className="text-warning">Pending</span>
+        )}
       </div>
       <div className="flex justify-between text-default-500">
         <span>Your prediction :</span>

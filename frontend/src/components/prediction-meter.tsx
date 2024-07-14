@@ -5,6 +5,7 @@ import { PredictButton } from "./predict-button";
 import { useMainStore } from "~/data/contexts/store-context";
 import { postUserPrediction } from "~/service/apiUtils";
 import { differenceInDays } from "~/utilities/differenceInDays";
+import { isValidPrediction } from "~/utilities/isValidPrediction";
 
 export interface PredictionMeterProps {
   prediction: Prediction;
@@ -44,8 +45,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
 
   const predictionScaleUnitLabel = predictionScaleUnit ?? "";
 
-  const hasUserPredicted =
-    typeof userPrediction === "number" && !isNaN(userPrediction);
+  const hasUserPredicted = isValidPrediction(userPrediction);
   const hasPredictionEnded =
     differenceInDays(new Date(), new Date(endDate)) < 0;
   const shouldDisableAction = hasUserPredicted || hasPredictionEnded;

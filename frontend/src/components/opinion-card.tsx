@@ -27,10 +27,11 @@ interface OpinionProps {
   opinion: Opinion;
   useFullWidth?: boolean;
   useFooter?: boolean;
+  showResult?: boolean;
 }
 
 export const OpinionCard: React.FC<OpinionProps> = (props) => {
-  const { useFullWidth, opinion, useFooter } = props;
+  const { useFullWidth, opinion, useFooter, showResult } = props;
   const { title, endDate, votes, filmId, result, opinionId, userVote } =
     opinion;
 
@@ -69,11 +70,13 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
     <Card className={cardClassName} isBlurred>
       {!useFooter && (
         <CardHeader className="flex flex-col items-start p-0 pb-2">
-          <ResultChip
-            endDate={endDate}
-            hasUserParticipated={!!userVote}
-            result={result}
-          />
+          {showResult && (
+            <ResultChip
+              endDate={endDate}
+              hasUserParticipated={!!userVote}
+              result={result}
+            />
+          )}
           <div className="flex w-full items-start justify-between">
             <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
               <Image

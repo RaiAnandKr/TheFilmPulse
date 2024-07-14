@@ -27,11 +27,15 @@ const RESULT_COLOR_MAP = new Map<
 export const ResultChip: React.FC<ResultChipProps> = (props) => {
   const { endDate, hasUserParticipated, result } = props;
   const daysToEnd = differenceInDays(new Date(), new Date(endDate));
-  const isEndDateInPast = daysToEnd < 0;
 
-  if (!isEndDateInPast || !hasUserParticipated || !result) {
+  if (!hasUserParticipated) {
     return null;
   }
+
+  const resultType = result?.type ?? PulseResultType.None;
+  const resultText = result
+    ? `${numberInShorthand(result.coinsResult)} coins`
+    : "Pending result";
 
   return (
     <Popover placement="bottom" showArrow={true}>
@@ -39,13 +43,13 @@ export const ResultChip: React.FC<ResultChipProps> = (props) => {
         <Chip
           size="md"
           radius="sm"
-          color={RESULT_COLOR_MAP.get(result.type)}
+          color={RESULT_COLOR_MAP.get(resultType)}
           variant="flat"
           classNames={{ content: "font-bold" }}
           className="mb-2"
           endContent={<InfoIcon dynamicSize />}
         >
-          {result.type}: {numberInShorthand(result.coinsResult)} coins
+          {resultType}: {resultText}
         </Chip>
       </PopoverTrigger>
       <PopoverContent>

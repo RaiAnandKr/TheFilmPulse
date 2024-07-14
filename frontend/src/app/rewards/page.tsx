@@ -13,7 +13,7 @@ import { useMainStore } from "~/data/contexts/store-context";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
 import { differenceInDays } from "~/utilities/differenceInDays";
 import type { MainStore } from "~/data/store/main-store";
-import { useLoadPastParticipationsData } from "~/data/hooks/useLoadPastParticipationsData";
+import { useLoadUserParticipationsData } from "~/data/hooks/useLoadUserParticipationsData";
 import { ClaimedCoupons } from "~/components/claimed-coupons";
 import { userTotalCoinsSelector } from "~/data/store/selectors/userTotalCoinsSelector";
 
@@ -44,8 +44,8 @@ const RewardsPage = () => {
       <Rewards />
       {isUserLoggedIn && (
         <>
-          <SectionHeader title="Past Participations" />
-          <PastParticipations />
+          <SectionHeader title="Your Participations" />
+          <YourParticipations />
         </>
       )}
     </>
@@ -100,24 +100,29 @@ const CoinCard: React.FC<{
   );
 };
 
-const PastParticipations = () => {
-  useLoadPastParticipationsData();
+const YourParticipations = () => {
+  useLoadUserParticipationsData();
 
-  const { userPastParticipations } = useMainStore((state) => ({
-    userPastParticipations: userPastParticipationSelector(state),
+  const { userParticipations } = useMainStore((state) => ({
+    userParticipations: userParticipationSelector(state),
   }));
 
   return (
     <div className="bg-success-to-danger flex w-full flex-col p-3">
-      {userPastParticipations.length ? (
-        userPastParticipations.map((pulse) =>
+      {userParticipations.length ? (
+        userParticipations.map((pulse) =>
           pulse.type === PulseType.Opinion ? (
-            <OpinionCard opinion={pulse} key={pulse.opinionId} useFullWidth />
+            <OpinionCard
+              opinion={pulse}
+              key={pulse.opinionId}
+              useFullWidth
+              showResult
+            />
           ) : (
             <PredictionCard
               key={pulse.predictionId}
               prediction={pulse}
-              isResult
+              showResult
             />
           ),
         )
@@ -128,17 +133,17 @@ const PastParticipations = () => {
   );
 };
 
-const userPastParticipationSelector = (
+const userParticipationSelector = (
   state: MainStore,
 ): (Prediction | Opinion)[] => {
   return [
     ...filterMapValuesInArray(
       state.predictions,
-      (_, prediction) => !!(prediction.userPrediction && prediction.result),
+      (_, prediction) => !!prediction.userPrediction,
     ),
     ...filterMapValuesInArray(
       state.opinions,
-      (_, opinion) => !!(opinion.userVote && opinion.result),
+      (_, opinion) => !!opinion.userVote,
     ),
   ].sort((pulse1, pulse2) =>
     differenceInDays(new Date(pulse2.endDate), new Date(pulse1.endDate)),

@@ -6,23 +6,23 @@ import { PulseType } from "~/schema/PulseType";
 import { getPastParticipations } from "~/service/apiUtils";
 import { useLoadData } from "./useLoadData";
 
-export const useLoadPastParticipationsData = () => {
+export const useLoadUserParticipationsData = () => {
   const { updateOpinions, updatePredictions } = useMainStore((state) => ({
     ...pick(state, ["updateOpinions", "updatePredictions"]),
   }));
 
   return useLoadData(
-    "pastParticipations",
+    "userParticipations",
     getPastParticipations,
     (participations) => {
       updateOpinions(
-        "userPastOpinions",
+        "userOpinionsParticipation",
         participations.filter(
           (pulse) => pulse.type === PulseType.Opinion,
         ) as Opinion[],
       );
       updatePredictions(
-        "userPastPredictions",
+        "userPredictionsParticipation",
         participations.filter(
           (pulse) => pulse.type === PulseType.Prediction,
         ) as Prediction[],
