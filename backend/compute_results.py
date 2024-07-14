@@ -33,26 +33,29 @@ def compute_prediction_results():
         # The winner will always get a voucher worthy coins irrespective of how few participants
         # are there. It's expensive when have we fewer users.
         top_1 = 1
-        top_3 = 3 if total_users >= 300 else 1
+        top_3 = 3
         top_1_percent_index = math.floor(total_users * 0.01)
         top_2point5_percent_index = math.floor(total_users * 0.025)
         top_10_percent_index = math.floor(total_users * 0.1)
 
-        # When total_users >= 100, winner gets 200 coins, otherwise less. There is no top 3.
+        # When total_users >= 100, winner gets 200 coins, otherwise less.
         # This is to control expenses in initial days when there aren't a lot of users.
         if total_users >= 100:
             winners_coin = 200
-        elif total_users >= 50:
-            winners_coin = 100
         else:
-            winners_coin = 50
+            winners_coin = 100
+
+        if total_users >= 100:
+            top3_coins = 100
+        else:
+            top3_coins = 50
 
         for i, user_prediction in enumerate(user_predictions):
             user_prediction.rank = i + 1
             if i < top_1:
                 user_prediction.coins_won = winners_coin
             elif i < top_3:
-                user_prediction.coins_won = 100
+                user_prediction.coins_won = top3_coins
             elif i < top_1_percent_index:
                 user_prediction.coins_won = 50
             elif i < top_2point5_percent_index:
