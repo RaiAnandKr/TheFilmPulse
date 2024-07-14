@@ -43,9 +43,10 @@ export const CouponDisclosure = (props: CouponDisclosureProps) => {
               <div className="flex items-center gap-4">
                 <Image
                   alt="Coupon Logo"
-                  height={32}
-                  width={32}
+                  height={25}
+                  width={50}
                   src={couponLogoSrc}
+                  radius="none"
                 />
                 <h3>{couponBrandName}</h3>
               </div>
