@@ -7,13 +7,15 @@ import { pick } from "~/utilities/pick";
 const STATIC_MENU_ITEMS: MenuItem[] = [
   {
     key: "help",
-    label: "Help",
+    label: "Help & FAQs",
     pathName: "help",
+    btnColor: "primary",
   },
   {
     key: "contact",
     label: "Contact Us",
     pathName: "contact",
+    btnColor: "primary",
   },
 ];
 
@@ -42,9 +44,7 @@ export const useHeaderMenu = () => {
       setMenuItems([
         {
           key: "profile",
-          label: `Your Profile (${username})`,
-          btnColor: "primary",
-          pathName: "profile",
+          label: `You (${username})`,
         },
         ...STATIC_MENU_ITEMS,
       ]);

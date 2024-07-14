@@ -90,9 +90,12 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
 };
 
 const PredictionDiff: React.FC<
-  Pick<Prediction, "userPrediction" | "result" | "predictionScaleUnit">
+  Pick<
+    Prediction,
+    "userPrediction" | "result" | "predictionScaleUnit" | "title"
+  >
 > = (props) => {
-  const { userPrediction, result, predictionScaleUnit } = props;
+  const { userPrediction, result, predictionScaleUnit, title } = props;
   const isValidUserPrediction = isValidPrediction(userPrediction);
   if (!isValidUserPrediction) {
     return <p className="text-sm text-default-500">No participation!</p>;
@@ -100,6 +103,7 @@ const PredictionDiff: React.FC<
 
   return (
     <div className="flex flex-col pt-2 text-sm">
+      <p className="my-2 font-medium">{title}</p>
       <div className="flex justify-between text-primary">
         <span>Actual result :</span>
         {result ? (
@@ -121,16 +125,12 @@ const PredictionDiff: React.FC<
 };
 
 const PredictionResult: React.FC<
-  Pick<Prediction, "endDate" | "userPrediction" | "result">
+  Pick<Prediction, "userPrediction" | "result">
 > = (props) => {
-  const { endDate, userPrediction, result } = props;
+  const { userPrediction, result } = props;
   return (
     <div className="flex w-full items-center justify-between">
-      <ResultChip
-        endDate={endDate}
-        hasUserParticipated={!!userPrediction}
-        result={result}
-      />
+      <ResultChip hasUserParticipated={!!userPrediction} result={result} />
       {!!result?.ranking && (
         <div className="mb-2 flex items-center text-sm font-bold text-primary">
           <TrophyIcon />

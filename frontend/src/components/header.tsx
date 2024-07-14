@@ -11,7 +11,7 @@ import {
   Dropdown,
   Avatar,
   AvatarIcon,
-  NavbarProps,
+  type NavbarProps,
 } from "@nextui-org/react";
 import { useState } from "react";
 import styles from "./header.module.css";

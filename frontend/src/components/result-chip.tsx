@@ -6,11 +6,9 @@ import {
 } from "@nextui-org/react";
 import { InfoIcon } from "~/res/icons/info";
 import { PulseResultType, type PulseResult } from "~/schema/PulseResult";
-import { differenceInDays } from "~/utilities/differenceInDays";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 
 interface ResultChipProps {
-  endDate: string;
   hasUserParticipated: boolean;
   result?: Pick<PulseResult<undefined>, "type" | "coinsResult">;
 }
@@ -25,8 +23,7 @@ const RESULT_COLOR_MAP = new Map<
 ]);
 
 export const ResultChip: React.FC<ResultChipProps> = (props) => {
-  const { endDate, hasUserParticipated, result } = props;
-  const daysToEnd = differenceInDays(new Date(), new Date(endDate));
+  const { hasUserParticipated, result } = props;
 
   if (!hasUserParticipated) {
     return null;
