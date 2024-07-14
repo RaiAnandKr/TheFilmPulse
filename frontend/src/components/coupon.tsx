@@ -34,10 +34,10 @@ export const Coupon: React.FC<CouponProps> = (props) => {
       >
         <Image
           alt="Coupon Logo"
-          height={32}
-          width={32}
           src={coupon.couponLogoSrc}
           radius="none"
+          removeWrapper
+          className="flex h-full w-full object-contain"
         />
       </Button>
       {mode === CouponMode.New && (
