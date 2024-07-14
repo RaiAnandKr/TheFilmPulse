@@ -260,10 +260,7 @@ const getPastParticipations = async (): Promise<(Opinion | Prediction)[]> => {
     ...(await getPredictions({ isActive: false })),
   ].filter(
     (pulse) =>
-      !!(
-        ((pulse as Opinion).userVote ?? (pulse as Prediction).userPrediction) &&
-        pulse.result
-      ),
+      !!((pulse as Opinion).userVote ?? (pulse as Prediction).userPrediction),
   );
 };
 

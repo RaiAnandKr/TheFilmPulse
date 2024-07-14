@@ -4,6 +4,8 @@ import type { Prediction } from "~/schema/Prediction";
 import { PredictButton } from "./predict-button";
 import { useMainStore } from "~/data/contexts/store-context";
 import { postUserPrediction } from "~/service/apiUtils";
+import { differenceInDays } from "~/utilities/differenceInDays";
+import { isValidPrediction } from "~/utilities/isValidPrediction";
 
 export interface PredictionMeterProps {
   prediction: Prediction;
@@ -22,6 +24,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
     meanPrediction,
     predictionId,
     userPrediction,
+    endDate,
   } = prediction;
 
   const defaultValue = (predictionRange[0] + predictionRange[1]) / 2;
@@ -42,8 +45,10 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
 
   const predictionScaleUnitLabel = predictionScaleUnit ?? "";
 
-  const hasUserPredicted =
-    typeof userPrediction === "number" && !isNaN(userPrediction);
+  const hasUserPredicted = isValidPrediction(userPrediction);
+  const hasPredictionEnded =
+    differenceInDays(new Date(), new Date(endDate)) < 0;
+  const shouldDisableAction = hasUserPredicted || hasPredictionEnded;
 
   const onChange = (value: SliderValue) => {
     setPredictionPointer(getSliderValueInNumber(value));
@@ -63,6 +68,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
         userPredictionValue={predictionPointer}
         inDarkTheme={inDarkTheme}
         hasUserPredicted={hasUserPredicted}
+        isDisabled={shouldDisableAction}
       />
     );
   }, [
@@ -74,12 +80,13 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
     predictionPointer,
     inDarkTheme,
     hasUserPredicted,
+    shouldDisableAction,
   ]);
 
   return (
     <Slider
       label={prediction.title}
-      isDisabled={hasUserPredicted}
+      isDisabled={shouldDisableAction}
       color="warning"
       showTooltip
       step={predictionStepValue}

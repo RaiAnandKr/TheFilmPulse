@@ -18,19 +18,26 @@ interface PredictButtonProps {
   predictionScaleUnitLabel: string;
   meanPredictionValue: number;
   userPredictionValue: number;
+  hasUserPredicted: boolean;
+  isDisabled: boolean;
   inDarkTheme?: boolean;
-  hasUserPredicted?: boolean;
 }
 
 export const PredictButton: React.FC<PredictButtonProps> = (props) => {
+  const { hasUserPredicted, isDisabled, inDarkTheme } = props;
   const disclosure = useDisclosureWithLogin();
-  const buttonText = props.hasUserPredicted ? "Predicted" : "Predict";
+  const buttonText = hasUserPredicted ? "Predicted" : "Predict";
   return (
     <>
       <Button
-        variant={props.inDarkTheme ? "solid" : "bordered"}
+        isDisabled={isDisabled}
+        variant={inDarkTheme ? "solid" : "bordered"}
         color="warning"
-        className={cn("flex-none font-bold", props.inDarkTheme && "text-white")}
+        className={cn(
+          "flex-none font-bold",
+          inDarkTheme && "text-white",
+          isDisabled && "opacity-80",
+        )}
         onPress={disclosure.onOpen}
       >
         {buttonText}
