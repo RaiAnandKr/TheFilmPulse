@@ -12,7 +12,7 @@ export type Prediction = {
   predictionRange: [number, number];
   predictionStepValue: number;
   predictionScaleUnit?: string; //Eg. "Cr"
-  userPrediction?: number;
+  userPrediction?: number | null;
   result?: PulseResult<number>;
 
   // For client-side state management

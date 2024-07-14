@@ -24,9 +24,11 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
     userPrediction,
   } = prediction;
 
-  const addUserPrediction = useMainStore((state) => state.addUserPrediction);
-
   const defaultValue = (predictionRange[0] + predictionRange[1]) / 2;
+
+  const [predictionPointer, setPredictionPointer] = useState(defaultValue);
+
+  const addUserPrediction = useMainStore((state) => state.addUserPrediction);
 
   const additionalClassName = inDarkTheme ? "text-white/80" : "";
 
@@ -40,7 +42,9 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
 
   const predictionScaleUnitLabel = predictionScaleUnit ?? "";
 
-  const [predictionPointer, setPredictionPointer] = useState(defaultValue);
+  const hasUserPredicted =
+    typeof userPrediction === "number" && !isNaN(userPrediction);
+
   const onChange = (value: SliderValue) => {
     setPredictionPointer(getSliderValueInNumber(value));
   };
@@ -58,6 +62,7 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
         predictionScaleUnitLabel={predictionScaleUnitLabel}
         userPredictionValue={predictionPointer}
         inDarkTheme={inDarkTheme}
+        hasUserPredicted={hasUserPredicted}
       />
     );
   }, [
@@ -68,12 +73,13 @@ export const PredictionMeter: React.FC<PredictionMeterProps> = (props) => {
     predictionScaleUnitLabel,
     predictionPointer,
     inDarkTheme,
+    hasUserPredicted,
   ]);
 
   return (
     <Slider
       label={prediction.title}
-      isDisabled={!!userPrediction}
+      isDisabled={hasUserPredicted}
       color="warning"
       showTooltip
       step={predictionStepValue}
