@@ -35,26 +35,15 @@ export const ResultChip: React.FC<ResultChipProps> = (props) => {
     : "Pending result";
 
   return (
-    <Popover placement="bottom" showArrow={true}>
-      <PopoverTrigger>
-        <Chip
-          size="md"
-          radius="sm"
-          color={RESULT_COLOR_MAP.get(resultType)}
-          variant="flat"
-          classNames={{ content: "font-bold" }}
-          className="mb-2"
-          endContent={<InfoIcon dynamicSize />}
-        >
-          {resultType}: {resultText}
-        </Chip>
-      </PopoverTrigger>
-      <PopoverContent>
-        <div className="px-1 py-2">
-          <div className="text-small font-bold">Popover Content</div>
-          <div className="text-tiny">This is the popover content</div>
-        </div>
-      </PopoverContent>
-    </Popover>
+    <Chip
+      size="md"
+      radius="sm"
+      color={RESULT_COLOR_MAP.get(resultType)}
+      variant="flat"
+      classNames={{ content: "font-bold" }}
+      className="mb-2"
+    >
+      {resultType}: {resultText}
+    </Chip>
   );
 };
