@@ -73,7 +73,7 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
           src={imgSrc}
         />
         {!!prediction && (
-          <CardFooter className="absolute bottom-0 z-10 flex flex-col border-t-1 border-default-600 bg-black/40 pt-2 font-medium dark:border-default-100">
+          <CardFooter className="absolute bottom-0 z-10 flex flex-col border-t-1 border-default-600 bg-black/40 pt-2 font-medium backdrop-blur-md dark:border-default-100">
             <div className="flex w-full items-center justify-between pb-2">
               <h4 className="flex w-10/12 gap-2 text-start text-medium font-bold text-warning">
                 <span>Predict and Win</span>
