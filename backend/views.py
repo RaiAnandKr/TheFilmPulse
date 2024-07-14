@@ -5,6 +5,7 @@ from flask.views import MethodView
 from dataclasses import is_dataclass, fields
 import dataclasses
 from datetime import datetime
+from functools import lru_cache
 import pytz
 from sqlalchemy import or_
 from cryptography.fernet import Fernet
@@ -21,6 +22,7 @@ from sqlalchemy.exc import IntegrityError
 # Setting the server's timezone to Indian Standard Time
 SERVER_TIMEZONE = 'Asia/Kolkata'
 
+@lru_cache(maxsize=None)
 def current_date():
     tz = pytz.timezone(SERVER_TIMEZONE)
     return datetime.now(tz).date()
@@ -249,8 +251,19 @@ class FilmView(BaseAPIView):
         for item in items:
             serialized_item = self.serializer.serialize(item)
 
+            # If possible fetch a prediction which hasn't expired as top prediction.
             top_prediction = Prediction.query.filter_by(
-                film_id=item.id).order_by(Prediction.user_count.desc()).first()
+                Prediction.film_id == item.id,
+                Prediction.end_date >= current_date()
+            ).order_by(Prediction.user_count.desc()).first()
+
+            # If there is no un-expired prediction, just return the expired with highest participation
+            # count.
+            if not top_prediction:
+                top_prediction = Prediction.query.filter(
+                    film_id=item.id
+                ).order_by(Prediction.user_count.desc()).first()
+
             if not top_prediction:
                 results.append(serialized_item)
                 continue
@@ -493,7 +506,13 @@ class UserPredictionView(BaseUserAPIView):
         if answer < prediction.min_value or answer > prediction.max_value:
             return jsonify({'error': 'Prediction value not in range'}), 400
 
-        prediction.mean_value = ((prediction.mean_value * prediction.user_count) + answer) / (prediction.user_count + 1)
+        if prediction.end_date is not None and prediction.end_date < current_date():
+            return jsonify({'error': 'The prediction has already ended'}), 400
+
+        new_mean_value = ((prediction.mean_value * prediction.user_count) + answer) / (prediction.user_count + 1)
+        # Round the mean value to one decimal place
+        prediction.mean_value = round(new_mean_value, 1)
+
         # Increase user_count for this prediction.
         prediction.user_count += 1
 
@@ -545,6 +564,9 @@ class UserOpinionView(BaseUserAPIView):
         # Make sure that the user has enough coins.
         if coins_to_deduct > user.bonus_coins + user.earned_coins:
             return jsonify({'error': 'Not enough coins'}), 400
+
+        if opinion.end_date is not None and opinion.end_date < current_date():
+            return jsonify({'error': 'The opinion has already ended'}), 400
 
         # If bonus coins exist, reduce them first and then if more coins are needed, reduce
         # the earned coins.

@@ -232,10 +232,15 @@ export const getOpinionsFromFilmId = async (
 };
 
 export const getUserOpinions = async (
+  isActive?: boolean,
   config?: FetchConfig,
 ): Promise<Opinion[]> => {
   try {
-    const url = "/user_opinions";
+    let url = "/user_opinions";
+    if (isActive) {
+      url += "?include_active=true"
+    }
+
     const userOpinionsData = await get<any[]>(url, config);
 
     const userOpinions: Opinion[] = userOpinionsData.map((userOpinionData) => {
@@ -388,10 +393,15 @@ export const getPredictionsFromFilmId = async (
 };
 
 export const getUserPredictions = async (
+  isActive?: boolean,
   config?: FetchConfig,
 ): Promise<Prediction[]> => {
   try {
-    const url = "/user_predictions";
+    let url = "/user_predictions";
+    if (isActive) {
+      url += "?include_active=true"
+    }
+
     const userPredictionsData = await get<any[]>(url, config);
 
     const userPredictions: Prediction[] = userPredictionsData.map(
@@ -463,8 +473,8 @@ export const getPastParticipations = async (): Promise<
 > => {
   try {
     const [opinions, predictions] = await Promise.all([
-      getUserOpinions(),
-      getUserPredictions(),
+      getUserOpinions(true),
+      getUserPredictions(true),
     ]);
 
     let i = 0,
