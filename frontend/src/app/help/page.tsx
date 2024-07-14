@@ -9,7 +9,7 @@ const HelpPage = () => (
     </p>
     <p>
       We have predictions and opinions as the two fantasy games today and soon
-      we'll be adding more.
+      we&lsquo;ll be adding more.
     </p>
     <Section
       id="signup"
@@ -49,7 +49,7 @@ const HelpPage = () => (
       id="result"
       title="Source of result"
       items={[
-        <li>
+        <li key="0">
           The film business collection is taken from &nbsp;
           <a
             href="https://www.sacnilk.com/"
@@ -59,7 +59,7 @@ const HelpPage = () => (
             sacnilk.com.
           </a>
         </li>,
-        <li>
+        <li key="1">
           The IMDB and film ratings are taken from &nbsp;
           <a
             href="https://www.imdb.com/"

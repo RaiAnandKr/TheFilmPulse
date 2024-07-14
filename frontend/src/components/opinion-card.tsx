@@ -71,11 +71,7 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
       {!useFooter && (
         <CardHeader className="flex flex-col items-start p-0 pb-2">
           {showResult && (
-            <ResultChip
-              endDate={endDate}
-              hasUserParticipated={!!userVote}
-              result={result}
-            />
+            <ResultChip hasUserParticipated={!!userVote} result={result} />
           )}
           <div className="flex w-full items-start justify-between">
             <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>

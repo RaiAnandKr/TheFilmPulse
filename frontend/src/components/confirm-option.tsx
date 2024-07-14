@@ -12,7 +12,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@nextui-org/react";
-import { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
+import type { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import type { OpinionOption } from "~/schema/OpinionOption";
 import type { Vote } from "~/schema/Opinion";

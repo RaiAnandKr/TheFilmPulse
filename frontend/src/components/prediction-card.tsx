@@ -125,16 +125,12 @@ const PredictionDiff: React.FC<
 };
 
 const PredictionResult: React.FC<
-  Pick<Prediction, "endDate" | "userPrediction" | "result">
+  Pick<Prediction, "userPrediction" | "result">
 > = (props) => {
-  const { endDate, userPrediction, result } = props;
+  const { userPrediction, result } = props;
   return (
     <div className="flex w-full items-center justify-between">
-      <ResultChip
-        endDate={endDate}
-        hasUserParticipated={!!userPrediction}
-        result={result}
-      />
+      <ResultChip hasUserParticipated={!!userPrediction} result={result} />
       {!!result?.ranking && (
         <div className="mb-2 flex items-center text-sm font-bold text-primary">
           <TrophyIcon />
