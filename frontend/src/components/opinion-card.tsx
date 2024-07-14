@@ -103,6 +103,7 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
           votes={votes}
           userVote={userVote}
           onOpinionConfirmed={onOpinionConfirmed}
+          endDate={endDate}
         />
         {useFooter && (
           <TimerAndParticipations
@@ -119,9 +120,10 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 const Options: React.FC<{
   votes: Vote[];
   onOpinionConfirmed: (userVote: UserVote) => void;
+  endDate: string;
   userVote?: UserVote;
 }> = (props) => {
-  const { votes, userVote, onOpinionConfirmed } = props;
+  const { votes, userVote, onOpinionConfirmed, endDate } = props;
 
   return (
     <div className="flex w-full justify-between gap-2 pb-1 pt-2.5">
@@ -137,6 +139,7 @@ const Options: React.FC<{
         votes={votes}
         userVote={userVote}
         onOpinionConfirmed={onOpinionConfirmed}
+        endDate={endDate}
       />
       <OptionButton
         key={votes[1]?.option ?? OpinionOption.No}
@@ -150,6 +153,7 @@ const Options: React.FC<{
         votes={votes}
         userVote={userVote}
         onOpinionConfirmed={onOpinionConfirmed}
+        endDate={endDate}
       />
     </div>
   );

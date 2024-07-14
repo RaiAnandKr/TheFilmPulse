@@ -12,5 +12,6 @@ export interface OptionButtonProps {
   icon: JSX.Element;
   votes: Vote[];
   onOpinionConfirmed: (userVote: UserVote) => void;
+  endDate: string;
   userVote?: UserVote;
 }

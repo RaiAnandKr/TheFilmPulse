@@ -5,13 +5,16 @@ import { CoinsImage } from "~/res/images/CoinsImage";
 import { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
 import type { OptionButtonProps } from "~/schema/OptionButtonProps";
 import { ConfirmOption } from "./confirm-option";
+import { differenceInDays } from "~/utilities/differenceInDays";
 
 export const OptionButton: React.FC<OptionButtonProps> = (props) => {
-  const { userVote, option, classNames } = props;
+  const { userVote, option, classNames, endDate } = props;
   const disclosure = useDisclosureWithLogin();
 
   const label = option;
-  const shouldDisable = !!userVote;
+  const hasUserParticipated = !!userVote;
+  const hasOpinionEnded = differenceInDays(new Date(), new Date(endDate)) < 0;
+  const shouldDisable = hasUserParticipated || hasOpinionEnded;
   const isUserVotedOption = userVote?.selectedOption === option;
   const variant = isUserVotedOption ? "flat" : "bordered";
   const className = isUserVotedOption ? "disabled:opacity-75" : "";
