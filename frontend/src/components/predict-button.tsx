@@ -85,7 +85,7 @@ const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
                   </span>
                 </p>
                 <p className="flex justify-between">
-                  <span>Top 100 wins coins</span>
+                  <span>Top 10% wins coins</span>
                   <span>
                     <CoinsImage />
                   </span>
