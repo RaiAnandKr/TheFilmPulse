@@ -22,6 +22,14 @@ const HelpPage = () => (
       ]}
     />
     <Section
+      id="vouchers"
+      title="Vouchers and gift cards"
+      items={[
+        "You can redeem a wide variety of coupons and gift cards once you earn enough coins.",
+        "The Terms & Conditions as well as how to use the coupons will be shown to you when you redeem it.",
+      ]}
+    />
+    <Section
       id="predictions"
       title="What are Predictions?"
       items={[
@@ -74,11 +82,14 @@ const HelpPage = () => (
     />
 
     <Section
-      id="vouchers"
-      title="Vouchers and gift cards"
+      id="participations"
+      title="Your Participations"
       items={[
-        "You can redeem a wide variety of coupons and gift cards once you have enough coins.",
-        "The Terms & Conditions as well as how to use the coupons will be shown to you when you redeem it.",
+        "You can see all your participations on the Rewards page.",
+        "The contest you have participated in might be still ongoing. Wait for it to Finish for the result to come.",
+        "Once a contest is closed for participation, it might generate a result either immediately or after few days.",
+        "Participations will show if the result is still pending.",
+        "Once the result is computed, you will be able to see how many coins you won."
       ]}
     />
     <p className="font-semibold">

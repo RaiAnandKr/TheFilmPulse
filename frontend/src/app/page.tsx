@@ -55,14 +55,12 @@ const TrendingOpinions = () => {
         onViewAllClick={() => router.push("/pulse")}
         info={
           <div className="px-1 py-2">
-            <div className="text-small font-bold">Trade & Win</div>
+            <div className="text-small font-bold">What are opinions?</div>
             <div className="text-tiny">
-              Trade with your opinion and instinct around films. <br />
-              Respond with &apos;Yes&apos; or &apos;No&apos; and put your coins
-              at stake. <br />
-              Analyze if the odds favor &apos;Yes&apos; or &apos;No&apos; and
-              choose coins. <br />
-              Win coins if your opinion is right.
+              Questions with &apos;Yes&apos; or &apos;No&apos; answer. <br />
+              Analyze the odds, choose an answer <br />
+              and put your coins at stake to win big. <br />
+              Learn more at <a href="https://thefilmpulse.com/help" target="_blank" className="text-primary underline">thefilmpulse.com/help</a>
             </div>
           </div>
         }
