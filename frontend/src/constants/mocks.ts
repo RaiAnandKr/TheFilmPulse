@@ -511,11 +511,17 @@ const getClaimedCoupons = async (): Promise<
   return [
     {
       couponId: "1",
-      couponCodes: [getRandomCouponCode(20), getRandomCouponCode(30)],
+      couponCodes: [
+        getRandomCouponCode("20HEIDNI34G"),
+        getRandomCouponCode(30),
+      ],
     },
     {
       couponId: "3",
-      couponCodes: [getRandomCouponCode(50), getRandomCouponCode(50)],
+      couponCodes: [
+        getRandomCouponCode("20HEIDNI34G"),
+        getRandomCouponCode(50),
+      ],
     },
     {
       couponId: "6",
@@ -523,7 +529,10 @@ const getClaimedCoupons = async (): Promise<
     },
     {
       couponId: "7",
-      couponCodes: [getRandomCouponCode(20), getRandomCouponCode(80)],
+      couponCodes: [
+        getRandomCouponCode("20HEIDNI34G"),
+        getRandomCouponCode(80),
+      ],
     },
     {
       couponId: "12",
@@ -532,7 +541,7 @@ const getClaimedCoupons = async (): Promise<
   ];
 };
 
-const getRandomCouponCode = (seed: number) => {
+const getRandomCouponCode = (seed: number | string) => {
   return {
     codeId: seed.toString(),
     code: "STEALDEAL" + seed.toString(),
