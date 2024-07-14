@@ -80,9 +80,10 @@ export const createUserSlice: StateCreator<
         // Update max_opinion_coins
         const newBonusCoins = bonusCoinCategory?.coins ?? 0;
         const newEarnedCoins = earnedCoinCategory?.coins ?? 0;
-        const newMaxOpinionCoins = Math.ceil(
-          0.4 * (newBonusCoins + newEarnedCoins),
-        );
+        const sumCoins = newBonusCoins + newEarnedCoins;
+        const newMaxOpinionCoins = sumCoins > 6
+          ? Math.ceil(0.4 * sumCoins)
+          : sumCoins;
 
         return {
           userCoins: updatedCoins,
