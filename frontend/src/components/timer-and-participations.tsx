@@ -30,6 +30,18 @@ export const EndTimer: React.FC<{
 }> = (props) => {
   const daysToEnd = differenceInDays(new Date(), new Date(props.endDate));
   const isEndDateInPast = daysToEnd < 0;
+  const isEndingToday = daysToEnd === 0;
+
+  const prefix = isEndingToday
+    ? "Ends: "
+    : isEndDateInPast
+      ? "Ended on: "
+      : "Ends in: ";
+  const text = isEndingToday
+    ? "Today"
+    : isEndDateInPast
+      ? props.endDate
+      : `${daysToEnd} days`;
 
   return (
     <p
@@ -38,10 +50,8 @@ export const EndTimer: React.FC<{
         props.isDarkTheme ? "text-default-300" : "text-default-400",
       )}
     >
-      <span className="font-semibold">
-        {isEndDateInPast ? "Ended on: " : "Ends in: "}
-      </span>
-      <span>{isEndDateInPast ? props.endDate : `${daysToEnd} days`}</span>
+      <span className="font-semibold">{prefix}</span>
+      <span>{text}</span>
     </p>
   );
 };
