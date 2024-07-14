@@ -251,8 +251,19 @@ class FilmView(BaseAPIView):
         for item in items:
             serialized_item = self.serializer.serialize(item)
 
+            # If possible fetch a prediction which hasn't expired as top prediction.
             top_prediction = Prediction.query.filter_by(
-                film_id=item.id).order_by(Prediction.user_count.desc()).first()
+                Prediction.film_id == item.id,
+                Prediction.end_date >= current_date()
+            ).order_by(Prediction.user_count.desc()).first()
+
+            # If there is no un-expired prediction, just return the expired with highest participation
+            # count.
+            if not top_prediction:
+                top_prediction = Prediction.query.filter(
+                    film_id=item.id
+                ).order_by(Prediction.user_count.desc()).first()
+
             if not top_prediction:
                 results.append(serialized_item)
                 continue
