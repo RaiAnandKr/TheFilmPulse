@@ -52,7 +52,7 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
           <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-bold text-white/80">
             {title}
           </h3>
-          <p className="overflow-hidden text-ellipsis text-nowrap text-tiny text-white/80">
+          <p className="overflow-hidden text-ellipsis text-nowrap text-tiny font-semibold text-white/80">
             {filmCasts}
           </p>
           <Chip
