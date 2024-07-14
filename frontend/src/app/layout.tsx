@@ -8,6 +8,7 @@ import { useSyncDocHeight } from "../hooks/useSyncDocHeight";
 import { OtplessSDK } from "~/constants/sdks";
 import { usePreloadData } from "~/data/hooks/usePreloadData";
 import { Banner } from "~/components/banner";
+import Metrics from './metrics';
 
 import "../styles/globals.css";
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <Providers>
             <App>{children}</App>
           </Providers>
+          <Metrics />
         </body>
       </html>
     </>

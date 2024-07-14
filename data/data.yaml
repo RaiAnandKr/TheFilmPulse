@@ -205,6 +205,7 @@ predictions:
   min_value: 3
   step_value: 0.1
   text: Opening Friday collection in India
+  unit: crores
 - done: 1
   end_date: '2024-07-26'
   film_title: Deadpool & Wolverine
@@ -213,6 +214,7 @@ predictions:
   min_value: 10
   step_value: 0.4
   text: Opening weekend (Fri-Sun) collection in India
+  unit: crores
 - done: 1
   end_date: '2024-07-26'
   film_title: Raayan
@@ -221,6 +223,7 @@ predictions:
   min_value: 5
   step_value: 0.1
   text: Opening Friday collection in India
+  unit: crores
 - done: 1
   end_date: '2024-07-26'
   film_title: Raayan
@@ -229,6 +232,7 @@ predictions:
   min_value: 20
   step_value: 0.4
   text: Opening weekend (Fri-Sun) collection in India
+  unit: crores
 - done: 1
   end_date: '2024-07-13'
   film_title: Sarfira
@@ -237,6 +241,7 @@ predictions:
   min_value: 10
   step_value: 0.4
   text: Opening weekend (Fri-Sun) collection in India
+  unit: crores
 - done: 1
   end_date: '2024-07-13'
   film_title: Sarfira
@@ -245,6 +250,7 @@ predictions:
   min_value: 3
   step_value: 0.1
   text: Opening Friday collection in India
+  unit: crores
 - done: 1
   end_date: '2024-07-13'
   film_title: Sarfira
