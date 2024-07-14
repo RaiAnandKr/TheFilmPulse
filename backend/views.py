@@ -180,7 +180,7 @@ class PredictionView(BaseAPIView):
     sort_by = 'user_count'
 
 def calc_max_opinion_coins(total_coins):
-    return math.ceil(0.4 * total_coins)
+    return math.ceil(0.4 * total_coins) if total_coins > 6 else total_coins
 
 class UserView(BaseAPIView):
     model = User
