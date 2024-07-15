@@ -6,7 +6,7 @@ films:
     directors:
     - Shankar
   done: 1
-  popularity_score: 50
+  popularity_score: 72
   poster_url: https://thefilmpulse.blob.core.windows.net/images/indian2.avif
   release_date: '2024-07-12'
   summary: In this sequel to the 1996 film Indian, Kamal Hassan reprises his role
@@ -23,7 +23,7 @@ films:
     directors:
     - Anand Tiwari
   done: 1
-  popularity_score: 75
+  popularity_score: 85
   poster_url: https://thefilmpulse.blob.core.windows.net/images/bad_newzz.avif
   release_date: '2024-07-19'
   summary: Bad Newz is a bizarre, rare comedy about heteropaternal superfecundation!
@@ -52,7 +52,7 @@ films:
     directors:
     - Dhanush
   done: 1
-  popularity_score: 45
+  popularity_score: 75
   poster_url: https://thefilmpulse.blob.core.windows.net/images/raayan.avif
   release_date: '2024-07-26'
   summary: Raayan features Dhanush in the titular role. The movie is written and directed
@@ -74,131 +74,117 @@ films:
     world calls you crazy.
   title: Sarfira
   trailer_url: https://www.youtube.com/embed/8Iy2geJD8HY
+- cast_metadata:
+    actors:
+    - Prabhas
+    - Amitabh Bachchan
+    - Deepika
+    directors:
+    - Nag Ashwin
+  done: 1
+  popularity_score: 90
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/kalki.avif
+  release_date: '2024-06-27'
+  summary: When the world is taken over by darkness. A force will rise.
+  title: Kalki
+  trailer_url: https://www.youtube.com/embed/kQDd1AhGIHk
+- cast_metadata:
+    actors:
+    - Priyadarshi Pulikonda
+    - Nabha Natesh
+    directors:
+    - Aswin Raam
+  done: 1
+  popularity_score: 30
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/darling.avif
+  release_date: '2024-07-19'
+  summary: Raghav works diligently at a tourist office, saving money for his dream
+    honeymoon in Paris. Accidentally, he meets and marries Anandhi. How will he face
+    the challenges that arise?
+  title: Darling
+  trailer_url: https://www.youtube.com/embed/FWsXywblGA4
 opinions:
 - done: 1
-  end_date: '2024-07-13'
-  film_title: Indian 2
-  text: Will Indian 2 hindi version be a bigger hit than Sarfira?
-- done: 1
-  end_date: '2024-07-13'
-  film_title: Indian 2
-  text: Will Indian 2 be a bigger hit than Jailer?
-- done: 1
-  end_date: '2024-07-19'
+  end_date: '2024-07-18'
   film_title: Bad Newzz
   text: Will Tripti have 2 babies in Bad Newzz?
 - done: 1
-  end_date: '2024-07-19'
+  end_date: '2024-07-18'
   film_title: Bad Newzz
   text: Will Bad Newzz be the biggest hit of Vicky Kaushal's career?
 - done: 1
-  end_date: '2024-07-19'
+  end_date: '2024-07-18'
   film_title: Bad Newzz
   text: Will Bad Newzz be biggest Hindi movie of 2024 so far?
 - done: 1
-  end_date: '2024-07-19'
+  end_date: '2024-07-18'
   film_title: Bad Newzz
   text: Is Vicky Kaushal the actual father at the end of Bad Newzz?
 - done: 1
-  end_date: '2024-07-13'
-  film_title: Sarfira
-  text: Will Akshay Kumar finally get a hit with Sarfira after so many flops?
+  end_date: '2024-07-16'
+  film_title: Bad Newzz
+  text: Will YT views of tauba tauba song cross 66 mil views today (Tue)?
 - done: 1
-  end_date: '2024-07-13'
+  end_date: '2024-07-16'
   film_title: Sarfira
-  text: Will Sarfira have higher IMDB rating than the original Soorarai Pottru?
+  text: Will Sarfira earn more than 1 cr today (Tue)?
 - done: 1
-  end_date: '2024-07-13'
+  end_date: '2024-07-16'
   film_title: Sarfira
-  text: Will Akshay's father die in the Sarfira movie?
+  text: Will Sarfira cross 20cr lifetime business?
 - done: 1
-  end_date: '2024-07-13'
-  film_title: Sarfira
-  text: Will Sarfira cross 50cr lifetime business?
-- done: 1
-  end_date: '2024-07-26'
+  end_date: '2024-07-25'
   film_title: Raayan
   text: Will Dhanush die at the end of Raayan?
 - done: 1
-  end_date: '2024-07-26'
+  end_date: '2024-07-25'
   film_title: Raayan
   text: Will Raayan be a bigger hit than Captain Miller?
 - done: 1
-  end_date: '2024-07-26'
+  end_date: '2024-07-25'
   film_title: Raayan
   text: Will Raayan have more than 8 IMDB rating after opening weekend?
 - done: 1
-  end_date: '2024-07-26'
+  end_date: '2024-07-25'
   film_title: Deadpool & Wolverine
   text: Will there be a Hulk appearance in the Deadpool & Wolverine?
 - done: 1
-  end_date: '2024-07-26'
-  film_title: Deadpool & Wolverine
-  text: Is Deadpool & Wolverine centered around the TVA?
+  end_date: '2024-07-16'
+  film_title: Indian 2
+  text: Will IMDB rating of Indian 2 fall below 5.5 today (Tue)?
+- done: 1
+  end_date: '2024-07-16'
+  film_title: Kalki
+  text: Will Kalki earn more than 10 cr today (Tue)?
 predictions:
 - done: 1
-  end_date: '2024-07-13'
-  film_title: Indian 2
-  max_value: 40
-  mean_value: 30
-  min_value: 10
-  step_value: 0.5
-  text: Opening Friday collection in India
-  unit: crores
-- done: 1
-  end_date: '2024-07-13'
-  film_title: Indian 2
-  max_value: 80
-  mean_value: 50
-  min_value: 40
-  step_value: 0.4
-  text: Opening weekend (Fri-Sun) collection in India
-  unit: crores
-- done: 1
-  end_date: '2024-07-13'
-  film_title: Indian 2
-  max_value: 10
-  mean_value: 1
-  min_value: 1
-  step_value: 0.1
-  text: IMDB rating after opening weekend
-- done: 1
-  end_date: '2024-07-19'
+  end_date: '2024-07-18'
   film_title: Bad Newzz
-  max_value: 200
-  mean_value: 120
-  min_value: 100
-  step_value: 2
-  text: Lifetime collection
-  unit: crores
-- done: 1
-  end_date: '2024-07-19'
-  film_title: Bad Newzz
-  max_value: 12
+  max_value: 20
   mean_value: 8
   min_value: 5
   step_value: 0.1
   text: Opening Friday collection in India
   unit: crores
 - done: 1
-  end_date: '2024-07-19'
+  end_date: '2024-07-18'
   film_title: Bad Newzz
-  max_value: 40
-  mean_value: 20
+  max_value: 50
+  mean_value: 30
   min_value: 20
   step_value: 0.4
   text: Opening weekend (Fri-Sun) collection in India
   unit: crores
 - done: 1
-  end_date: '2024-07-19'
+  end_date: '2024-07-18'
   film_title: Bad Newzz
   max_value: 10
   mean_value: 5
   min_value: 1
   step_value: 0.1
-  text: IMDB rating after opening weekend
+  text: Audience rating after opening Friday (IMDB)
 - done: 1
-  end_date: '2024-07-26'
+  end_date: '2024-07-25'
   film_title: Deadpool & Wolverine
   max_value: 15
   mean_value: 9
@@ -207,55 +193,47 @@ predictions:
   text: Opening Friday collection in India
   unit: crores
 - done: 1
-  end_date: '2024-07-26'
-  film_title: Deadpool & Wolverine
-  max_value: 40
-  mean_value: 20
-  min_value: 10
-  step_value: 0.4
-  text: Opening weekend (Fri-Sun) collection in India
-  unit: crores
-- done: 1
-  end_date: '2024-07-26'
+  end_date: '2024-07-25'
   film_title: Raayan
-  max_value: 10
-  mean_value: 6
-  min_value: 5
+  max_value: 30
+  mean_value: 20
+  min_value: 8
   step_value: 0.1
   text: Opening Friday collection in India
   unit: crores
 - done: 1
-  end_date: '2024-07-26'
-  film_title: Raayan
-  max_value: 40
-  mean_value: 25
-  min_value: 20
-  step_value: 0.4
-  text: Opening weekend (Fri-Sun) collection in India
+  end_date: '2024-07-18'
+  film_title: Darling
+  max_value: 10
+  mean_value: 8
+  min_value: 2
+  step_value: 0.1
+  text: Opening Friday collection in India
   unit: crores
 - done: 1
-  end_date: '2024-07-13'
+  end_date: '2024-07-16'
+  film_title: Kalki
+  max_value: 10
+  mean_value: 7
+  min_value: 2
+  step_value: 0.1
+  text: Collection in India today (Tuesday)
+  unit: crores
+- done: 1
+  end_date: '2024-07-16'
   film_title: Sarfira
   max_value: 30
-  mean_value: 25
-  min_value: 10
-  step_value: 0.4
-  text: Opening weekend (Fri-Sun) collection in India
+  mean_value: 15
+  min_value: 12
+  step_value: 0.2
+  text: Lifetime collection
   unit: crores
 - done: 1
-  end_date: '2024-07-13'
-  film_title: Sarfira
-  max_value: 15
-  mean_value: 8
-  min_value: 3
-  step_value: 0.1
-  text: Opening Friday collection in India
-  unit: crores
-- done: 1
-  end_date: '2024-07-13'
-  film_title: Sarfira
+  end_date: '2024-07-16'
+  film_title: Indian 2
   max_value: 10
-  mean_value: 6
+  mean_value: 5
   min_value: 1
   step_value: 0.1
-  text: IMDB rating after the opening weekend
+  text: Collection in India today (Tuesday)
+  unit: crores
