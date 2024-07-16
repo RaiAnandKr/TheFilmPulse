@@ -1,6 +1,6 @@
 import GoogleAnalytics from "./GoogleAnalytics";
 import MicrosoftClarity from "./MicrosoftClarity";
-import MetaPixel from "./Meta.tsx";
+import MetaPixel from "./Meta";
 
 const Metrics = () => (
     <>
