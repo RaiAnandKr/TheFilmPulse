@@ -103,6 +103,19 @@ films:
     the challenges that arise?
   title: Darling
   trailer_url: https://www.youtube.com/embed/FWsXywblGA4
+- cast_metadata:
+    actors:
+    - Janhvi Kapoor
+    - Gulshan Devaiah
+    directors:
+    - Sudhanshu Saria
+  done: 1
+  popularity_score: 50
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/ulajh.avif
+  release_date: '2024-08-02'
+  summary: The price of secrets is higher in the world of Diplomacy.
+  title: Ulajh
+  trailer_url: https://www.youtube.com/embed/ge6BKalmxsE
 opinions:
 - done: 1
   end_date: '2024-07-18'
@@ -124,10 +137,6 @@ opinions:
   end_date: '2024-07-16'
   film_title: Bad Newzz
   text: Will YT views of tauba tauba song cross 66 mil views today (Tue)?
-- done: 1
-  end_date: '2024-07-16'
-  film_title: Sarfira
-  text: Will Sarfira earn more than 1 cr today (Tue)?
 - done: 1
   end_date: '2024-07-16'
   film_title: Sarfira
@@ -156,6 +165,10 @@ opinions:
   end_date: '2024-07-16'
   film_title: Kalki
   text: Will Kalki earn more than 10 cr today (Tue)?
+- done: 1
+  end_date: '2024-07-16'
+  film_title: Ulajh
+  text: Will Ulajh trailer cross 2 million views today (Tue)?
 predictions:
 - done: 1
   end_date: '2024-07-18'
@@ -237,3 +250,11 @@ predictions:
   step_value: 0.1
   text: Collection in India today (Tuesday)
   unit: crores
+- done: 1
+  end_date: '2024-08-01'
+  film_title: Ulajh
+  max_value: 10
+  mean_value: 5
+  min_value: 1
+  step_value: 0.1
+  text: Audience rating after opening Friday (IMDB)
