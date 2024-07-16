@@ -18,7 +18,7 @@ const MetaPixel = () => {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '704452488488441');
+            fbq('init', '1549500315911023');
             fbq('track', 'PageView');
           `,
         }}
@@ -28,7 +28,7 @@ const MetaPixel = () => {
           height="1"
           width="1"
           style={{ display: 'none' }}
-          src="https://www.facebook.com/tr?id=704452488488441&ev=PageView&noscript=1"
+          src="https://www.facebook.com/tr?id=1549500315911023&ev=PageView&noscript=1"
         />
       </noscript>
     </>
