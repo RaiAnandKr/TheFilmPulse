@@ -70,7 +70,7 @@ def hello_world():
 @app.route("/login", methods=['POST'])
 def login():
     data = request.json
-    phone_number = data.get('phone_number')
+    phone_number = data.get('phone_number', None)
     kwargs = {
         'phone_number': phone_number,
         'uid': data.get('uid'),
@@ -79,14 +79,13 @@ def login():
 
     newUser = False
     try:
-        verified = auth_provider.verify_token(**kwargs)
-        if not verified:
-            return jsonify({"message": "Error verifying token"}), 403
-        user = User.query.filter_by(phone_number=phone_number).one_or_none()
+        # Throws exception if unsuccessful
+        user_name = auth_provider.verify_token(**kwargs)
+        user = User.query.filter_by(username=user_name).one_or_none()
         if not user:
             # TODO: hackx for now. Make the user signup instead of doing this
             session = db.session()
-            user = User(phone_number=phone_number, username=str(phone_number))
+            user = User(username=user_name)
             session.add(user)
             session.commit()
             newUser = True

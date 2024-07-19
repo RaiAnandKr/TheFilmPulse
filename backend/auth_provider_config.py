@@ -23,12 +23,18 @@ class OTPLess(AuthProvider):
         token = kwargs.get('otp')
         phone_number = kwargs.get('phone_number')
         aud = f"{self.client_secret}-{self.app_id}"
+        # decode_id_token throws exception if it's not successful
         result = OTPLessAuthSDK.UserDetail.decode_id_token(
             id_token=token,
             client_id=self.client_id,
             client_secret=self.client_secret,
             audience=aud)
-        return phone_number==result['country_code']+result['national_phone_number']
+        user_name = None
+        if result['phone_number'] is not None:
+            user_name = '+' + result['phone_number']
+        else:
+            user_name = result['email']
+        return user_name
 
 
 class AuthProviderFactory:
