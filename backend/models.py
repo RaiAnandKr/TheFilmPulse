@@ -19,8 +19,8 @@ class User(db.Model):
     earned_coins: int
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(String(15), unique=True)
-    phone_number: Mapped[str] = mapped_column(String(15), unique=True)
+    username: Mapped[str] = mapped_column(String(255), unique=True)
+    phone_number: Mapped[str] = mapped_column(String(15), unique=True, nullable=True)
     email: Mapped[str] = mapped_column(String(20), unique=True, nullable=True)
     name: Mapped[str] = mapped_column(String(20), nullable=True)
     is_banned: Mapped[bool] = mapped_column(default=False)
