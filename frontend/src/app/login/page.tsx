@@ -20,7 +20,7 @@ const LoginPageBase = () => {
   return (
     <div className="bg-success-to-danger flex h-full flex-col justify-center gap-4 p-6">
       {loginFailureMessage && (
-        <div className="flex rounded-lg border-2 border-danger bg-danger-100 font-semibold text-danger">
+        <div className="flex justify-between rounded-lg border-2 border-danger bg-danger-100 font-semibold text-danger">
           <p className="p-2">{loginFailureMessage}</p>
           <Button
             isIconOnly
@@ -32,6 +32,12 @@ const LoginPageBase = () => {
           </Button>
         </div>
       )}
+
+      <div className="flex flex-col items-center gap-2 ">
+        <h2 className="text-2xl font-semibold text-primary">The Film Pulse</h2>
+        <p className="text-xl font-bold">Sign in</p>
+      </div>
+
       <OtplessLogin onUserInfoLoad={onUserInfoLoad} />
     </div>
   );
