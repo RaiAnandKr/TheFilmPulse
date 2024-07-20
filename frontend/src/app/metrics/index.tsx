@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import GoogleAnalytics from './GoogleAnalytics';
 import MicrosoftClarity from './MicrosoftClarity';
 import MetaPixel from './MetaPixel';
 
@@ -16,7 +15,6 @@ const Metrics = () => {
 
   return (
     <>
-      {initialized && <GoogleAnalytics />}
       {initialized && <MicrosoftClarity />}
       {initialized && <MetaPixel />}
     </>
