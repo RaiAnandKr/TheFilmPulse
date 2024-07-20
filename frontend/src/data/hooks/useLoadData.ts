@@ -9,7 +9,7 @@ type CacheKey = string;
 
 interface CacheValue<T> {
   fetcher: () => Promise<T>;
-  storeSetter: (val: T) => void;
+  onFetchSuccess: (val: T) => void;
   fetcherPromise?: Promise<T>;
 }
 
@@ -47,20 +47,20 @@ const FETCH_CACHE = new Map<CacheKey, CacheValue<any>>();
  * Ensures loading of data to store only once per session, unless revalidated.
  * @param dataKey unique key for data fetcher and store setter. There has to be 1:1 mapping b/w dataKey and (fetcher, storeSetter) params.
  * @param fetcher API call to get the data
- * @param storeSetter store setter
+ * @param onFetchSuccess handler for fetch success
  * @returns
  */
 export const useLoadData = <T>(
   dataKey: CacheKey,
   fetcher: () => Promise<T>,
-  storeSetter: (val: T) => void,
+  onFetchSuccess: (val: T) => void,
 ): LoadState & LoadDataConfig => {
   const [loadStatus, setLoadStatus] = useState<LoadStatus>(LoadStatus.LOADING);
 
   if (!FETCH_CACHE.has(dataKey)) {
     FETCH_CACHE.set(dataKey, {
       fetcher,
-      storeSetter,
+      onFetchSuccess,
     });
   }
 
@@ -71,7 +71,7 @@ export const useLoadData = <T>(
 
     fetchData<T>(dataKey)
       .then((val) => {
-        FETCH_CACHE.get(dataKey)!.storeSetter(val);
+        FETCH_CACHE.get(dataKey)!.onFetchSuccess(val);
         EventEmitter.emitEvent(dataKey, LoadStatus.LOADED);
       })
       .catch((err) => {
@@ -112,7 +112,7 @@ const revalidateCache = (dataKey: CacheKey) => {
 
   fetchData(dataKey)
     .then((val) => {
-      FETCH_CACHE.get(dataKey)!.storeSetter(val);
+      FETCH_CACHE.get(dataKey)!.onFetchSuccess(val);
       EventEmitter.emitEvent(dataKey, LoadStatus.REVALIDATED);
     })
     .catch((err) => {
