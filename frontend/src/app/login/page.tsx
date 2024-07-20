@@ -17,6 +17,17 @@ const LoginPageBase = () => {
   const { loginFailureMessage, setLoginFailureMessage, onUserInfoLoad } =
     useLoginHandler();
 
+  // We are actually tracking an "attempt to login" event but that's not one of
+  // the standard events in FB pixel. "Search" looked like the nearest suitable
+  // one.
+  // window.fbq might be None if the pixel hasn't been initiated in the root layout and
+  // hence checking its value for safety.
+  // Using hasTrackedSearchEvent to make sure we do the tracking only once per session.
+  if (typeof window !== "undefined" && window.fbq && !window.hasTrackedSearchEvent) {
+     window.fbq('track', 'Search');
+     window.hasTrackedSearchEvent = true;
+  }
+
   return (
     <div className="bg-success-to-danger flex h-full flex-col justify-center gap-4 p-6">
       {loginFailureMessage && (
