@@ -7,8 +7,8 @@ import { Footer } from "../components/footer";
 import { useSyncDocHeight } from "../hooks/useSyncDocHeight";
 import { OtplessSDK } from "~/constants/sdks";
 import { usePreloadData } from "~/data/hooks/usePreloadData";
-import { Banner } from "~/components/banner";
-import Metrics from './metrics';
+import { Banners } from "~/components/banners";
+import Metrics from "./metrics";
 
 import "../styles/globals.css";
 
@@ -46,7 +46,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
           <Header />
           <div className="flex flex-auto flex-col">{children}</div>
           <Footer />
-          <Banner />
+          <Banners />
         </div>
       </div>
     </>

@@ -14,7 +14,7 @@ import { CoinType } from "~/schema/CoinType";
 import { pick } from "~/utilities/pick";
 import CoinsAward from "../res/images/CoinsAward.png";
 
-export const Banner = () => {
+export const SignupBonusBanner = () => {
   const { isNewUser, setUser, bonusCoins } = useMainStore((state) => ({
     bonusCoins:
       state.userCoins.find(
