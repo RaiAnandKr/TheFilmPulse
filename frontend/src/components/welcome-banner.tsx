@@ -9,7 +9,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useLoadData } from "~/data/hooks/useLoadData";
-import CoinsAward from "~/res/images/CoinsAward.png";
+import WelcomeBannerPic from "~/res/images/WelcomeBanner.png";
 import { differenceInDays } from "~/utilities/differenceInDays";
 
 export const WelcomeBanner = () => {
@@ -33,10 +33,10 @@ export const WelcomeBanner = () => {
           return (
             <>
               <ModalHeader className="bg-success-to-danger justify-center">
-                <p className="text-xl font-semibold text-danger">Welcome</p>
+                <p className="text-xl font-semibold text-danger">!! Win !!</p>
               </ModalHeader>
               <ModalBody className="items-center p-4 text-center">
-                <Image alt="Coins" src={CoinsAward.src} removeWrapper />
+                <Image alt="welcome" src={WelcomeBannerPic.src} removeWrapper />
               </ModalBody>
               <ModalFooter className="bg-success-to-danger flex w-full flex-col justify-end gap-2 text-center font-bold">
                 <p className="text-xl text-danger">
