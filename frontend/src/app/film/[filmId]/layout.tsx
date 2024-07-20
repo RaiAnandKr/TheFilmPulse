@@ -1,7 +1,7 @@
-import { Chip, Image } from "@nextui-org/react";
+import { Chip } from "@nextui-org/react";
 import { PulseTabs } from "~/components/pulse-tabs";
 import { getFilms, getFilmInfoFromFilmId } from "~/service/apiUtils";
-import type { Film } from "~/schema/Film";
+import { FilmVisual } from "~/components/film-visual";
 
 export default async function FilmLayout({
   children,
@@ -21,7 +21,7 @@ export default async function FilmLayout({
 
   return (
     <div className="flex h-full w-full flex-col">
-      <FilmVisual film={filmInfo} />
+      <FilmVisual filmId={filmId} />
       <div className="p-2">
         <h2 className="overflow-hidden text-ellipsis text-nowrap text-2xl font-bold">
           {title}
@@ -50,31 +50,6 @@ export default async function FilmLayout({
     </div>
   );
 }
-
-const FilmVisual: React.FC<{ film: Film }> = (props) => {
-  const { videoSrc, imgSrc } = props.film;
-  if (videoSrc) {
-    return (
-      <iframe
-        src={videoSrc}
-        allowFullScreen
-        frameBorder={0}
-        className="h-52 w-full"
-      />
-    );
-  }
-
-  return (
-    <div className="flex justify-center bg-black">
-      <Image
-        alt="Film Poster"
-        radius="none"
-        className="object-fit z-0 h-52 w-full"
-        src={imgSrc}
-      />
-    </div>
-  );
-};
 
 export async function generateStaticParams() {
   const films = await getFilms();
