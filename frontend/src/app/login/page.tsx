@@ -23,8 +23,13 @@ const LoginPageBase = () => {
   // window.fbq might be None if the pixel hasn't been initiated in the root layout and
   // hence checking its value for safety.
   // Using hasTrackedSearchEvent to make sure we do the tracking only once per session.
+  // @ts-expect-error: I know this works in testing. There is a better ts way to do it, but
+  // I am a noob so excuse me.
   if (typeof window !== "undefined" && window.fbq && !window.hasTrackedSearchEvent) {
+     // @ts-expect-error: I know this works in testing.
+     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
      window.fbq('track', 'Search');
+     // @ts-expect-error: I know this works in testing.
      window.hasTrackedSearchEvent = true;
   }
 
