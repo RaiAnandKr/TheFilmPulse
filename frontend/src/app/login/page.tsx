@@ -33,9 +33,9 @@ const LoginPageBase = () => {
         </div>
       )}
 
-      <div className="flex flex-col items-center gap-2 ">
-        <h2 className="text-2xl font-semibold text-primary">The Film Pulse</h2>
-        <p className="text-xl font-bold">Sign in</p>
+      <div className="flex flex-col items-center gap-3 ">
+        <h2 className="text-4xl font-semibold text-primary">The Film Pulse</h2>
+        <p className="text-3xl font-bold">Sign in</p>
       </div>
 
       <OtplessLogin onUserInfoLoad={onUserInfoLoad} />
