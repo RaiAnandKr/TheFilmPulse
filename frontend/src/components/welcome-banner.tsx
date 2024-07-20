@@ -63,7 +63,7 @@ export const WelcomeBanner = () => {
   );
 };
 
-const useCheckUserVisits = (onDailyVisit: () => void, limit: number = 3) => {
+const useCheckUserVisits = (onDailyVisit: () => void, limit = 3) => {
   const onLoadSuccess = (userVisitsStringified: string | null) => {
     if (!userVisitsStringified) {
       onDailyVisit();
@@ -74,6 +74,7 @@ const useCheckUserVisits = (onDailyVisit: () => void, limit: number = 3) => {
       return;
     }
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     const userVisits: Array<string> = JSON.parse(userVisitsStringified);
     const visitsCount = userVisits.length;
     if (visitsCount >= limit) {
