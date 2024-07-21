@@ -1,3 +1,5 @@
+import base64
+import json
 import os
 import traceback
 from typing import Type
@@ -65,6 +67,14 @@ def hello_world():
     """A simple route returning a message"""
     return jsonify({"message": "Hello from your Flask Backend!"})
 
+def base64url_decode(input):
+    input += '=' * (4 - len(input) % 4)
+    return base64.urlsafe_b64decode(input)
+
+def decode_jwt_without_verification(token):
+    _, payload_b64, _ = token.split('.')
+    payload = json.loads(base64url_decode(payload_b64).decode('utf-8'))
+    print("Login user info: ", payload)
 
 # TODO: errors & exception handling
 @app.route("/login", methods=['POST'])
@@ -76,6 +86,10 @@ def login():
         'uid': data.get('uid'),
         'otp': data.get('otp')
     }
+    try:
+        decode_jwt_without_verification(data.get('otp'))
+    except Exception as e:
+        print(f'Error decoding login user info JWT: {e}')
 
     newUser = False
     try:
@@ -96,6 +110,7 @@ def login():
             user.bonus_coins + user.earned_coins
         )
         if newUser:
+            print("Login user is a new user")
             serialized_user["new_user"] = 1
 
         resp = jsonify(serialized_user)
