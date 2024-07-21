@@ -10,7 +10,6 @@ import type { Film } from "../schema/Film";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
 import { useRouter } from "next/navigation";
-import { ExpandCircleIcon } from "~/res/icons/expand-circle";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { GiftBoxImage } from "~/res/images/GiftBoxImage";
 import { useMainStore } from "~/data/contexts/store-context";
@@ -88,7 +87,6 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
                 onClick={onMorePredictionsClick}
                 size="sm"
               >
-                <ExpandCircleIcon />
               </Button>
             </div>
 
