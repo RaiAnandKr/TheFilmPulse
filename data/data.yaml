@@ -1,36 +1,20 @@
 films:
 - cast_metadata:
     actors:
-    - Kamal Haasan
-    - Kajal Aggarwal
-    directors:
-    - Shankar
-  done: 1
-  popularity_score: 72
-  poster_url: https://thefilmpulse.blob.core.windows.net/images/indian2.avif
-  release_date: '2024-07-12'
-  summary: In this sequel to the 1996 film Indian, Kamal Hassan reprises his role
-    as Senapathy, an ex-freedom fighter turned vigilante who fights against corruption.
-    Senapathy returns to the country to aid a young man who has been exposing corrupt
-    politicians in the country through videos on the internet.
-  title: Indian 2
-  trailer_url: https://www.youtube.com/embed/3bvBUT5pQYY
-- cast_metadata:
-    actors:
     - Vicky Kaushal
     - Tripti Dimri
     - Ammy Virk
     directors:
     - Anand Tiwari
   done: 1
-  popularity_score: 85
+  popularity_score: 90
   poster_url: https://thefilmpulse.blob.core.windows.net/images/bad_newzz.avif
   release_date: '2024-07-19'
   summary: Bad Newz is a bizarre, rare comedy about heteropaternal superfecundation!
     A twist of fate leads to Saloni Bagga`s twin pregnancy being fathered by both
     Akhil Chadha and Gurbir Pannu, setting off a chaotic rivalry for her love and
     their children. As Akhil and Gurbir vie for Saloni`s affections, chaos ensues.
-  title: Bad Newzz
+  title: Bad Newz
   trailer_url: https://www.youtube.com/embed/uV50UfcIT68
 - cast_metadata:
     actors:
@@ -39,7 +23,7 @@ films:
     directors:
     - Shawn Levy
   done: 1
-  popularity_score: 70
+  popularity_score: 75
   poster_url: https://thefilmpulse.blob.core.windows.net/images/deadpool.avif
   release_date: '2024-07-26'
   summary: Deadpool & Wolverine delivers the ultimate, iconic, cinematic team-up throwdown
@@ -52,28 +36,13 @@ films:
     directors:
     - Dhanush
   done: 1
-  popularity_score: 75
+  popularity_score: 80
   poster_url: https://thefilmpulse.blob.core.windows.net/images/raayan.avif
   release_date: '2024-07-26'
   summary: Raayan features Dhanush in the titular role. The movie is written and directed
     by Dhanush.
   title: Raayan
-  trailer_url: https://www.youtube.com/embed/VcsntxPDPj0
-- cast_metadata:
-    actors:
-    - Akshay Kumar
-    - Paresh Rawal
-    directors:
-    - Suriya
-  done: 1
-  popularity_score: 80
-  poster_url: https://thefilmpulse.blob.core.windows.net/images/sarfira.avif
-  release_date: '2024-07-12'
-  summary: An incredible story, set in the world of startups and aviation, Sarfira
-    will inspire the common man to dream big and to chase your dreams even if the
-    world calls you crazy.
-  title: Sarfira
-  trailer_url: https://www.youtube.com/embed/8Iy2geJD8HY
+  trailer_url: https://www.youtube.com/embed/qQJJWhh-XRo
 - cast_metadata:
     actors:
     - Prabhas
@@ -82,27 +51,12 @@ films:
     directors:
     - Nag Ashwin
   done: 1
-  popularity_score: 90
+  popularity_score: 85
   poster_url: https://thefilmpulse.blob.core.windows.net/images/kalki.avif
   release_date: '2024-06-27'
   summary: When the world is taken over by darkness. A force will rise.
   title: Kalki
   trailer_url: https://www.youtube.com/embed/kQDd1AhGIHk
-- cast_metadata:
-    actors:
-    - Priyadarshi Pulikonda
-    - Nabha Natesh
-    directors:
-    - Aswin Raam
-  done: 1
-  popularity_score: 30
-  poster_url: https://thefilmpulse.blob.core.windows.net/images/darling.avif
-  release_date: '2024-07-19'
-  summary: Raghav works diligently at a tourist office, saving money for his dream
-    honeymoon in Paris. Accidentally, he meets and marries Anandhi. How will he face
-    the challenges that arise?
-  title: Darling
-  trailer_url: https://www.youtube.com/embed/FWsXywblGA4
 - cast_metadata:
     actors:
     - Janhvi Kapoor
@@ -116,81 +70,76 @@ films:
   summary: The price of secrets is higher in the world of Diplomacy.
   title: Ulajh
   trailer_url: https://www.youtube.com/embed/ge6BKalmxsE
+- cast_metadata:
+    actors:
+    - Rajkumar Rao
+    - Shraddha kapoor
+    - Pankaj Tripathi
+    directors:
+    - Amar kaushik
+  done: 1
+  popularity_score: 95
+  poster_url: https://thefilmpulse.blob.core.windows.net/images/stree2.avif
+  release_date: '2024-08-15'
+  summary: After the events of Stree, the town of Chanderi is being haunted again.
+    This time, women are mysteriously abducted by a terrifying headless entity. Once
+    again, it`s up to Bicky and his friends to save their town and loved ones.
+  title: Stree 2
+  trailer_url: https://www.youtube.com/embed/KVnheXywIbY
 opinions:
 - done: 1
-  end_date: '2024-07-18'
-  film_title: Bad Newzz
-  text: Will Tripti have 2 babies in Bad Newzz?
+  end_date: '2024-07-21'
+  film_title: Kalki
+  text: Will Kalki earn more than Bad Newz in India today (Sun)?
 - done: 1
-  end_date: '2024-07-18'
-  film_title: Bad Newzz
-  text: Will Bad Newzz be the biggest hit of Vicky Kaushal's career?
+  end_date: '2024-07-21'
+  film_title: Bad Newz
+  text: Will Bad Newz earn biggest weekend collection of Vicky Kaushal's career?
 - done: 1
-  end_date: '2024-07-18'
-  film_title: Bad Newzz
-  text: Will Bad Newzz be biggest Hindi movie of 2024 so far?
+  end_date: '2024-07-21'
+  film_title: Bad Newz
+  text: Will YT views of tauba tauba song cross 90 mil views today (Sun)?
 - done: 1
-  end_date: '2024-07-18'
-  film_title: Bad Newzz
-  text: Is Vicky Kaushal the actual father at the end of Bad Newzz?
-- done: 1
-  end_date: '2024-07-16'
-  film_title: Bad Newzz
-  text: Will YT views of tauba tauba song cross 66 mil views today (Tue)?
-- done: 1
-  end_date: '2024-07-16'
-  film_title: Sarfira
-  text: Will Sarfira cross 20cr lifetime business?
-- done: 1
-  end_date: '2024-07-17'
+  end_date: '2024-07-21'
   film_title: Raayan
-  text: Will Raayan trailer cross 10 million views on YT today (Wed)?
+  text: Will Raayan trailer cross 15 million views on YT today (Sun)?
 - done: 1
   end_date: '2024-07-25'
   film_title: Raayan
-  text: Will Raayan be a bigger hit than Captain Miller?
-- done: 1
-  end_date: '2024-07-25'
-  film_title: Raayan
-  text: Will Raayan have more than 8 IMDB rating after opening weekend?
+  text: Will Raayan be a bigger hit than Dhanush's Captain Miller?
 - done: 1
   end_date: '2024-07-25'
   film_title: Deadpool & Wolverine
   text: Will there be a Hulk appearance in the Deadpool & Wolverine?
 - done: 1
-  end_date: '2024-07-16'
-  film_title: Indian 2
-  text: Will IMDB rating of Indian 2 fall below 5.5 today (Tue)?
+  end_date: '2024-07-25'
+  film_title: Deadpool & Wolverine
+  text: Will there be a spiderman cameo in the Deadpool & Wolverine?
 - done: 1
-  end_date: '2024-07-16'
-  film_title: Kalki
-  text: Will Kalki earn more than 10 cr today (Tue)?
+  end_date: '2024-07-21'
+  film_title: Stree 2
+  text: Will Stree 2 trailer cross 32 million views on YT today (Sun)?
 - done: 1
-  end_date: '2024-07-16'
+  end_date: '2024-07-21'
   film_title: Ulajh
-  text: Will Ulajh trailer cross 2 million views today (Tue)?
+  text: Will Ulajh trailer cross 34 million views on YT today (Sun)?
+- done: 1
+  end_date: '2024-08-14'
+  film_title: Stree 2
+  text: Is Akshay Kumar the Sarkata bhoot in Stree 2?
 predictions:
 - done: 1
-  end_date: '2024-07-18'
+  end_date: '2024-07-21'
   film_title: Bad Newzz
   max_value: 20
-  mean_value: 8
-  min_value: 5
+  mean_value: 15
+  min_value: 8
   step_value: 0.1
-  text: Opening Friday collection in India
+  text: Collection in India today (Sun)
   unit: crores
 - done: 1
-  end_date: '2024-07-18'
-  film_title: Bad Newzz
-  max_value: 50
-  mean_value: 30
-  min_value: 20
-  step_value: 0.4
-  text: Opening weekend (Fri-Sun) collection in India
-  unit: crores
-- done: 1
-  end_date: '2024-07-18'
-  film_title: Bad Newzz
+  end_date: '2024-07-25'
+  film_title: Deadpool & Wolverine
   max_value: 10
   mean_value: 5
   min_value: 1
@@ -198,57 +147,21 @@ predictions:
   text: Audience rating after opening Friday (IMDB)
 - done: 1
   end_date: '2024-07-25'
-  film_title: Deadpool & Wolverine
-  max_value: 15
-  mean_value: 9
-  min_value: 3
-  step_value: 0.1
-  text: Opening Friday collection in India
-  unit: crores
-- done: 1
-  end_date: '2024-07-25'
   film_title: Raayan
-  max_value: 30
-  mean_value: 20
-  min_value: 8
-  step_value: 0.1
-  text: Opening Friday collection in India
-  unit: crores
-- done: 1
-  end_date: '2024-07-18'
-  film_title: Darling
-  max_value: 10
-  mean_value: 8
-  min_value: 2
-  step_value: 0.1
-  text: Opening Friday collection in India
-  unit: crores
-- done: 1
-  end_date: '2024-07-16'
-  film_title: Kalki
-  max_value: 10
-  mean_value: 7
-  min_value: 2
-  step_value: 0.1
-  text: Collection in India today (Tuesday)
-  unit: crores
-- done: 1
-  end_date: '2024-07-16'
-  film_title: Sarfira
-  max_value: 30
+  max_value: 25
   mean_value: 15
-  min_value: 12
-  step_value: 0.2
-  text: Lifetime collection
+  min_value: 5
+  step_value: 0.1
+  text: Opening Friday collection in India
   unit: crores
 - done: 1
-  end_date: '2024-07-16'
-  film_title: Indian 2
-  max_value: 10
-  mean_value: 5
-  min_value: 1
+  end_date: '2024-07-21'
+  film_title: Kalki
+  max_value: 15
+  mean_value: 7
+  min_value: 5
   step_value: 0.1
-  text: Collection in India today (Tuesday)
+  text: Collection in India today (Sun)
   unit: crores
 - done: 1
   end_date: '2024-08-01'
@@ -258,3 +171,12 @@ predictions:
   min_value: 1
   step_value: 0.1
   text: Audience rating after opening Friday (IMDB)
+- done: 1
+  end_date: '2024-08-14'
+  film_title: Stree
+  max_value: 30
+  mean_value: 20
+  min_value: 7
+  step_value: 0.1
+  text: Opening day (15 Aug) collecton in India
+  unit: crores
