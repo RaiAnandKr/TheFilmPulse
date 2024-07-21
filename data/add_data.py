@@ -30,6 +30,7 @@ def post_film(film):
 def post_opinion(opinion):
     film_id, poster_url = get_film_id_and_poster_url(opinion["film_title"])
     if not film_id:
+        print(f"Missing film_id for {opinion['film_title']}\n")
         return
 
     opinion["film_id"] = film_id
@@ -51,6 +52,7 @@ def post_opinion(opinion):
 def post_prediction(prediction):
     film_id, poster_url = get_film_id_and_poster_url(prediction["film_title"])
     if not film_id:
+        print(f"Missing film_id for {prediction['film_title']}\n")
         return
 
     prediction["film_id"] = film_id
