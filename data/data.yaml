@@ -88,17 +88,17 @@ films:
   trailer_url: https://www.youtube.com/embed/KVnheXywIbY
 opinions:
 - done: 1
-  end_date: '2024-07-22'
+  end_date: '2024-07-23'
   film_title: Kalki
-  text: Will Kalki earn more than Bad Newz in India today (Mon)?
+  text: Will Kalki earn more than Bad Newz in India today (Tue)?
 - done: 1
-  end_date: '2024-07-22'
+  end_date: '2024-07-23'
   film_title: Bad Newz
-  text: Will Bad Newz earn more than 5 cr in India today (Mon)?
+  text: Will Bad Newz earn more than 3 cr in India today (Tue)?
 - done: 1
-  end_date: '2024-07-22'
+  end_date: '2024-07-23'
   film_title: Bad Newz
-  text: Will YT views of tauba tauba song cross 93 mil views today (Mon)?
+  text: Will YT views of tauba tauba song cross 100 mil views today (Tue)?
 - done: 1
   end_date: '2024-07-22'
   film_title: Raayan
@@ -116,26 +116,30 @@ opinions:
   film_title: Deadpool & Wolverine
   text: Will there be a spiderman cameo in the Deadpool & Wolverine?
 - done: 1
-  end_date: '2024-07-22'
+  end_date: '2024-07-23'
   film_title: Stree 2
-  text: Will Stree 2 trailer cross 35 million views on YT today (Mon)?
+  text: Will Stree 2 trailer cross 30 million views on YT today (Tue)?
 - done: 1
-  end_date: '2024-07-22'
+  end_date: '2024-07-23'
   film_title: Ulajh
-  text: Will Ulajh trailer cross 34 million views on YT today (Mon)?
+  text: Will Ulajh trailer cross 30 million views on YT today (Tue)?
 - done: 1
   end_date: '2024-08-14'
   film_title: Stree 2
   text: Is Akshay Kumar the Sarkata bhoot in Stree 2?
+- done: 1
+  end_date: '2024-08-24'
+  film_title: Kalki
+  text: Will Kalki cross Jawan's lifetime collection this week?
 predictions:
 - done: 1
-  end_date: '2024-07-22'
+  end_date: '2024-07-23'
   film_title: Bad Newz
-  max_value: 10
-  mean_value: 8
-  min_value: 3
+  max_value: 6
+  mean_value: 5
+  min_value: 1
   step_value: 0.1
-  text: Collection in India today (Mon)
+  text: Collection in India today (Tue)
   unit: crores
 - done: 1
   end_date: '2024-07-25'
@@ -155,13 +159,13 @@ predictions:
   text: Opening Friday collection in India
   unit: crores
 - done: 1
-  end_date: '2024-07-22'
+  end_date: '2024-07-23'
   film_title: Kalki
-  max_value: 10
-  mean_value: 7
-  min_value: 2
+  max_value: 6
+  mean_value: 5
+  min_value: 1
   step_value: 0.1
-  text: Collection in India today (Mon)
+  text: Collection in India today (Tue)
   unit: crores
 - done: 1
   end_date: '2024-08-01'
