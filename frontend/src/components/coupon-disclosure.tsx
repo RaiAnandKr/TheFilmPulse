@@ -91,7 +91,6 @@ const CouponTnC: React.FC<
       <h3 className=" font-bold">Terms & Conditions</h3>
       <ul className="list-inside list-disc space-y-4 text-sm">
         {props.couponTnCs?.map((tnC, idx) => <li key={idx}> {tnC} </li>)}
-        <li> Expiry date of this coupon code is {props.couponExpiryDate}.</li>
         <li>
           The Coupon code will be revealed on clicking the &quot;Claim&quot;
           button.
@@ -100,11 +99,11 @@ const CouponTnC: React.FC<
           {props.worthCoins} coins will be deducted from your balance on
           clicking the &quot;Claim&quot; button.
         </li>
-        <li>
-          Once revealed, you will not be shown the code again on page refresh or
-          closing this dialog. So, make sure to copy the coupon code.
-        </li>
         <li>The coupon code is applicable for only one transaction.</li>
+        <li>
+          Once revealed, you can see the coupon and the code anytime in the
+          &quot;Claimed Coupons&quot; section.
+        </li>
       </ul>
     </>
   );
