@@ -22,7 +22,6 @@ from sqlalchemy.exc import IntegrityError
 # Setting the server's timezone to Indian Standard Time
 SERVER_TIMEZONE = 'Asia/Kolkata'
 
-@lru_cache(maxsize=None)
 def current_date():
     tz = pytz.timezone(SERVER_TIMEZONE)
     return datetime.now(tz).date()
