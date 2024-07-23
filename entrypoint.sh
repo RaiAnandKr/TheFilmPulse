@@ -5,7 +5,7 @@ flask db upgrade --directory=/app/backend/migrations
 
 while true; do
     python3 backend/compute_results.py
-    sleep 3600
+    sleep 900
 done &
 
 # Start the Flask application
