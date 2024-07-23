@@ -93,7 +93,7 @@ const CouponTnC: React.FC<
         {props.couponTnCs?.map((tnC, idx) => <li key={idx}> {tnC} </li>)}
         <li>
           The Coupon code will be revealed on clicking the &quot;Claim&quot;
-          button.
+          button (Wait for 1-2 second after clicking for code to appear).
         </li>
         <li>
           {props.worthCoins} coins will be deducted from your balance on
