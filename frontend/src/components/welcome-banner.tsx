@@ -33,10 +33,15 @@ export const WelcomeBanner = () => {
           return (
             <>
               <ModalHeader className="bg-success-to-danger justify-center">
-                <p className="text-xl font-semibold text-danger">!! Win !!</p>
+                <p className="text-xl font-semibold text-danger">Welcome</p>
               </ModalHeader>
-              <ModalBody className="items-center p-4 text-center">
-                <Image alt="welcome" src={WelcomeBannerPic.src} removeWrapper />
+              <ModalBody className="bg-success-to-danger items-center p-2 text-center">
+                <Image
+                  alt="welcome"
+                  src={WelcomeBannerPic.src}
+                  removeWrapper
+                  className="border-2 border-solid border-danger"
+                />
               </ModalBody>
               <ModalFooter className="bg-success-to-danger flex w-full flex-col justify-end gap-2 text-center font-bold">
                 <p className="text-xl text-danger">
@@ -52,7 +57,7 @@ export const WelcomeBanner = () => {
                   onPress={onClose}
                   className="font-bold text-white"
                 >
-                  Continue to app
+                  Continue
                 </Button>
               </ModalFooter>
             </>
