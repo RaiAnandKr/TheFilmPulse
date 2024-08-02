@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 "use client";
 
 import { Button } from "@nextui-org/react";
@@ -23,14 +26,18 @@ const LoginPageBase = () => {
   // window.fbq might be None if the pixel hasn't been initiated in the root layout and
   // hence checking its value for safety.
   // Using hasTrackedSearchEvent to make sure we do the tracking only once per session.
-  // @ts-expect-error: I know this works in testing. There is a better ts way to do it, but
+  // "@ts-expect-error": I know this works in testing. There is a better ts way to do it, but
   // I am a noob so excuse me.
-  if (typeof window !== "undefined" && window.fbq && !window.hasTrackedSearchEvent) {
-     // @ts-expect-error: I know this works in testing.
-     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-     window.fbq('track', 'Search');
-     // @ts-expect-error: I know this works in testing.
-     window.hasTrackedSearchEvent = true;
+  if (
+    typeof window !== "undefined" &&
+    (window as any).fbq &&
+    !(window as any).hasTrackedSearchEvent
+  ) {
+    // @ts-expect-error: I know this works in testing.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    window.fbq("track", "Search");
+    // @ts-expect-error: I know this works in testing.
+    window.hasTrackedSearchEvent = true;
   }
 
   return (
@@ -50,7 +57,7 @@ const LoginPageBase = () => {
       )}
 
       <div className="flex flex-col items-center gap-3 ">
-        <h2 className="text-4xl font-semibold text-primary">The Film Pulse</h2>
+        <h2 className="text-3xl font-semibold text-danger">The Film Pulse</h2>
         <p className="text-3xl font-bold">Sign in</p>
       </div>
 

@@ -46,7 +46,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
       {!noHeader && (
         <CardHeader className="flex flex-col items-start p-0">
           {showResult && <PredictionResult {...prediction} />}
-          <div className="flex items-center">
+          <div className="flex w-full items-center gap-2 overflow-hidden">
             <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
               <Image
                 alt="nextui logo"
@@ -60,7 +60,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
               />
             </Button>
 
-            <div className="flex flex-col px-2">
+            <div className="flex flex-col">
               <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-semibold">
                 {title}
               </h3>
