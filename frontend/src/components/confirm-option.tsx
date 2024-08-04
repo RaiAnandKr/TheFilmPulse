@@ -24,16 +24,14 @@ interface ExpectedRewardCoins {
 }
 
 export const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
-  const { isOpen, onOpenChange, option, classNames } = props;
+  const { isOpen, onOpenChange, option: label, classNames } = props;
 
-  const label = option;
+  const isUserLoggedIn = useMainStore((state) => state.isUserLoggedIn);
 
-  const { hasNoBalance, isUserLoggedIn } = useMainStore((state) => ({
-    hasNoBalance: userMaxOpinionCoinsSelector(state) <= 0,
-    isUserLoggedIn: state.isUserLoggedIn,
-  }));
+  const coinsToBetProps = useCoinsToBet(props);
 
-  const userIsLoggedInButHasNoBalance = isUserLoggedIn && hasNoBalance;
+  const userIsLoggedInButHasNoBalance =
+    isUserLoggedIn && coinsToBetProps.maxCoinsToBet <= 0;
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -54,7 +52,11 @@ export const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
                 </p>
               </ModalBody>
             ) : (
-              <CoinsSelector {...props} onClose={onClose} />
+              <CoinsSelector
+                {...props}
+                onClose={onClose}
+                {...coinsToBetProps}
+              />
             )}
           </>
         )}
@@ -63,12 +65,21 @@ export const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
   );
 };
 
-const CoinsSelector: React.FC<ConfirmOptionProps> = (props) => {
-  const { votes, option, onOpinionConfirmed, onClose, endDate, userVote } =
-    props;
-
-  const { minCoinsToBet, maxCoinsToBet, coinsToBet, onSliderChange } =
-    useCoinsToBet(props);
+const CoinsSelector: React.FC<
+  ConfirmOptionProps & ReturnType<typeof useCoinsToBet>
+> = (props) => {
+  const {
+    votes,
+    option,
+    onOpinionConfirmed,
+    onClose,
+    endDate,
+    userVote,
+    coinsToBet,
+    maxCoinsToBet,
+    minCoinsToBet,
+    onSliderChange,
+  } = props;
 
   const expectedRewardCoins = useMemo(
     () => getExpectedRewardCoins(votes, option, coinsToBet),
