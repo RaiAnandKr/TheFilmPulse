@@ -31,6 +31,7 @@ const OPINIONS: Opinion[] = [
       { option: OpinionOption.No, participationCount: 129, coins: 3875 },
     ],
     userVote: { selectedOption: OpinionOption.Yes, coinsUsed: 25 },
+    participationCount: 379,
   },
   {
     type: PulseType.Opinion,
@@ -43,6 +44,7 @@ const OPINIONS: Opinion[] = [
       { option: OpinionOption.No, participationCount: 180, coins: 3975 },
     ],
     userVote: { selectedOption: OpinionOption.No, coinsUsed: 12 },
+    participationCount: 394,
   },
   {
     type: PulseType.Opinion,
@@ -54,6 +56,7 @@ const OPINIONS: Opinion[] = [
       { option: OpinionOption.Yes, participationCount: 68, coins: 2230 },
       { option: OpinionOption.No, participationCount: 126, coins: 2955 },
     ],
+    participationCount: 194,
   },
   {
     type: PulseType.Opinion,
@@ -72,6 +75,7 @@ const OPINIONS: Opinion[] = [
       coinsResult: 12,
       finalValue: OpinionOption.Yes,
     },
+    participationCount: 364,
   },
   {
     type: PulseType.Opinion,
@@ -90,6 +94,7 @@ const OPINIONS: Opinion[] = [
       coinsResult: 135,
       finalValue: OpinionOption.Yes,
     },
+    participationCount: 203,
   },
 ];
 

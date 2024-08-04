@@ -2,18 +2,9 @@
 
 import { Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 import { Rewards } from "~/components/rewards";
-import { OpinionCard } from "~/components/opinion-card";
-import { PredictionCard } from "~/components/prediction-card";
 import { CoinType } from "~/schema/CoinType";
-import type { Opinion } from "~/schema/Opinion";
-import type { Prediction } from "~/schema/Prediction";
-import { PulseType } from "~/schema/PulseType";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 import { useMainStore } from "~/data/contexts/store-context";
-import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
-import { differenceInDays } from "~/utilities/differenceInDays";
-import type { MainStore } from "~/data/store/main-store";
-import { useLoadUserParticipationsData } from "~/data/hooks/useLoadUserParticipationsData";
 import { ClaimedCoupons } from "~/components/claimed-coupons";
 import { userTotalCoinsSelector } from "~/data/store/selectors/userTotalCoinsSelector";
 
@@ -42,12 +33,6 @@ const RewardsPage = () => {
       )}
       <SectionHeader title="Reveal Rewards" />
       <Rewards />
-      {isUserLoggedIn && (
-        <>
-          <SectionHeader title="Your Participations" />
-          <YourParticipations />
-        </>
-      )}
     </>
   );
 };
@@ -97,56 +82,6 @@ const CoinCard: React.FC<{
         )}
       </CardFooter>
     </Card>
-  );
-};
-
-const YourParticipations = () => {
-  useLoadUserParticipationsData();
-
-  const { userParticipations } = useMainStore((state) => ({
-    userParticipations: userParticipationSelector(state),
-  }));
-
-  return (
-    <div className="bg-success-to-danger flex w-full flex-col p-3">
-      {userParticipations.length ? (
-        userParticipations.map((pulse) =>
-          pulse.type === PulseType.Opinion ? (
-            <OpinionCard
-              opinion={pulse}
-              key={pulse.opinionId}
-              useFullWidth
-              showResult
-            />
-          ) : (
-            <PredictionCard
-              key={pulse.predictionId}
-              prediction={pulse}
-              showResult
-            />
-          ),
-        )
-      ) : (
-        <p className="text-tiny text-danger"> No participations!</p>
-      )}
-    </div>
-  );
-};
-
-const userParticipationSelector = (
-  state: MainStore,
-): (Prediction | Opinion)[] => {
-  return [
-    ...filterMapValuesInArray(
-      state.predictions,
-      (_, prediction) => !!prediction.userPrediction,
-    ),
-    ...filterMapValuesInArray(
-      state.opinions,
-      (_, opinion) => !!opinion.userVote,
-    ),
-  ].sort((pulse1, pulse2) =>
-    differenceInDays(new Date(pulse2.endDate), new Date(pulse1.endDate)),
   );
 };
 

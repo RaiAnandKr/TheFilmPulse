@@ -15,6 +15,12 @@ export type Opinion = {
   // For client-side state management
   isTrending?: boolean;
   isActive?: boolean;
+
+  // Hack to show opinions in certain order in pulse page. This data
+  // is directly fed from backend response and we return manipulated user_count
+  // (different than "yes_count + no_count") for certain opinions to show
+  // few opinions on top.
+  participationCount: number;
 };
 
 export type Vote = {
