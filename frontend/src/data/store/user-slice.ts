@@ -7,8 +7,13 @@ type UserState = {
   handle: string | null;
   userCoins: { type: CoinType; coins: number; isRedeemable?: boolean }[];
   isUserLoggedIn: boolean;
-  isNewUser?: boolean;
   maxOpinionCoins: number;
+  /**
+   * Experience coins to let users explore the app while not logged in.
+   * Eg. Explore the contest win probability.
+   */
+  xpCoins: number;
+  isNewUser?: boolean;
 };
 
 type UserAction = {
@@ -81,9 +86,8 @@ export const createUserSlice: StateCreator<
         const newBonusCoins = bonusCoinCategory?.coins ?? 0;
         const newEarnedCoins = earnedCoinCategory?.coins ?? 0;
         const sumCoins = newBonusCoins + newEarnedCoins;
-        const newMaxOpinionCoins = sumCoins > 6
-          ? Math.ceil(0.4 * sumCoins)
-          : sumCoins;
+        const newMaxOpinionCoins =
+          sumCoins > 6 ? Math.ceil(0.4 * sumCoins) : sumCoins;
 
         return {
           userCoins: updatedCoins,
@@ -97,7 +101,7 @@ export const createUserSlice: StateCreator<
     set({ ...initUserState() }, false, "UserAction/removeUser"),
 });
 
-const initUserState = () => ({
+const initUserState = (): UserState => ({
   userId: null,
   phone: null,
   handle: null,
@@ -115,4 +119,5 @@ const initUserState = () => ({
     },
   ],
   maxOpinionCoins: 0,
+  xpCoins: 100,
 });

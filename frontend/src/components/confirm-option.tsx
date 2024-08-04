@@ -1,26 +1,22 @@
-import { TickIcon } from "~/res/icons/tick";
 import { useMainStore } from "~/data/contexts/store-context";
 import { userMaxOpinionCoinsSelector } from "~/data/store/selectors/userMaxOpinionCoinsSelector";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  Button,
   Slider,
   cn,
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
+  type useDisclosure,
 } from "@nextui-org/react";
-import type { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import type { OpinionOption } from "~/schema/OpinionOption";
 import type { Vote } from "~/schema/Opinion";
 import type { OptionButtonProps } from "~/schema/OptionButtonProps";
-import { UI_TIMEOUT_IN_MILLIS } from "~/constants/ui-configs";
+import { ConfirmActionFooter } from "./confirm-action-footer";
 
-type ConfirmOptionProps = ReturnType<typeof useDisclosureWithLogin> &
-  OptionButtonProps;
+type ConfirmOptionProps = ReturnType<typeof useDisclosure> & OptionButtonProps;
 
 interface ExpectedRewardCoins {
   additionalCoins: number;
@@ -32,9 +28,12 @@ export const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
 
   const label = option;
 
-  const canParticipate = useMainStore(
-    (state) => userMaxOpinionCoinsSelector(state) > 0,
-  );
+  const { hasNoBalance, isUserLoggedIn } = useMainStore((state) => ({
+    hasNoBalance: userMaxOpinionCoinsSelector(state) <= 0,
+    isUserLoggedIn: state.isUserLoggedIn,
+  }));
+
+  const userIsLoggedInButHasNoBalance = isUserLoggedIn && hasNoBalance;
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -48,14 +47,14 @@ export const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
                 {label}
               </h4>
             </ModalHeader>
-            {canParticipate ? (
-              <CoinsSelector {...props} onClose={onClose} />
-            ) : (
+            {userIsLoggedInButHasNoBalance ? (
               <ModalBody className="p-4">
                 <p className="self-center font-bold text-danger">
                   You have zero balance!
                 </p>
               </ModalBody>
+            ) : (
+              <CoinsSelector {...props} onClose={onClose} />
             )}
           </>
         )}
@@ -64,72 +63,54 @@ export const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
   );
 };
 
-const CoinsSelector: React.FC<
-  Pick<
-    ConfirmOptionProps,
-    "isOpen" | "votes" | "option" | "onOpinionConfirmed" | "onClose"
-  >
-> = (props) => {
-  const { isOpen, votes, option, onOpinionConfirmed, onClose } = props;
-  // Global state value for max opinion coins.
-  const userMaxOpinionCoins = useMainStore(userMaxOpinionCoinsSelector);
-  const defaultCoinsToBet = Math.floor(userMaxOpinionCoins * 0.5);
+const CoinsSelector: React.FC<ConfirmOptionProps> = (props) => {
+  const { votes, option, onOpinionConfirmed, onClose, endDate, userVote } =
+    props;
 
-  // Local state value. This ensures we don't update the value while the confirm modal is opened after participation.
-  const [localMaxCoinsToBet, setLocalMaxCoinsToBet] =
-    useState(userMaxOpinionCoins);
-  const [coinsToBet, setCoinsToBet] = useState(defaultCoinsToBet);
-
-  useEffect(() => {
-    // Updating values on modal open or close.
-    setCoinsToBet(defaultCoinsToBet);
-    setLocalMaxCoinsToBet(userMaxOpinionCoins);
-  }, [isOpen]);
-
-  const [hasConfirmedOption, setHasConfirmedOption] = useState(false);
-
-  const onSliderChange = useCallback((value: number | number[]) => {
-    const newValue = typeof value === "number" ? value : value[0] ?? 0;
-    setCoinsToBet(newValue);
-  }, []);
+  const { minCoinsToBet, maxCoinsToBet, coinsToBet, onSliderChange } =
+    useCoinsToBet(props);
 
   const expectedRewardCoins = useMemo(
     () => getExpectedRewardCoins(votes, option, coinsToBet),
     [votes, option, coinsToBet],
   );
 
-  const onConfirmButtonPress = useCallback(() => {
-    setHasConfirmedOption(true);
+  const onParticipation = useCallback(() => {
     onOpinionConfirmed({
       selectedOption: option,
       coinsUsed: coinsToBet,
     });
-    setTimeout(onClose, UI_TIMEOUT_IN_MILLIS);
-  }, [onOpinionConfirmed, option, coinsToBet, onClose]);
+  }, [onOpinionConfirmed, option, coinsToBet]);
+
+  const totalParticipations = votes.reduce(
+    (acc, vote) => acc + vote.participationCount,
+    0,
+  );
 
   const isValidCoinsToBet = coinsToBet > 0;
+  const hasUserParticipated = !!userVote;
 
   return (
     <>
       <ModalBody className="p-4">
         <Slider
-          isDisabled={hasConfirmedOption}
+          isDisabled={hasUserParticipated}
           label={"Select Coins"}
           showTooltip
           step={1}
           formatOptions={{
             style: "decimal",
           }}
-          maxValue={localMaxCoinsToBet}
-          minValue={0}
+          maxValue={maxCoinsToBet}
+          minValue={minCoinsToBet}
           marks={[
             {
-              value: 0,
-              label: "0",
+              value: minCoinsToBet,
+              label: minCoinsToBet.toString(),
             },
             {
-              value: localMaxCoinsToBet,
-              label: localMaxCoinsToBet.toString(),
+              value: maxCoinsToBet,
+              label: maxCoinsToBet.toString(),
             },
           ]}
           value={coinsToBet}
@@ -153,40 +134,13 @@ const CoinsSelector: React.FC<
           <CoinsImage />
         </p>
       </ModalBody>
-      <ModalFooter className="flex w-full justify-end gap-2">
-        {hasConfirmedOption ? (
-          <Button
-            fullWidth
-            color="success"
-            variant="solid"
-            className="font-bold text-white"
-            startContent={<TickIcon />}
-          >
-            Confirmed
-          </Button>
-        ) : (
-          <>
-            <Button
-              fullWidth
-              color="default"
-              variant="bordered"
-              onPress={onClose}
-              className="font-bold text-default-500"
-            >
-              Close
-            </Button>
-            <Button
-              fullWidth
-              isDisabled={!isValidCoinsToBet}
-              color="primary"
-              onPress={onConfirmButtonPress}
-              className="font-bold text-white"
-            >
-              Confirm
-            </Button>
-          </>
-        )}
-      </ModalFooter>
+      <ConfirmActionFooter
+        onClose={onClose}
+        onParticipation={onParticipation}
+        endDate={endDate}
+        totalParticipations={totalParticipations}
+        isParticipationDisabled={!isValidCoinsToBet}
+      />
     </>
   );
 };
@@ -219,5 +173,39 @@ const getExpectedRewardCoins = (
   return {
     additionalCoins,
     totalCoins,
+  };
+};
+
+const useCoinsToBet = (props: Pick<ConfirmOptionProps, "isOpen">) => {
+  const { isOpen } = props;
+
+  // Global state value for max opinion coins.
+  const userMaxOpinionCoins = useMainStore((state) =>
+    state.isUserLoggedIn ? userMaxOpinionCoinsSelector(state) : state.xpCoins,
+  );
+  const defaultCoinsToBet = Math.floor(userMaxOpinionCoins * 0.5);
+
+  // Local state value. This ensures we don't update the value while the confirm modal is opened after participation.
+  const [localMaxCoinsToBet, setLocalMaxCoinsToBet] =
+    useState(userMaxOpinionCoins);
+
+  const [coinsToBet, setCoinsToBet] = useState(defaultCoinsToBet);
+
+  useEffect(() => {
+    // Updating values on modal open or close.
+    setCoinsToBet(defaultCoinsToBet);
+    setLocalMaxCoinsToBet(userMaxOpinionCoins);
+  }, [isOpen]);
+
+  const onSliderChange = useCallback((value: number | number[]) => {
+    const newValue = typeof value === "number" ? value : value[0] ?? 0;
+    setCoinsToBet(newValue);
+  }, []);
+
+  return {
+    minCoinsToBet: 0,
+    maxCoinsToBet: localMaxCoinsToBet,
+    coinsToBet,
+    onSliderChange,
   };
 };
