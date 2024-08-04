@@ -1,21 +1,14 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Image,
-} from "@nextui-org/react";
-import type { Prediction } from "~/schema/Prediction";
+import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 import { TimerAndParticipations } from "./timer-and-participations";
 import { PredictionMeter } from "./prediction-meter";
-import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
 import { TrophyIcon } from "~/res/icons/trophy";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 import { useMainStore } from "~/data/contexts/store-context";
-import type { MainStore } from "~/data/store/main-store";
 import { isValidPrediction } from "~/utilities/isValidPrediction";
+import { FilmHeader } from "./film-header";
+import type { Prediction } from "~/schema/Prediction";
+import type { MainStore } from "~/data/store/main-store";
 
 interface PredictionCardProps {
   prediction: Prediction;
@@ -29,46 +22,16 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
     predictionFilmSelector(state, prediction.predictionId),
   );
 
-  const router = useRouter();
-
   if (!film) {
     return null;
   }
-
-  const onFilmPosterClick = () => {
-    router.push(`/film/${film.filmId}/predictions`);
-  };
-
-  const { title, imgSrc, filmCasts } = film;
 
   return (
     <Card className="h-50 my-2 w-full p-3" isBlurred>
       {!noHeader && (
         <CardHeader className="flex flex-col items-start p-0">
           {showResult && <PredictionResult {...prediction} />}
-          <div className="flex w-full items-center gap-2 overflow-hidden">
-            <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
-              <Image
-                alt="nextui logo"
-                height={48}
-                src={
-                  imgSrc ??
-                  "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-                }
-                width={48}
-                className="max-h-12 max-w-12"
-              />
-            </Button>
-
-            <div className="flex flex-col">
-              <h3 className="text-md overflow-hidden text-ellipsis text-nowrap font-semibold">
-                {title}
-              </h3>
-              <p className="overflow-hidden text-ellipsis text-nowrap text-tiny font-medium text-default-500">
-                {filmCasts}
-              </p>
-            </div>
-          </div>
+          <FilmHeader filmId={film.filmId} appendNavigationPath="predictions" />
         </CardHeader>
       )}
       <CardBody className="flex flex-col p-0 py-2">

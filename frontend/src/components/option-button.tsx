@@ -7,7 +7,9 @@ import { ConfirmOption } from "./confirm-option";
 import { differenceInDays } from "~/utilities/differenceInDays";
 
 export const OptionButton: React.FC<OptionButtonProps> = (props) => {
-  const { userVote, option, classNames, endDate } = props;
+  const { option, classNames, opinion } = props;
+  const { userVote, endDate } = opinion;
+
   const disclosure = useDisclosure();
 
   const label = option;
@@ -39,8 +41,8 @@ export const OptionButton: React.FC<OptionButtonProps> = (props) => {
 const getOptionTerminalContentProps = (
   props: OptionButtonProps,
 ): Pick<ButtonProps, "startContent" | "endContent"> => {
-  const { option, userVote, icon } = props;
-  const isUserVotedOption = userVote?.selectedOption === option;
+  const { option, opinion, icon } = props;
+  const isUserVotedOption = opinion.userVote?.selectedOption === option;
 
   switch (option) {
     case OpinionOption.Yes:

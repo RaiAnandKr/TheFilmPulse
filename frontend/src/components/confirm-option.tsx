@@ -15,6 +15,7 @@ import type { OpinionOption } from "~/schema/OpinionOption";
 import type { Vote } from "~/schema/Opinion";
 import type { OptionButtonProps } from "~/schema/OptionButtonProps";
 import { ConfirmActionFooter } from "./confirm-action-footer";
+import { FilmHeader } from "./film-header";
 
 type ConfirmOptionProps = ReturnType<typeof useDisclosure> & OptionButtonProps;
 
@@ -24,7 +25,7 @@ interface ExpectedRewardCoins {
 }
 
 export const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
-  const { isOpen, onOpenChange, option: label, classNames } = props;
+  const { isOpen, onOpenChange, classNames, opinion } = props;
 
   const isUserLoggedIn = useMainStore((state) => state.isUserLoggedIn);
 
@@ -39,11 +40,12 @@ export const ConfirmOption: React.FC<ConfirmOptionProps> = (props) => {
         {(onClose) => (
           <>
             <ModalHeader
-              className={cn("justify-center", classNames.contentBgColor)}
+              className={cn(
+                "justify-center p-4 pr-10",
+                classNames.contentBgColor,
+              )}
             >
-              <h4 className={cn("font-bold", classNames.contentTextColor)}>
-                {label}
-              </h4>
+              <FilmHeader filmId={opinion.filmId} />
             </ModalHeader>
             {userIsLoggedInButHasNoBalance ? (
               <ModalBody className="p-4">
@@ -69,19 +71,17 @@ const CoinsSelector: React.FC<
   ConfirmOptionProps & ReturnType<typeof useCoinsToBet>
 > = (props) => {
   const {
-    opinionTitle,
-    votes,
+    opinion,
     option,
     onOpinionConfirmed,
     onClose,
-    endDate,
-    userVote,
     coinsToBet,
     maxCoinsToBet,
     minCoinsToBet,
     onSliderChange,
     classNames,
   } = props;
+  const { userVote, votes, title, endDate } = opinion;
 
   const expectedRewardCoins = useMemo(
     () => getExpectedRewardCoins(votes, option, coinsToBet),
@@ -106,7 +106,7 @@ const CoinsSelector: React.FC<
   return (
     <>
       <ModalBody className="gap-2 p-4">
-        <p className="text-md p-0 font-bold">{opinionTitle}</p>
+        <p className="text-md p-0 font-bold">{title}</p>
         <p className="flex justify-between gap-2 font-bold text-default-500">
           <span className="flex-auto">Your answer:</span>
           <span className={cn("font-bold", classNames.contentTextColor)}>
