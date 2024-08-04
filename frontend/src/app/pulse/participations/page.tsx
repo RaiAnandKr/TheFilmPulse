@@ -19,7 +19,7 @@ const ParticipationPage = () => {
   }));
 
   return (
-    <div className="bg-success-to-danger flex w-full flex-col p-3">
+    <div className="bg-success-to-danger flex w-full flex-col">
       {userParticipations.length ? (
         userParticipations.map((pulse) =>
           pulse.type === PulseType.Opinion ? (
