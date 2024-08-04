@@ -5,8 +5,8 @@ import { Tab, type TabItemProps, Tabs } from "@nextui-org/react";
 import { usePathname, useRouter } from "next/navigation";
 
 const TAB_ITEMS: TabItemProps[] = [
-  { key: "opinions", title: "Opinions" },
-  { key: "predictions", title: "Predictions" },
+  { key: "contests", title: "Contests" },
+  { key: "participations", title: "Your Participations" },
 ];
 
 export const PulseTabs: React.FC<React.PropsWithChildren> = (props) => {
@@ -29,7 +29,7 @@ export const PulseTabs: React.FC<React.PropsWithChildren> = (props) => {
         classNames={{
           tabContent: "group-data-[selected=true]:text-white font-bold",
           base: "pb-2",
-          tabList: "border-teal-500",
+          tabList: "border-teal-500 flex flex-grow",
         }}
         selectedKey={selectedKey}
         onSelectionChange={(key) => router.push(key as string)}

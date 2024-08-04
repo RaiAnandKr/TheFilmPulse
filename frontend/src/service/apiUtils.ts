@@ -216,6 +216,7 @@ export const getOpinions = async ({
         filmPosterSrc: opinionData.icon_url,
         votes: [yesVote, noVote],
         userVote: userVote,
+        participationCount: opinionData.user_count,
       };
     });
 
@@ -298,6 +299,7 @@ export const getUserOpinions = async (
         votes: [yesVote, noVote],
         userVote: userVote,
         result: result,
+        participationCount: userOpinionData.opinion.user_count,
       };
     });
 
