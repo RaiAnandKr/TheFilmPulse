@@ -99,6 +99,7 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
       <CardFooter className="flex flex-none flex-col p-0 pt-2">
         <ParticipationTrend votes={votes} />
         <Options
+          opinionTitle={title}
           votes={votes}
           userVote={userVote}
           onOpinionConfirmed={onOpinionConfirmed}
@@ -117,16 +118,18 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 };
 
 const Options: React.FC<{
+  opinionTitle: string;
   votes: Vote[];
   onOpinionConfirmed: (userVote: UserVote) => void;
   endDate: string;
   userVote?: UserVote;
 }> = (props) => {
-  const { votes, userVote, onOpinionConfirmed, endDate } = props;
+  const { votes, userVote, onOpinionConfirmed, endDate, opinionTitle } = props;
 
   return (
     <div className="flex w-full justify-between gap-2 pb-1 pt-2.5">
       <OptionButton
+        opinionTitle={opinionTitle}
         key={votes[0]?.option ?? OpinionOption.Yes}
         option={votes[0]?.option ?? OpinionOption.Yes}
         icon={<LikeIcon />}
@@ -141,6 +144,7 @@ const Options: React.FC<{
         endDate={endDate}
       />
       <OptionButton
+        opinionTitle={opinionTitle}
         key={votes[1]?.option ?? OpinionOption.No}
         option={votes[1]?.option ?? OpinionOption.No}
         icon={<DislikeIcon />}

@@ -69,6 +69,7 @@ const CoinsSelector: React.FC<
   ConfirmOptionProps & ReturnType<typeof useCoinsToBet>
 > = (props) => {
   const {
+    opinionTitle,
     votes,
     option,
     onOpinionConfirmed,
@@ -79,6 +80,7 @@ const CoinsSelector: React.FC<
     maxCoinsToBet,
     minCoinsToBet,
     onSliderChange,
+    classNames,
   } = props;
 
   const expectedRewardCoins = useMemo(
@@ -103,7 +105,14 @@ const CoinsSelector: React.FC<
 
   return (
     <>
-      <ModalBody className="p-4">
+      <ModalBody className="gap-2 p-4">
+        <p className="text-md p-0 font-bold">{opinionTitle}</p>
+        <p className="flex justify-between gap-2 font-bold text-default-500">
+          <span className="flex-auto">Your answer:</span>
+          <span className={cn("font-bold", classNames.contentTextColor)}>
+            {option}
+          </span>
+        </p>
         <Slider
           isDisabled={hasUserParticipated}
           label={"Select Coins"}

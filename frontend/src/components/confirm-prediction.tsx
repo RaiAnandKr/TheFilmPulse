@@ -5,7 +5,6 @@ import {
   ModalHeader,
   type useDisclosure,
 } from "@nextui-org/react";
-import { useState } from "react";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { GiftBoxImage } from "~/res/images/GiftBoxImage";
 import type { PredictButtonProps } from "~/schema/PredictButtonProps";
@@ -27,8 +26,13 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
     isDisabled,
   } = props;
 
-  const { meanPrediction, predictionScaleUnit, endDate, participationCount } =
-    prediction;
+  const {
+    title,
+    meanPrediction,
+    predictionScaleUnit,
+    endDate,
+    participationCount,
+  } = prediction;
   const predictionScaleUnitLabel = predictionScaleUnit ?? "";
 
   return (
@@ -54,6 +58,9 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
                   </span>
                 </p>
               </div>
+
+              <p className="text-md p-0 font-bold">{title}</p>
+
               <PredictionSlider
                 prediction={prediction}
                 onChange={onChange}
@@ -63,6 +70,7 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
                 baseClassOverride={"h-12 mb-0"}
                 noLabel
               />
+
               <p className="flex justify-between text-default-500">
                 <span>Average prediction :</span>
                 <span>
