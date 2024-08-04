@@ -98,12 +98,7 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
       </CardBody>
       <CardFooter className="flex flex-none flex-col p-0 pt-2">
         <ParticipationTrend votes={votes} />
-        <Options
-          votes={votes}
-          userVote={userVote}
-          onOpinionConfirmed={onOpinionConfirmed}
-          endDate={endDate}
-        />
+        <Options opinion={opinion} onOpinionConfirmed={onOpinionConfirmed} />
         {useFooter && (
           <TimerAndParticipations
             endDate={endDate}
@@ -117,42 +112,36 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 };
 
 const Options: React.FC<{
-  votes: Vote[];
+  opinion: Opinion;
   onOpinionConfirmed: (userVote: UserVote) => void;
-  endDate: string;
-  userVote?: UserVote;
 }> = (props) => {
-  const { votes, userVote, onOpinionConfirmed, endDate } = props;
+  const { opinion, onOpinionConfirmed } = props;
 
   return (
     <div className="flex w-full justify-between gap-2 pb-1 pt-2.5">
       <OptionButton
-        key={votes[0]?.option ?? OpinionOption.Yes}
-        option={votes[0]?.option ?? OpinionOption.Yes}
+        opinion={opinion}
+        key={opinion.votes[0]?.option ?? OpinionOption.Yes}
+        option={opinion.votes[0]?.option ?? OpinionOption.Yes}
         icon={<LikeIcon />}
         classNames={{
           buttonColor: "success",
           contentBgColor: "bg-success-100",
           contentTextColor: "text-success",
         }}
-        votes={votes}
-        userVote={userVote}
         onOpinionConfirmed={onOpinionConfirmed}
-        endDate={endDate}
       />
       <OptionButton
-        key={votes[1]?.option ?? OpinionOption.No}
-        option={votes[1]?.option ?? OpinionOption.No}
+        opinion={opinion}
+        key={opinion.votes[1]?.option ?? OpinionOption.No}
+        option={opinion.votes[1]?.option ?? OpinionOption.No}
         icon={<DislikeIcon />}
         classNames={{
           buttonColor: "danger",
           contentBgColor: "bg-danger-100",
           contentTextColor: "text-danger",
         }}
-        votes={votes}
-        userVote={userVote}
         onOpinionConfirmed={onOpinionConfirmed}
-        endDate={endDate}
       />
     </div>
   );

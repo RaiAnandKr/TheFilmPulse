@@ -1,15 +1,16 @@
-import { Button, type ButtonProps } from "@nextui-org/react";
+import { Button, useDisclosure, type ButtonProps } from "@nextui-org/react";
 import { OpinionOption } from "~/schema/OpinionOption";
 import { numberInShorthand } from "../utilities/numberInShorthand";
 import { CoinsImage } from "~/res/images/CoinsImage";
-import { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
 import type { OptionButtonProps } from "~/schema/OptionButtonProps";
 import { ConfirmOption } from "./confirm-option";
 import { differenceInDays } from "~/utilities/differenceInDays";
 
 export const OptionButton: React.FC<OptionButtonProps> = (props) => {
-  const { userVote, option, classNames, endDate } = props;
-  const disclosure = useDisclosureWithLogin();
+  const { option, classNames, opinion } = props;
+  const { userVote, endDate } = opinion;
+
+  const disclosure = useDisclosure();
 
   const label = option;
   const hasUserParticipated = !!userVote;
@@ -40,8 +41,8 @@ export const OptionButton: React.FC<OptionButtonProps> = (props) => {
 const getOptionTerminalContentProps = (
   props: OptionButtonProps,
 ): Pick<ButtonProps, "startContent" | "endContent"> => {
-  const { option, userVote, icon } = props;
-  const isUserVotedOption = userVote?.selectedOption === option;
+  const { option, opinion, icon } = props;
+  const isUserVotedOption = opinion.userVote?.selectedOption === option;
 
   switch (option) {
     case OpinionOption.Yes:

@@ -1,11 +1,10 @@
-import { Button, cn } from "@nextui-org/react";
-import { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
+import { Button, cn, useDisclosure } from "@nextui-org/react";
 import { ConfirmPrediction } from "./confirm-prediction";
 import type { PredictButtonProps } from "~/schema/PredictButtonProps";
 
 export const PredictButton: React.FC<PredictButtonProps> = (props) => {
   const { hasUserPredicted, isDisabled, inDarkTheme } = props;
-  const disclosure = useDisclosureWithLogin();
+  const disclosure = useDisclosure();
   const buttonText = hasUserPredicted ? "Predicted" : "Predict";
   return (
     <>

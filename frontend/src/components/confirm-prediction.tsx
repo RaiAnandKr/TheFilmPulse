@@ -1,20 +1,18 @@
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
+  type useDisclosure,
 } from "@nextui-org/react";
-import { useState } from "react";
-import { TickIcon } from "~/res/icons/tick";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { GiftBoxImage } from "~/res/images/GiftBoxImage";
-import { useDisclosureWithLogin } from "~/hooks/useDisclosureWithLogin";
 import type { PredictButtonProps } from "~/schema/PredictButtonProps";
 import { PredictionSlider } from "./prediction-slider";
+import { ConfirmActionFooter } from "./confirm-action-footer";
+import { FilmHeader } from "./film-header";
 
-type ConfirmPredictionProps = ReturnType<typeof useDisclosureWithLogin> &
+type ConfirmPredictionProps = ReturnType<typeof useDisclosure> &
   PredictButtonProps;
 
 export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
@@ -29,24 +27,23 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
     isDisabled,
   } = props;
 
-  const { meanPrediction, predictionScaleUnit } = prediction;
+  const {
+    title,
+    meanPrediction,
+    predictionScaleUnit,
+    endDate,
+    participationCount,
+    filmId,
+  } = prediction;
   const predictionScaleUnitLabel = predictionScaleUnit ?? "";
-
-  const [hasConfirmedPrediction, setHasConfirmedPrediction] = useState(false);
-
-  const onConfirmButtonPress = (onClose: () => void) => {
-    setHasConfirmedPrediction(true);
-    onPrediction();
-    setTimeout(onClose, 2000);
-  };
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="justify-center bg-warning-100">
-              <h4 className="font-bold text-warning">Predict</h4>
+            <ModalHeader className="justify-center bg-warning-100 p-4 pr-10">
+              <FilmHeader filmId={filmId} appendNavigationPath="predictions" />
             </ModalHeader>
             <ModalBody className="p-4">
               <div className="flex flex-col rounded-lg border-2 border-dashed border-success bg-success-50 p-2 font-semibold text-success">
@@ -63,6 +60,9 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
                   </span>
                 </p>
               </div>
+
+              <p className="text-md p-0 font-bold">{title}</p>
+
               <PredictionSlider
                 prediction={prediction}
                 onChange={onChange}
@@ -72,6 +72,7 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
                 baseClassOverride={"h-12 mb-0"}
                 noLabel
               />
+
               <p className="flex justify-between text-default-500">
                 <span>Average prediction :</span>
                 <span>
@@ -85,39 +86,12 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
                 </span>
               </p>
             </ModalBody>
-            <ModalFooter className="flex w-full justify-end gap-2">
-              {hasConfirmedPrediction ? (
-                <Button
-                  fullWidth
-                  color="success"
-                  variant="solid"
-                  className="font-bold text-white"
-                  startContent={<TickIcon />}
-                >
-                  Confirmed
-                </Button>
-              ) : (
-                <>
-                  <Button
-                    fullWidth
-                    color="default"
-                    variant="bordered"
-                    onPress={onClose}
-                    className="font-bold text-default-500"
-                  >
-                    Close
-                  </Button>
-                  <Button
-                    fullWidth
-                    color="primary"
-                    onPress={() => onConfirmButtonPress(onClose)}
-                    className="font-bold text-white"
-                  >
-                    Confirm
-                  </Button>
-                </>
-              )}
-            </ModalFooter>
+            <ConfirmActionFooter
+              onClose={onClose}
+              onParticipation={onPrediction}
+              endDate={endDate}
+              totalParticipations={participationCount}
+            />
           </>
         )}
       </ModalContent>
