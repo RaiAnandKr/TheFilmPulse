@@ -4,7 +4,6 @@ import { OpinionCard } from "~/components/opinion-card";
 import { PredictionCard } from "~/components/prediction-card";
 import { useMainStore } from "~/data/contexts/store-context";
 import { filterMapValuesInArray } from "~/utilities/filterMapValuesInArray";
-import { differenceInDays } from "~/utilities/differenceInDays";
 import { useLoadUserParticipationsData } from "~/data/hooks/useLoadUserParticipationsData";
 import type { MainStore } from "~/data/store/main-store";
 import type { Opinion } from "~/schema/Opinion";
@@ -57,7 +56,8 @@ const userParticipationSelector = (
       (_, opinion) => !!opinion.userVote,
     ),
   ].sort((pulse1, pulse2) =>
-    differenceInDays(new Date(pulse2.endDate), new Date(pulse1.endDate))
+    // Combine opinions and predictions and sort them in descending order of end date.
+    new Date(pulse2.endDate).getTime() - new Date(pulse1.endDate).getTime()
   );
 };
 
