@@ -35,7 +35,7 @@ export const ConfirmActionFooter: React.FC<ConfirmActionFooterProps> = (
   }, [onParticipation, onClose]);
 
   return (
-    <ModalFooter className="flex w-full flex-col items-center justify-center gap-2">
+    <ModalFooter className="flex w-full flex-col items-center justify-center gap-2 p-4">
       {!isUserLoggedIn && (
         <p className="font-bold text-danger">
           You need to login to participate!
