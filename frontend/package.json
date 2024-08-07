@@ -9,7 +9,7 @@
     "lint": "next lint",
     "start": "npx serve@latest out",
     "clean": "del-cli ./out ./.next",
-    "clean_build": "npm run clean && npm run build"
+    "clean-build": "npm run clean && npm run build"
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.0",
