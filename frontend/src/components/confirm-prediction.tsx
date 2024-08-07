@@ -45,7 +45,7 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
             <ModalHeader className="justify-center bg-warning-100 p-4 pr-10">
               <FilmHeader filmId={filmId} appendNavigationPath="predictions" />
             </ModalHeader>
-            <ModalBody className="p-4">
+            <ModalBody className="gap-2 p-4 pb-0">
               <div className="flex flex-col rounded-lg border-2 border-dashed border-success bg-success-50 p-2 font-semibold text-success">
                 <p className="flex justify-between">
                   <span>Top 3 wins gifts</span>
@@ -73,16 +73,16 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
                 noLabel
               />
 
-              <p className="flex justify-between text-default-500">
-                <span>Average prediction :</span>
-                <span>
-                  {meanPrediction} {predictionScaleUnitLabel}
-                </span>
-              </p>
               <p className="flex justify-between font-bold text-warning">
                 <span>Your prediction :</span>
                 <span>
                   {predictionPointer} {predictionScaleUnitLabel}
+                </span>
+              </p>
+              <p className="flex justify-between text-default-500">
+                <span>Average prediction :</span>
+                <span>
+                  {meanPrediction} {predictionScaleUnitLabel}
                 </span>
               </p>
             </ModalBody>
