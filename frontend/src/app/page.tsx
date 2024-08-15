@@ -23,13 +23,13 @@ import { OpinionCardSkeletons } from "~/components/opinion-card-skeleton";
 export default function Page() {
   return (
     <>
-      <TrendingOpinions />
+      <TrendingContests />
       <TrendingFilms />
     </>
   );
 }
 
-const TrendingOpinions = () => {
+const TrendingContests = () => {
   const router = useRouter();
 
   const { trendingOpinions, setTrendingOpinions } = useMainStore((state) => ({
@@ -51,19 +51,8 @@ const TrendingOpinions = () => {
   return (
     <>
       <SectionHeader
-        title="Trending Opinions"
+        title="Trending Contests"
         onViewAllClick={() => router.push("/contests")}
-        info={
-          <div className="px-1 py-2">
-            <div className="text-small font-bold">What are opinions?</div>
-            <div className="text-tiny">
-              Questions with &apos;Yes&apos; or &apos;No&apos; answer. <br />
-              Analyze the odds, choose an answer <br />
-              and put your coins at stake to win big. <br />
-              Learn more at <a href="https://thefilmpulse.com/help" target="_blank" className="text-primary underline">thefilmpulse.com/help</a>
-            </div>
-          </div>
-        }
       />
       <div className="w-full overflow-x-auto">
         <div
