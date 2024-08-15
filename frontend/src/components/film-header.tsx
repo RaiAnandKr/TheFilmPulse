@@ -22,7 +22,7 @@ export const FilmHeader: React.FC<{
   const { title, imgSrc, filmCasts } = film;
   return (
     <div className="flex w-full items-center gap-2 overflow-hidden">
-      <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
+      <Button isIconOnly radius="sm" onClick={onFilmPosterClick} className="mt-2 ml-2">
         <Image
           alt="nextui logo"
           height={48}

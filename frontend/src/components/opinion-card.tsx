@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { ResultChip } from "./result-chip";
 import { CoinsImage } from "~/res/images/CoinsImage";
 import { OptionButton } from "./option-button";
+import { FilmHeader } from "./film-header";
 import type { MainStore } from "~/data/store/main-store";
 import { useMainStore } from "~/data/contexts/store-context";
 import { pick } from "~/utilities/pick";
@@ -68,29 +69,12 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
 
   return (
     <Card className={cardClassName} isBlurred>
-      {!useFooter && (
-        <CardHeader className="flex flex-col items-start p-0 pb-2">
-          {showResult && (
+      {showResult && (
             <ResultChip hasUserParticipated={!!userVote} result={result} />
-          )}
-          <div className="flex w-full items-start justify-between">
-            <Button isIconOnly radius="sm" onClick={onFilmPosterClick}>
-              <Image
-                alt="Film Poster"
-                height={48}
-                src={
-                  film?.imgSrc ??
-                  "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-                }
-                width={48}
-                className="max-h-12 max-w-12"
-              />
-            </Button>
-            <TimerAndParticipations
-              endDate={endDate}
-              totalParticipations={totalParticipations}
-            />
-          </div>
+      )}
+      {!useFooter && (
+        <CardHeader className="flex flex-col items-start p-0 pb-2 bg-success-100 bg-opacity-75">
+          <FilmHeader filmId={filmId} appendNavigationPath="contests" />
         </CardHeader>
       )}
       <CardBody className="p-0 py-2 text-sm font-medium">
@@ -99,13 +83,11 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
       <CardFooter className="flex flex-none flex-col p-0 pt-2">
         <ParticipationTrend votes={votes} />
         <Options opinion={opinion} onOpinionConfirmed={onOpinionConfirmed} />
-        {useFooter && (
-          <TimerAndParticipations
-            endDate={endDate}
-            totalParticipations={totalParticipations}
-            showInRow
-          />
-        )}
+        <TimerAndParticipations
+          endDate={endDate}
+          totalParticipations={totalParticipations}
+          showInRow
+        />
       </CardFooter>
     </Card>
   );

@@ -28,10 +28,10 @@ export const PredictionCard: React.FC<PredictionCardProps> = (props) => {
 
   return (
     <Card className="h-50 my-2 w-full p-3" isBlurred>
+      {showResult && <PredictionResult {...prediction} />}
       {!noHeader && (
-        <CardHeader className="flex flex-col items-start p-0">
-          {showResult && <PredictionResult {...prediction} />}
-          <FilmHeader filmId={film.filmId} appendNavigationPath="predictions" />
+        <CardHeader className="flex flex-col items-start p-0 pb-2 bg-success-100 bg-opacity-75">
+          <FilmHeader filmId={film.filmId} appendNavigationPath="contests" />
         </CardHeader>
       )}
       <CardBody className="flex flex-col p-0 py-2">

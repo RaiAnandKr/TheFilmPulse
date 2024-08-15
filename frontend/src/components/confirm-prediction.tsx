@@ -43,7 +43,7 @@ export const ConfirmPrediction: React.FC<ConfirmPredictionProps> = (props) => {
         {(onClose) => (
           <>
             <ModalHeader className="justify-center bg-warning-100 p-4 pr-10">
-              <FilmHeader filmId={filmId} appendNavigationPath="predictions" />
+              <FilmHeader filmId={filmId} appendNavigationPath="contests" />
             </ModalHeader>
             <ModalBody className="gap-2 p-4 pb-0">
               <div className="flex flex-col rounded-lg border-2 border-dashed border-success bg-success-50 p-2 font-semibold text-success">
