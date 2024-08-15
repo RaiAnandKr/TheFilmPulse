@@ -1,22 +1,22 @@
 import type { OpinionOption } from "./OpinionOption";
-import type { PulseResult } from "./PulseResult";
-import type { PulseType } from "./PulseType";
+import type { ContestResult } from "./ContestResult";
+import type { ContestType } from "./ContestType";
 
 export type Opinion = {
-  type: PulseType.Opinion;
+  type: ContestType.Opinion;
   opinionId: string;
   title: string;
   endDate: string;
   filmId: string;
   votes: Vote[];
   userVote?: UserVote;
-  result?: PulseResult<OpinionOption>;
+  result?: ContestResult<OpinionOption>;
 
   // For client-side state management
   isTrending?: boolean;
   isActive?: boolean;
 
-  // Hack to show opinions in certain order in pulse page. This data
+  // Hack to show opinions in certain order in contests page. This data
   // is directly fed from backend response and we return manipulated user_count
   // (different than "yes_count + no_count") for certain opinions to show
   // few opinions on top.

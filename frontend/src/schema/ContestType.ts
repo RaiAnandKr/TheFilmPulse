@@ -1,4 +1,4 @@
-export enum PulseType {
+export enum ContestType {
   Opinion = "Opinion",
   Prediction = "Prediction",
 }

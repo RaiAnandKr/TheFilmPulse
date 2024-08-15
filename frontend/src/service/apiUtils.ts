@@ -11,11 +11,11 @@ import type { Film } from "../schema/Film";
 import type { Prediction } from "~/schema/Prediction";
 import type { Opinion, Vote, UserVote } from "../schema/Opinion";
 import { OpinionOption } from "~/schema/OpinionOption";
-import { PulseType } from "~/schema/PulseType";
+import { ContestType } from "~/schema/ContestType";
 import type { CouponDetail, CouponCode } from "~/schema/CouponDetail";
 import type { Reward } from "~/schema/Reward";
-import type { PulseResult } from "~/schema/PulseResult";
-import { PulseResultType } from "~/schema/PulseResult";
+import type { ContestResult } from "~/schema/ContestResult";
+import { ContestResultType } from "~/schema/ContestResult";
 import type { User, UserResponse } from "~/schema/User";
 
 const BASE_URL = "https://backend.thefilmpulse.com";
@@ -102,7 +102,7 @@ export const getFilms = async (
     const films: Film[] = filmsData.map((filmData) => {
       const predictionData = filmData.top_prediction;
       const topPrediction: Prediction = {
-        type: PulseType.Prediction,
+        type: ContestType.Prediction,
         predictionId: predictionData.id.toString(),
         title: predictionData.text,
         filmId: predictionData.film_id.toString(),
@@ -208,7 +208,7 @@ export const getOpinions = async ({
         : undefined;
 
       return {
-        type: PulseType.Opinion,
+        type: ContestType.Opinion,
         opinionId: opinionData.id.toString(),
         title: opinionData.text,
         endDate: opinionData.end_date,
@@ -267,14 +267,14 @@ export const getUserOpinions = async (
 
       // Set the result only if the result computation is finished. Check that from the correct_answer field and if it's
       // set or not.
-      const result: PulseResult<OpinionOption> | undefined =
+      const result: ContestResult<OpinionOption> | undefined =
         userOpinionData.opinion.correct_answer !== null
           ? {
               type:
                 userOpinionData.answer ===
                 userOpinionData.opinion.correct_answer
-                  ? PulseResultType.Won
-                  : PulseResultType.Lost,
+                  ? ContestResultType.Won
+                  : ContestResultType.Lost,
               coinsUsed: userOpinionData.coins,
               // If the coins_won is 0, that means user lost and hence set coinsResult to the lost coins (wagered coins) value.
               // Otherwise, set it to the won coins value.
@@ -290,7 +290,7 @@ export const getUserOpinions = async (
           : undefined;
 
       return {
-        type: PulseType.Opinion,
+        type: ContestType.Opinion,
         opinionId: userOpinionData.opinion_id.toString(),
         title: userOpinionData.opinion.text,
         endDate: userOpinionData.opinion.end_date,
@@ -368,7 +368,7 @@ export const getPredictions = async ({
 
     const predictions: Prediction[] = predictionsData.map((predictionData) => {
       return {
-        type: PulseType.Prediction,
+        type: ContestType.Prediction,
         predictionId: predictionData.id.toString(),
         title: predictionData.text,
         filmId: predictionData.film_id.toString(),
@@ -410,13 +410,13 @@ export const getUserPredictions = async (
       (userPredictionData) => {
         // Populate result only if there is a rank in userPredictionData implying that the result
         // computation has finished.
-        const result: PulseResult<number> | undefined =
+        const result: ContestResult<number> | undefined =
           userPredictionData.rank !== null
             ? {
                 type:
                   userPredictionData.coins_won > 0
-                    ? PulseResultType.Won
-                    : PulseResultType.None,
+                    ? ContestResultType.Won
+                    : ContestResultType.None,
                 coinsResult: userPredictionData.coins_won,
                 ranking: userPredictionData.rank,
                 finalValue: userPredictionData.prediction.correct_answer,
@@ -424,7 +424,7 @@ export const getUserPredictions = async (
             : undefined;
 
         return {
-          type: PulseType.Prediction,
+          type: ContestType.Prediction,
           predictionId: userPredictionData.prediction_id.toString(),
           title: userPredictionData.prediction.text,
           filmId: userPredictionData.prediction.film_id.toString(),

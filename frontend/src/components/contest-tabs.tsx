@@ -4,12 +4,12 @@ import { useMemo } from "react";
 import { Tab, type TabItemProps, Tabs } from "@nextui-org/react";
 import { usePathname, useRouter } from "next/navigation";
 
-interface PulseTabsProps {
+interface ContestTabsProps {
   tabItems: TabItemProps[];
   children: React.ReactNode;
 }
 
-export const PulseTabs: React.FC<PulseTabsProps> = ({tabItems, children}) => {
+export const ContestTabs: React.FC<ContestTabsProps> = ({tabItems, children}) => {
   const pathname = usePathname();
   const router = useRouter();
 

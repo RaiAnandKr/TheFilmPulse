@@ -8,7 +8,7 @@ import { useLoadUserParticipationsData } from "~/data/hooks/useLoadUserParticipa
 import type { MainStore } from "~/data/store/main-store";
 import type { Opinion } from "~/schema/Opinion";
 import type { Prediction } from "~/schema/Prediction";
-import { PulseType } from "~/schema/PulseType";
+import { ContestType } from "~/schema/ContestType";
 
 const ParticipationPage = () => {
   useLoadUserParticipationsData();
@@ -20,18 +20,18 @@ const ParticipationPage = () => {
   return (
     <div className="bg-success-to-danger flex w-full flex-col">
       {userParticipations.length ? (
-        userParticipations.map((pulse) =>
-          pulse.type === PulseType.Opinion ? (
+        userParticipations.map((contest) =>
+          contest.type === ContestType.Opinion ? (
             <OpinionCard
-              opinion={pulse}
-              key={pulse.opinionId}
+              opinion={contest}
+              key={contest.opinionId}
               useFullWidth
               showResult
             />
           ) : (
             <PredictionCard
-              key={pulse.predictionId}
-              prediction={pulse}
+              key={contest.predictionId}
+              prediction={contest}
               showResult
             />
           )
@@ -55,9 +55,9 @@ const userParticipationSelector = (
       state.opinions,
       (_, opinion) => !!opinion.userVote,
     ),
-  ].sort((pulse1, pulse2) =>
+  ].sort((contest1, contest2) =>
     // Combine opinions and predictions and sort them in descending order of end date.
-    new Date(pulse2.endDate).getTime() - new Date(pulse1.endDate).getTime()
+    new Date(contest2.endDate).getTime() - new Date(contest1.endDate).getTime()
   );
 };
 

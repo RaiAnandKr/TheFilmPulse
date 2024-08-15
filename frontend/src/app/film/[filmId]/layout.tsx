@@ -1,5 +1,5 @@
 import { Chip } from "@nextui-org/react";
-import { PulseTabs } from "~/components/pulse-tabs";
+import { ContestTabs } from "~/components/contest-tabs";
 import { getFilms, getFilmInfoFromFilmId } from "~/service/apiUtils";
 import { FilmVisual } from "~/components/film-visual";
 
@@ -51,7 +51,7 @@ export default async function FilmLayout({
           <span className="font-medium">{filmDirector}</span>
         </p>
       </div>
-      <PulseTabs tabItems={FILM_TAB_ITEMS}>{children}</PulseTabs>
+      <ContestTabs tabItems={FILM_TAB_ITEMS}>{children}</ContestTabs>
     </div>
   );
 }

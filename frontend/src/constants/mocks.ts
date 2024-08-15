@@ -5,8 +5,8 @@ import { OpinionOption } from "~/schema/OpinionOption";
 import Kalki from "../res/images/Kalki.jpeg";
 import Pushpa2 from "../res/images/Pushpa2.jpg";
 import { differenceInDays } from "~/utilities/differenceInDays";
-import { PulseType } from "~/schema/PulseType";
-import { PulseResultType } from "~/schema/PulseResult";
+import { ContestType } from "~/schema/ContestType";
+import { ContestResultType } from "~/schema/ContestResult";
 import Pvr from "~/res/images/PVR.png";
 import Netflix from "~/res/images/Netflix.png";
 import PrimeVideo from "~/res/images/PrimeVideo.webp";
@@ -20,7 +20,7 @@ import type { CouponCode, CouponDetail } from "~/schema/CouponDetail";
 
 const OPINIONS: Opinion[] = [
   {
-    type: PulseType.Opinion,
+    type: ContestType.Opinion,
     opinionId: "1",
     title:
       "Will Kalki cross Jawaan's first day box office collection of Rs. 75 Crore in India?",
@@ -34,7 +34,7 @@ const OPINIONS: Opinion[] = [
     participationCount: 379,
   },
   {
-    type: PulseType.Opinion,
+    type: ContestType.Opinion,
     opinionId: "2",
     title: "Will Puspa 2 include cameo from Lord Bobby?",
     endDate: "July 17, 2024",
@@ -47,7 +47,7 @@ const OPINIONS: Opinion[] = [
     participationCount: 394,
   },
   {
-    type: PulseType.Opinion,
+    type: ContestType.Opinion,
     opinionId: "3",
     title: "Will there be sequel of Pushpa 2?",
     endDate: "July 15, 2024",
@@ -59,7 +59,7 @@ const OPINIONS: Opinion[] = [
     participationCount: 194,
   },
   {
-    type: PulseType.Opinion,
+    type: ContestType.Opinion,
     opinionId: "4",
     title: "Will there be sequel of Kalki?",
     endDate: "June 15, 2024",
@@ -70,7 +70,7 @@ const OPINIONS: Opinion[] = [
     ],
     userVote: { selectedOption: OpinionOption.No, coinsUsed: 12 },
     result: {
-      type: PulseResultType.Lost,
+      type: ContestResultType.Lost,
       coinsUsed: 12,
       coinsResult: 12,
       finalValue: OpinionOption.Yes,
@@ -78,7 +78,7 @@ const OPINIONS: Opinion[] = [
     participationCount: 364,
   },
   {
-    type: PulseType.Opinion,
+    type: ContestType.Opinion,
     opinionId: "5",
     title: "Will Fahad Fasil die in Pushpa 2?",
     endDate: "June 2, 2024",
@@ -89,7 +89,7 @@ const OPINIONS: Opinion[] = [
     ],
     userVote: { selectedOption: OpinionOption.Yes, coinsUsed: 85 },
     result: {
-      type: PulseResultType.Won,
+      type: ContestResultType.Won,
       coinsUsed: 85,
       coinsResult: 135,
       finalValue: OpinionOption.Yes,
@@ -100,7 +100,7 @@ const OPINIONS: Opinion[] = [
 
 const PREDICTIONS: Prediction[] = [
   {
-    type: PulseType.Prediction,
+    type: ContestType.Prediction,
     predictionId: "1",
     title: "Week 1 box office collection",
     filmId: "1",
@@ -113,7 +113,7 @@ const PREDICTIONS: Prediction[] = [
     predictionScaleUnit: "Crores",
   },
   {
-    type: PulseType.Prediction,
+    type: ContestType.Prediction,
     predictionId: "2",
     title: "Week 1 IMDB rating",
     filmId: "1",
@@ -125,7 +125,7 @@ const PREDICTIONS: Prediction[] = [
     predictionStepValue: 0.1,
   },
   {
-    type: PulseType.Prediction,
+    type: ContestType.Prediction,
     predictionId: "3",
     title: "Lifetime collection", // Needs clear naming
     filmId: "1",
@@ -137,14 +137,14 @@ const PREDICTIONS: Prediction[] = [
     predictionStepValue: 50,
     predictionScaleUnit: "Crores",
     result: {
-      type: PulseResultType.None,
+      type: ContestResultType.None,
       coinsResult: 0,
       finalValue: 2400,
       ranking: 1500,
     },
   },
   {
-    type: PulseType.Prediction,
+    type: ContestType.Prediction,
     predictionId: "4",
     title: "Week 1 box office collection",
     filmId: "2",
@@ -156,7 +156,7 @@ const PREDICTIONS: Prediction[] = [
     predictionScaleUnit: "Crores",
   },
   {
-    type: PulseType.Prediction,
+    type: ContestType.Prediction,
     predictionId: "5",
     title: "Week 1 IMDB rating",
     filmId: "2",
@@ -167,14 +167,14 @@ const PREDICTIONS: Prediction[] = [
     predictionRange: [0, 10],
     predictionStepValue: 0.1,
     result: {
-      type: PulseResultType.Won,
+      type: ContestResultType.Won,
       coinsResult: 120,
       finalValue: 8.1,
       ranking: 21,
     },
   },
   {
-    type: PulseType.Prediction,
+    type: ContestType.Prediction,
     predictionId: "6",
     title: "Lifetime collection (including overseas, theaters, OTT)",
     filmId: "2",
@@ -220,7 +220,7 @@ const FILMS: Film[] = [
   },
 ];
 
-function isPulseActive(endDate: string) {
+function isContestActive(endDate: string) {
   return differenceInDays(new Date(), new Date(endDate)) > 0;
 }
 
@@ -234,7 +234,7 @@ const getOpinions = async ({
   const opinions = [...OPINIONS];
 
   return opinions
-    .filter((opinion) => isActive === isPulseActive(opinion.endDate))
+    .filter((opinion) => isActive === isContestActive(opinion.endDate))
     .slice(0, limit)
     .filter(Boolean);
 };
@@ -243,7 +243,7 @@ const getPredictions = async ({ isActive }: { isActive: boolean }) => {
   const predictions = [...PREDICTIONS];
 
   return predictions
-    .filter((prediction) => isActive === isPulseActive(prediction.endDate))
+    .filter((prediction) => isActive === isContestActive(prediction.endDate))
     .filter(Boolean);
 };
 
@@ -264,8 +264,8 @@ const getPastParticipations = async (): Promise<(Opinion | Prediction)[]> => {
     ...(await getOpinions({ isActive: false })),
     ...(await getPredictions({ isActive: false })),
   ].filter(
-    (pulse) =>
-      !!((pulse as Opinion).userVote ?? (pulse as Prediction).userPrediction),
+    (contest) =>
+      !!((contest as Opinion).userVote ?? (contest as Prediction).userPrediction),
   );
 };
 

@@ -1,8 +1,8 @@
-import type { PulseResult } from "./PulseResult";
-import type { PulseType } from "./PulseType";
+import type { ContestResult } from "./ContestResult";
+import type { ContestType } from "./ContestType";
 
 export type Prediction = {
-  type: PulseType.Prediction;
+  type: ContestType.Prediction;
   predictionId: string;
   title: string; // I think we should change this to 'text'. title is very closely linked with Film.
   filmId: string;
@@ -13,7 +13,7 @@ export type Prediction = {
   predictionStepValue: number;
   predictionScaleUnit?: string; //Eg. "Cr"
   userPrediction?: number | null;
-  result?: PulseResult<number>;
+  result?: ContestResult<number>;
 
   // For client-side state management
   isActive?: boolean;

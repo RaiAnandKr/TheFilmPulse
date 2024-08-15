@@ -1,4 +1,4 @@
-export const PulseIcon = () => (
+export const ContestIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24px"

@@ -2,7 +2,7 @@ import { pick } from "~/utilities/pick";
 import { useMainStore } from "../contexts/store-context";
 import type { Prediction } from "~/schema/Prediction";
 import type { Opinion } from "~/schema/Opinion";
-import { PulseType } from "~/schema/PulseType";
+import { ContestType } from "~/schema/ContestType";
 import { getPastParticipations } from "~/service/apiUtils";
 import { useLoadData } from "./useLoadData";
 
@@ -18,13 +18,13 @@ export const useLoadUserParticipationsData = () => {
       updateOpinions(
         "userOpinionsParticipation",
         participations.filter(
-          (pulse) => pulse.type === PulseType.Opinion,
+          (contest) => contest.type === ContestType.Opinion,
         ) as Opinion[],
       );
       updatePredictions(
         "userPredictionsParticipation",
         participations.filter(
-          (pulse) => pulse.type === PulseType.Prediction,
+          (contest) => contest.type === ContestType.Prediction,
         ) as Prediction[],
       );
     },

@@ -1,5 +1,5 @@
-export interface PulseResult<TValue> {
-  type: PulseResultType;
+export interface ContestResult<TValue> {
+  type: ContestResultType;
   coinsUsed?: number;
   coinsResult: number;
   finalValue: TValue;
@@ -8,7 +8,7 @@ export interface PulseResult<TValue> {
   ranking?: number;
 }
 
-export enum PulseResultType {
+export enum ContestResultType {
   None = "None",
   Won = "Won",
   Lost = "Lost",

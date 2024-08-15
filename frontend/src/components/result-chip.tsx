@@ -5,21 +5,21 @@ import {
   PopoverTrigger,
 } from "@nextui-org/react";
 import { InfoIcon } from "~/res/icons/info";
-import { PulseResultType, type PulseResult } from "~/schema/PulseResult";
+import { ContestResultType, type ContestResult } from "~/schema/ContestResult";
 import { numberInShorthand } from "~/utilities/numberInShorthand";
 
 interface ResultChipProps {
   hasUserParticipated: boolean;
-  result?: Pick<PulseResult<undefined>, "type" | "coinsResult">;
+  result?: Pick<ContestResult<undefined>, "type" | "coinsResult">;
 }
 
 const RESULT_COLOR_MAP = new Map<
-  PulseResultType,
+  ContestResultType,
   "success" | "danger" | "warning"
 >([
-  [PulseResultType.Won, "success"],
-  [PulseResultType.Lost, "danger"],
-  [PulseResultType.None, "warning"],
+  [ContestResultType.Won, "success"],
+  [ContestResultType.Lost, "danger"],
+  [ContestResultType.None, "warning"],
 ]);
 
 export const ResultChip: React.FC<ResultChipProps> = (props) => {
@@ -29,7 +29,7 @@ export const ResultChip: React.FC<ResultChipProps> = (props) => {
     return null;
   }
 
-  const resultType = result?.type ?? PulseResultType.None;
+  const resultType = result?.type ?? ContestResultType.None;
   const resultText = result
     ? `${numberInShorthand(result.coinsResult)} coins`
     : "Pending result";

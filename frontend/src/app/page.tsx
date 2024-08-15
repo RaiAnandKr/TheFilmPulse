@@ -52,7 +52,7 @@ const TrendingOpinions = () => {
     <>
       <SectionHeader
         title="Trending Opinions"
-        onViewAllClick={() => router.push("/pulse")}
+        onViewAllClick={() => router.push("/contests")}
         info={
           <div className="px-1 py-2">
             <div className="text-small font-bold">What are opinions?</div>
