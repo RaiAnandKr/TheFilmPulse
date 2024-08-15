@@ -54,7 +54,7 @@ export const OpinionCard: React.FC<OpinionProps> = (props) => {
   const router = useRouter();
 
   const onFilmPosterClick = () => {
-    router.push(`/film/${filmId}/opinions`);
+    router.push(`/film/${filmId}/contests`);
   };
 
   const totalParticipations = votes.reduce(

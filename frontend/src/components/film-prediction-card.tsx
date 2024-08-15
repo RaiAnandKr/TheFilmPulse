@@ -34,10 +34,6 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
     router.push(`film/${filmId}`);
   };
 
-  const onMorePredictionsClick = () => {
-    router.push(`/film/${filmId}/predictions`);
-  };
-
   return (
     <div className="p-2">
       <Card
@@ -79,15 +75,6 @@ export const FilmPredictionCard: React.FC<FilmPredictionCardProps> = (
                 <CoinsImage />
                 <GiftBoxImage />
               </h4>
-              <Button
-                isIconOnly
-                color="warning"
-                variant="light"
-                radius="sm"
-                onClick={onMorePredictionsClick}
-                size="sm"
-              >
-              </Button>
             </div>
 
             <PredictionMeter prediction={prediction} inDarkTheme />
