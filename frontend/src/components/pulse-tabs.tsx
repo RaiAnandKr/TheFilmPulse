@@ -4,20 +4,20 @@ import { useMemo } from "react";
 import { Tab, type TabItemProps, Tabs } from "@nextui-org/react";
 import { usePathname, useRouter } from "next/navigation";
 
-const TAB_ITEMS: TabItemProps[] = [
-  { key: "contests", title: "Contests" },
-  { key: "participations", title: "Your Participations" },
-];
+interface PulseTabsProps {
+  tabItems: TabItemProps[];
+  children: React.ReactNode;
+}
 
-export const PulseTabs: React.FC<React.PropsWithChildren> = (props) => {
+export const PulseTabs: React.FC<PulseTabsProps> = ({tabItems, children}) => {
   const pathname = usePathname();
   const router = useRouter();
 
   const selectedKey = useMemo(
     () =>
-      TAB_ITEMS.find((tabItem) => pathname?.includes(tabItem.key as string))
+      tabItems.find((tabItem) => pathname?.includes(tabItem.key as string))
         ?.key as string,
-    [pathname],
+    [pathname, tabItems],
   );
 
   return (
@@ -34,11 +34,11 @@ export const PulseTabs: React.FC<React.PropsWithChildren> = (props) => {
         selectedKey={selectedKey}
         onSelectionChange={(key) => router.push(key as string)}
       >
-        {TAB_ITEMS.map((tabItem) => (
+        {tabItems.map((tabItem) => (
           <Tab {...tabItem} key={tabItem.key} />
         ))}
       </Tabs>
-      {props.children}
+      {children}
     </div>
   );
 };

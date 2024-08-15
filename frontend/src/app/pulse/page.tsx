@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 
 const Pulse = () => {
-  redirect("pulse/contests");
+  redirect("pulse/live");
 };
 
 export default Pulse;

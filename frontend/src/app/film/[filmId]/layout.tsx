@@ -3,6 +3,11 @@ import { PulseTabs } from "~/components/pulse-tabs";
 import { getFilms, getFilmInfoFromFilmId } from "~/service/apiUtils";
 import { FilmVisual } from "~/components/film-visual";
 
+const FILM_TAB_ITEMS = [
+  { key: "contests", title: "All Contests" },
+  { key: "participations", title: "Your Participations" },
+];
+
 export default async function FilmLayout({
   children,
   params,
@@ -46,7 +51,7 @@ export default async function FilmLayout({
           <span className="font-medium">{filmDirector}</span>
         </p>
       </div>
-      <PulseTabs>{children}</PulseTabs>
+      <PulseTabs tabItems={FILM_TAB_ITEMS}>{children}</PulseTabs>
     </div>
   );
 }
